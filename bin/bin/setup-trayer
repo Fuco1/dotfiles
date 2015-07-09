@@ -10,3 +10,8 @@ if [ ! -z $(which pasystray) ] && [ -z $(pgrep pasystray) ]; then
     pasystray &
     echo " done"
 fi
+if [ -z $(pgrep xfce4-power-manager) ]; then
+    echo -n "Starting power manager..."
+    xfce4-power-manager &
+    echo " done"
+fi
