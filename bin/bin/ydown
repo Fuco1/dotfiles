@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+notify_timeout=5000
+youtube_home="/home/matus/download/youtube"
+
+notify-send -a Youtube-dl -u low -c "transfer.begin" -t "$notify_timeout" "Youtube-dl: downloading..." "${@: -1}"
+destination=$(youtube-dl -o "$youtube_home/%(title)s-%(id)s.%(ext)s" "$@" | grep 'Destination' | cut -d ' ' -f 3-)
+notify-send -a Youtube-dl -u low -c "transfer.complete" -t "$notify_timeout" "Youtube-dl: download complete" "${destination##${youtube_home}/}"
+
+# Local Variables:
+# mode: shell-script
+# End:

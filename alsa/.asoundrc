@@ -1,0 +1,83 @@
+# see http://dl.dropboxusercontent.com/u/18371907/asoundrc
+
+# about pcm plugins http://www.alsa-project.org/alsa-doc/alsa-lib/pcm_plugins.html
+# pcm.dmixed {
+#     type asym
+#     playback.pcm {
+#         # See plugin:dmix at http://www.alsa-project.org/alsa-doc/alsa-lib/pcm_plugins.html
+#         type dmix
+
+#         # Don't block other users, e.g. the Timidity midi-player daemon
+#         # http://www.alsa-project.org/alsa-doc/alsa-lib/pcm_plugins.html
+#         ipc_key_add_uid true
+
+#         ipc_key 5678293
+#         ipc_perm 0660
+#         ipc_gid audio
+
+#         # Don't put the rate here! Otherwise it resets the rate & channels set below, as shown by:  cat /proc/asound/card0/pcm0p/sub0/hw_params
+#         slave {
+#             # 2 for stereo, 6 for surround51, 8 for surround71
+#             channels 2
+#             pcm {
+#                 # mplayer chooses S32_LE, but others usually S16_LE
+#                 #format S32_LE
+#                 format S16_LE
+
+#                 # 44100 or 48000
+#                 # 44100 for music, 48000 is compatible with most h/w
+#                 rate 44100
+#                 #rate 48000
+
+#                 # http://www.alsa-project.org/alsa-doc/alsa-lib/pcm_plugins.html
+#                 # Maybe helps
+#                 nonblock true
+
+#                 type hw
+#                 card 0
+#                 device 0
+#                 subdevice 0
+#             }
+
+#             # mplayer2 chooses 1024
+#             # period_size 512 with buffer_size 16384 stops crackling in xmame
+#             # 320 breaks flash - https://bbs.archlinux.org/viewtopic.php?id=129458
+#             period_size 512
+#             #period_size 2048
+#             period_size 1102
+
+#             # explanation about periods & buffers http://www.alsa-project.org/main/index.php/FramesPeriods
+#             # 4096 might make sound crackle
+#             # mplayer2 chooses 8192. Half-Life 2 chooses 16384.
+#             # If too large, use CONFIG_SND_HDA_PREALLOC_SIZE=2048
+#             #buffer_size 32768
+#             #buffer_size 16384
+#             buffer_size 70560
+#         }
+#     }
+#     capture.pcm "hw:0"
+# }
+
+pcm.dmixed {
+    type dmix
+    ipc_key 456479
+    ipc_key_add_uid true
+    slave {
+        pcm "hw:0,0"
+        buffer_size 10880
+        period_size 2176
+        rate 48000
+        channels 2
+    }
+}
+
+pcm.!default {
+    type plug
+    slave.pcm "dmixed"
+}
+
+## other changes
+# in /etc/modprobe.d/alsa-base.conf change
+# -options snd-hda-intel model=3stack-dig
+# to
+# +options snd-hda-intel model=dell

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# mpcshuf.sh: "Shuffles" the mpd playlist.
+# By Renan Birck, '09. 
+# Last updated: 02/04/09.
+
+UPPER=50 # How many times max. to shuffle?
+HOWMANY=$RANDOM
+let "HOWMANY %= $UPPER"
+
+for X in `seq 0 $HOWMANY`; do
+MAXSONG=`mpc playlist | wc -l`;
+RANFROM=$RANDOM;
+RANTO=$RANDOM;
+
+
+let "RANFROM %= $MAXSONG";
+let "RANTO %= $MAXSONG";
+
+
+mpc move $RANFROM $RANTO;
+echo "Moved song " $RANFROM " to " $RANTO; # For debugging, remove if you want.
+done
+

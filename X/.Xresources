@@ -1,0 +1,62 @@
+!# flash on bell
+URxvt.urgentOnBell: true
+
+!# borderless and no scrollbar
+URxvt.scrollBar_right: false
+URxvt.scrollBar: false
+URxvt.borderLess: false
+
+!# the transparency stuff
+! Rxvt*inheritPixmap: true
+! URxvt*tintColor: white
+! URxvt*shading: 20
+
+!# clickable links
+URxvt.perl-ext: default,matcher
+URxvt.url-launcher: conkeror
+URxvt.matcher.button: 3
+URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
+URxvt.matcher.pattern.2: (?<=\\s)`(?=\\w)([^']+)(?<=\\w)'
+URxvt.matcher.launcher.2: /home/matus/bin/emacs-show-docs $1
+URxvt.keysym.M-Delete: perl:matcher:list
+
+! scrollback buffer lines - 65535 is max on most machines (64 is default)
+URxvt.saveLines: 12000
+
+! scrollbar position - left=false (default) or right=true
+! URxvt*scrollBar_right: true
+
+URxvt.letterSpace: -1
+
+! xft:Inconsolata:pixelsize=14:antialias=true:hinting=true
+URxvt.font: xft:Monospace:pixelsize=14:antialias=true:hinting=true
+URxvt.boldFont: xft:Monospace:pixelsize=14:antialias=true:hinting=true
+
+! set color depth
+URxvt.depth: 32
+
+URxvt.foreground: #bbbbbb
+URxvt.background: #050505
+
+! black red green yellow blue purple cyan white
+! normal versions
+URxvt.color0:  #000000
+URxvt.color1:  #bb0000
+URxvt.color2:  #00bb00
+URxvt.color3:  #bbbb00
+URxvt.color4:  #0000bb
+URxvt.color5:  #bb00bb
+URxvt.color6:  #00bbbb
+URxvt.color7:  #bbbbbb
+! light versions
+URxvt.color8:  #555555
+URxvt.color9:  #ff5555
+URxvt.color10: #55ff55
+URxvt.color11: #ffff55
+URxvt.color12: #5555ff
+URxvt.color13: #ff55ff
+URxvt.color14: #55ffff
+URxvt.color15: #ffffff
+
+URxvt.colorIT: #ff5555
+URxvt.colorUL: #4682B4

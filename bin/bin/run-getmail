@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+mbsync logio
+where=$(cat ~/.whereami)
+if [[ "$where" = "home" || "$where" = "brno" ]] ; then
+    mbsync goljer
+    mbsync dota
+fi
+notmuch new

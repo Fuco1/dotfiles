@@ -1,0 +1,73 @@
+## -*- shell-script -*-
+# if we have pcregrep, set an alias
+if [[ ! -z $(which pcregrep) ]] ; then
+    alias grep='pcregrep'
+fi
+
+# enable color support of ls and also add handy aliases
+if [[ -x /usr/bin/dircolors ]] ; then
+    eval "`dircolors -b`"
+    alias ls='ls --color=auto'
+    if [[ ! -z $(which pcregrep) ]] ; then
+        alias grep='pcregrep --color=auto'
+    fi
+fi
+
+# ls aliases
+alias ll='ls -l --group-directories-first'
+alias la='ls -A --group-directories-first'
+alias lla='ls -lA --group-directories-first'
+alias lle='ll --color-never | le'
+alias lg='ls -lA | grep -i '
+
+# navigation
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+
+# text viewers/editors
+alias le='less -MN'
+
+# processes
+alias psef='ps -ef'
+alias psg='ps -ef | grep '
+alias topu="top -u $USER"
+
+# directory commands
+alias ds='du -sm'
+alias du1='du -h --max-depth=1'
+alias mc="mc -S fuco"
+
+# screens
+alias sls='screen -ls'
+alias sr='screen -rUaAd'
+alias ta='tmux attach'
+
+# tar
+alias untar='tar xvfz'
+
+# youtube-dl
+alias yd='youtube-dl'
+alias youtube-mp3='youtube-dl -t --extract-audio --audio-format mp3 --audio-quality 320k'
+
+# ssh
+alias aisa='ssh xgoljer@aisa.fi.muni.cz'
+alias nymfe='ssh xgoljer@nymfe33.fi.muni.cz'
+alias dasnet="TERM=xterm-256color ssh fuco@dasnet.cz"
+
+# app installation
+alias ins='sudo apt-get install'
+alias agr='sudo apt-get remove'
+alias acs='sudo apt-cache search'
+
+## global aliases
+alias -g L="|less" # Write L after a command to page through the output.
+alias -g NUL="> /dev/null 2>&1" # You get the idea.
+
+## file associations
+alias -s pdf=zathura
+
+## directory aliases
+alias w~='cd /media/System/Users/Matus/AppData/Roaming/'

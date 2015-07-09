@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+imgur_key="486690f872c678126a2c09a9e196ce1b"
+upload_connect_timeout="5"
+upload_timeout="120"
+upload_retries="1"
+SCREENS=~/media/screenshots
+notify_timeout=5000
+
+# notify <'ok'|'error'> <title> <text>
+function notify() {
+  if [ "$1" = "error" ]; then
+      notify-send -a ImgurScreenshot -u critical -c "im.error" -i "$imgur_icon_path" -t "$notify_timeout" "$2" "$3"
+  else
+      notify-send -a ImgurScreenshot -u low -c "transfer.complete" -i "$imgur_icon_path" -t "$notify_timeout" "$2" "$3"
+  fi
+  sleep $(( notify_timeout / 1000 ))
+}
+
+function upload_image() {
+  echo "Uploading '${1}'..."
+  response="$(curl --connect-timeout "$upload_connect_timeout" -m "$upload_timeout" --retry "$upload_retries" -s -F "image=@$1" -F "key=$imgur_key" https://imgur.com/api/upload.xml)"
+
+  # imgur response contains stat="ok" when successful
+  if [[ "$response" == *"stat=\"ok\""*  ]]; then
+    # cutting the url from the xml response
+    img_url="$(echo "$response" | egrep -o "<original_image>.*</original_image>" | cut -d ">" -f 2 | cut -d "<" -f 1)"
+    del_url="$(echo "$response" | egrep -o "<delete_page>.*</delete_page>" | cut -d ">" -f 2 | cut -d "<" -f 1)"
+    echo "image  link: $img_url"
+    echo "delete link: $del_url"
+
+    echo -n "$img_url" | xclip -selection clipboard
+    echo "URL copied to clipboard"
+
+    notify ok "Imgur: Upload done!" "$img_url"
+
+  else # upload failed
+    err_msg="$(echo "$response" | egrep -o "<error_msg>.*</error_msg>" | cut -d ">" -f 2 | cut -d "<" -f 1)"
+    img_url="Upload failed: \"$err_msg\"" # using this for the log file
+    echo "$img_url"
+    notify error "Imgur: Upload failed :(" "$err_msg"
+  fi
+}
+
+LAST=$(ls screen* | sort | tail -n 1)
+LAST_NUM_PNG=${LAST##screen}
+LAST_NO=${LAST_NUM_PNG%%\.png}
+NEXT_NO=$(( LAST_NO + 1 ))
+FILE=$(printf 'screen%04d.png' "$NEXT_NO")
+import $SCREENS/$FILE
+if [[ ! $1 == "noupload" ]] ; then
+    upload_image $SCREENS/$FILE
+fi
+
+
+# Local Variables:
+# mode: shell-script
+# End:

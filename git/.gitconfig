@@ -1,0 +1,9 @@
+[push]
+	default = simple
+[user]
+	email = dota.keys@gmail.com
+	name = Matus Goljer
+[gui]
+	recentrepo = C:/Users/Matus/AppData/Roaming/.emacs.d/vendor/smartparens
+[core]
+	autocrlf = input

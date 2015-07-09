@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [ -d "/home/matus/sources/conkeror" ]; then
+    exec firefox --app /home/matus/sources/conkeror/application.ini "$@"
+else
+    # fallback to opera if conkeror is not found
+    exec opera "$@"
+fi

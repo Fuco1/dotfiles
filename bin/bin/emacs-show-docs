@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+extension=${1##*.}
+case $extension in
+    el)
+        emacsclient -e "(find-file \"/usr/local/share/emacs/24.3/lisp/$1.gz\")" >/dev/null
+        ;;
+    c)
+        emacsclient -e "(find-file \"/home/matus/sources/emacs-24.3/src/$1\")" >/dev/null
+        ;;
+    *)
+        emacsclient -e "(describe-function '$1)" >/dev/null
+esac
+
+# Local Variables:
+# mode: shell-script
+# End:

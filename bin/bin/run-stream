@@ -1,0 +1,5 @@
+#!/usr/bin/fish
+
+while sleep 1;
+    mplayer http://localhost:16700
+end

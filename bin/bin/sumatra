@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+wine /media/matus/Data/progs/gnuutils/bin/sumatra.exe $@
+
+# Local Variables:
+# mode: shell-script
+# End:

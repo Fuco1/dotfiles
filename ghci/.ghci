@@ -1,0 +1,5 @@
+:set prompt "> "
+:m +Control.Monad
+:m +Control.Applicative
+:m +Control.Arrow
+:m +Data.List

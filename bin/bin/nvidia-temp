@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+nvidia-smi | sed -n '9p' | awk '{print $3}'

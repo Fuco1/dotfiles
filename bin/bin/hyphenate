@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+from hyphen import Hyphenator
+import fileinput
+import codecs
+import sys
+
+char_stream = codecs.getreader("utf-8")(sys.stdin)
+h = Hyphenator('de_DE')
+
+def main():
+    for line in char_stream.readlines():
+        for s in h.syllables(line):
+            print s,
+
+if __name__ == "__main__":
+    main()

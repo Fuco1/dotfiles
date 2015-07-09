@@ -1,0 +1,14 @@
+clear mod1
+keycode 64 = Meta_L
+add mod1 = Meta_L
+
+clear mod2
+keycode 108 = Alt_R
+add mod2 = Alt_R
+
+clear mod4
+add mod4 = Super_L
+
+keycode 135 = Hyper_L
+clear mod5
+add mod5 = Hyper_L

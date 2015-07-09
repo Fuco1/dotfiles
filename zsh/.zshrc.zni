@@ -1,0 +1,14 @@
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _complete _ignored _approximate
+zstyle ':completion:*' completions 1
+zstyle ':completion:*' glob 1
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=* r:|=* l:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=* r:|=* l:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' max-errors 2 not-numeric
+zstyle ':completion:*' prompt '%e'
+zstyle ':completion:*' substitute 1
+zstyle :compinstall filename '/home/matus/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall

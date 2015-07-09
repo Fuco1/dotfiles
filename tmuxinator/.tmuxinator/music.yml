@@ -1,0 +1,8 @@
+# ~/.tmuxinator/music.yml
+
+name: music
+root: ~/
+
+windows:
+  - ncmpcpp: ncmpcpp
+  - mplayer: run-stream

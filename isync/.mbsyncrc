@@ -1,0 +1,95 @@
+# Logio account
+
+IMAPAccount logio
+Host imap.gmail.com
+User goljer@logio.cz
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/secrets/mailpass-logio.gpg"
+UseIMAPS yes
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore logio-remote
+Account logio
+
+MaildirStore logio-local
+Path ~/Maildir/Logio/
+Inbox ~/Maildir/Logio/inbox
+
+Channel logio-all
+Master :logio-remote:"[Gmail]/All Mail"
+Slave :logio-local:all
+Create Slave
+SyncState *
+
+Channel logio-sent
+Master :logio-remote:"[Gmail]/Sent Mail"
+Slave :logio-local:sent
+Create Slave
+SyncState *
+
+Group logio
+Channel logio-all
+Channel logio-sent
+
+# Goljer account
+
+IMAPAccount goljer
+Host imap.gmail.com
+User matus.goljer@gmail.com
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/secrets/mailpass-goljer.gpg"
+UseIMAPS yes
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore goljer-remote
+Account goljer
+
+MaildirStore goljer-local
+Path ~/Maildir/Goljer/
+Inbox ~/Maildir/Goljer/inbox
+
+Channel goljer-all
+Master :goljer-remote:"[Gmail]/All Mail"
+Slave :goljer-local:all
+Create Slave
+SyncState *
+
+Channel goljer-sent
+Master :goljer-remote:"[Gmail]/Sent Mail"
+Slave :goljer-local:sent
+Create Slave
+SyncState *
+
+Group goljer
+Channel goljer-all
+Channel goljer-sent
+
+# Dota account
+
+IMAPAccount dota
+Host imap.gmail.com
+User dota.keys@gmail.com
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/secrets/mailpass-dota.gpg"
+UseIMAPS yes
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore dota-remote
+Account dota
+
+MaildirStore dota-local
+Path ~/Maildir/Dota/
+Inbox ~/Maildir/Dota/inbox
+
+Channel dota-all
+Master :dota-remote:"[Gmail]/All Mail"
+Slave :dota-local:all
+Create Slave
+SyncState *
+
+Channel dota-sent
+Master :dota-remote:"[Gmail]/Sent Mail"
+Slave :dota-local:sent
+Create Slave
+SyncState *
+
+Group dota
+Channel dota-all
+Channel dota-sent

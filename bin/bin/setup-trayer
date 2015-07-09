@@ -1,0 +1,12 @@
+#!/bin/bash
+trayer --edge top --align right --SetDockType true --SetPartialStrut false --expand true --height 17 --transparent true --alpha 0 --tint 0x000000 --margin -5 --widthtype request --monitor 1 &
+if [ -z $(pgrep nm-applet) ]; then
+    echo -n "Starting nm-appliet..."
+    nm-applet &
+    echo " done"
+fi
+if [ ! -z $(which pasystray) ] && [ -z $(pgrep pasystray) ]; then
+    echo -n "Starting pasystray..."
+    pasystray &
+    echo " done"
+fi
