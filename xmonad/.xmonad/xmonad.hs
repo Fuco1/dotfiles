@@ -15,7 +15,7 @@ import XMonad.Prompt.RunOrRaise (runOrRaisePrompt)
 import XMonad.Prompt.Window (windowPromptGoto)
 import XMonad.Util.EZConfig (additionalKeys, additionalKeysP)
 import XMonad.Util.ExtensibleState as XS
-import XMonad.Util.Run (spawnPipe, runInTerm)
+import XMonad.Util.Run (spawnPipe, runInTerm, safeSpawn)
 import qualified XMonad.StackSet as W
 
 import qualified Constants as C
@@ -39,6 +39,31 @@ withoutNetActiveWindow c = c { handleEventHook = \e -> do
                                           return (mt /= a_aw)
                                         otherwise -> return True
                                   if p then handleEventHook c e else return (All True) }
+
+actuallBrightness :: IO Double
+actuallBrightness = read `fmap` IOS.readFile "/sys/class/backlight/intel_backlight/actual_brightness"
+
+minBrightness :: IO Double
+minBrightness = read `fmap` IOS.readFile "/sys/class/backlight/intel_backlight/bl_power"
+
+maxBrightness :: IO Double
+maxBrightness = read `fmap` IOS.readFile "/sys/class/backlight/intel_backlight/max_brightness"
+
+actuallBrightnessFrac :: IO Double
+actuallBrightnessFrac = do
+  maxb <- maxBrightness
+  minb <- minBrightness
+  actb <- actuallBrightness
+  return $ (actb - minb) / (maxb - minb)
+
+setBrightness :: Double -> IO ()
+setBrightness b = do
+  maxb <- maxBrightness
+  minb <- minBrightness
+  let range = maxb - minb
+      new' = (b * range) + minb
+      new = (new' `min` maxb) `max` minb
+  safeSpawn "sudo" ["/home/matus/bin/set-brightness", show $ floor $ new]
 
 main = do
        w <- IOS.readFile "/home/matus/.whereami"
@@ -96,6 +121,8 @@ main = do
                 , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 3%+")
                 , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 3%-")
                 , ("<XF86AudioMute>",        spawn "amixer -q -D pulse sset Master toggle")
+                , ("<XF86MonBrightnessDown>", liftIO $ actuallBrightnessFrac >>= \x -> setBrightness (x - 0.1))
+                , ("<XF86MonBrightnessUp>", liftIO $ actuallBrightnessFrac >>= \x -> setBrightness (x + 0.1))
                 , (leader <%> "m", muteSinkInput)
                 , (leader <%> "v", setVolumeSinkInput)
                 , (leader <%> "<Insert>",    spawn "amixer -q -D pulse sset Master toggle")
