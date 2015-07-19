@@ -98,6 +98,7 @@ main = do
                 , ("<XF86AudioMute>",        spawn "amixer -q -D pulse sset Master toggle")
                 , (leader <%> "<Left>", decBrightness)
                 , (leader <%> "<Right>", incBrightness)
+                , (leader <%> "b", setBrightness)
                 , (leader <%> "m", muteSinkInput)
                 , (leader <%> "v", setVolumeSinkInput)
                 , (leader <%> "<Insert>",    spawn "amixer -q -D pulse sset Master toggle")

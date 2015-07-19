@@ -2,11 +2,16 @@ module Brightness
        (
          incBrightness
        , decBrightness
+       , setBrightness
        ) where
 
+import Control.Applicative
 import System.IO.Strict as IOS (readFile)
 
+import XMonad
 import XMonad.Util.Run (safeSpawn)
+
+import Interactive
 
 actuallBrightness :: IO Double
 actuallBrightness = read `fmap` IOS.readFile "/sys/class/backlight/intel_backlight/actual_brightness"
@@ -39,3 +44,5 @@ decBrightness = liftIO $ actuallBrightnessFrac >>= \x -> setBrightnessIO $ 0.1 `
 incBrightness :: X ()
 incBrightness = liftIO $ actuallBrightnessFrac >>= \x -> setBrightnessIO (x + 0.1)
 
+setBrightness :: X ()
+setBrightness = interactive $ (liftIO . setBrightnessIO) <$> ((/ 100) <$> read <$> prompts cf "Brightness [10-100]: ")
