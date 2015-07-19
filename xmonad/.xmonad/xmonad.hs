@@ -25,6 +25,7 @@ import StackSetExtra as WX
 import Workspaces
 import PulseAudio
 import Interactive
+import Brightness
 
 -- TODO: we might want to set urgency for the "to be focused" window in the future.
 -- TODO: test that the window sending the event is in fact the firefox
@@ -39,38 +40,6 @@ withoutNetActiveWindow c = c { handleEventHook = \e -> do
                                           return (mt /= a_aw)
                                         otherwise -> return True
                                   if p then handleEventHook c e else return (All True) }
-
-actuallBrightness :: IO Double
-actuallBrightness = read `fmap` IOS.readFile "/sys/class/backlight/intel_backlight/actual_brightness"
-
-minBrightness :: IO Double
-minBrightness = read `fmap` IOS.readFile "/sys/class/backlight/intel_backlight/bl_power"
-
-maxBrightness :: IO Double
-maxBrightness = read `fmap` IOS.readFile "/sys/class/backlight/intel_backlight/max_brightness"
-
-actuallBrightnessFrac :: IO Double
-actuallBrightnessFrac = do
-  maxb <- maxBrightness
-  minb <- minBrightness
-  actb <- actuallBrightness
-  return $ (actb - minb) / (maxb - minb)
-
-setBrightness :: Double -> IO ()
-setBrightness b = do
-  maxb <- maxBrightness
-  minb <- minBrightness
-  let range = maxb - minb
-      new' = (b * range) + minb
-      new = (new' `min` maxb) `max` minb
-  safeSpawn "sudo" ["/home/matus/bin/set-brightness", show $ floor $ new]
-
-decBrightness :: IO ()
-decBrightness = actuallBrightnessFrac >>= \x -> setBrightness $ 0.1 `max` (x - 0.1)
-
-incBrightness :: IO ()
-incBrightness = actuallBrightnessFrac >>= \x -> setBrightness (x + 0.1)
-
 main = do
        w <- IOS.readFile "/home/matus/.whereami"
        let (left, middle, right) = case w of
