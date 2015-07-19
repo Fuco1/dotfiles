@@ -65,6 +65,12 @@ setBrightness b = do
       new = (new' `min` maxb) `max` minb
   safeSpawn "sudo" ["/home/matus/bin/set-brightness", show $ floor $ new]
 
+decBrightness :: IO ()
+decBrightness = actuallBrightnessFrac >>= \x -> setBrightness $ 0.1 `max` (x - 0.1)
+
+incBrightness :: IO ()
+incBrightness = actuallBrightnessFrac >>= \x -> setBrightness (x + 0.1)
+
 main = do
        w <- IOS.readFile "/home/matus/.whereami"
        let (left, middle, right) = case w of
@@ -121,8 +127,8 @@ main = do
                 , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 3%+")
                 , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 3%-")
                 , ("<XF86AudioMute>",        spawn "amixer -q -D pulse sset Master toggle")
-                , ("<XF86MonBrightnessDown>", liftIO $ actuallBrightnessFrac >>= \x -> setBrightness (x - 0.1))
-                , ("<XF86MonBrightnessUp>", liftIO $ actuallBrightnessFrac >>= \x -> setBrightness (x + 0.1))
+                , (leader <%> "<Left>", liftIO decBrightness)
+                , (leader <%> "<Right>", liftIO incBrightness)
                 , (leader <%> "m", muteSinkInput)
                 , (leader <%> "v", setVolumeSinkInput)
                 , (leader <%> "<Insert>",    spawn "amixer -q -D pulse sset Master toggle")
