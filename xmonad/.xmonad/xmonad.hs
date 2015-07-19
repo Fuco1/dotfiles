@@ -150,10 +150,10 @@ main = do
                 (
                   [ (mod2Mask,                   W.greedyView)
                   , (mod4Mask,                   W.greedyView)
-                  , ((shiftMask .|. mod2Mask),   W.shift)
-                  , ((shiftMask .|. mod4Mask),   W.shift)
-                  , ((controlMask .|. mod2Mask), WX.shiftAndGreedyView)
-                  , ((mod4Mask .|. mod2Mask),    WX.shiftAndView)
+                  , (shiftMask .|. mod2Mask,   W.shift)
+                  , (shiftMask .|. mod4Mask,   W.shift)
+                  , (controlMask .|. mod2Mask, WX.shiftAndGreedyView)
+                  , (mod4Mask .|. mod2Mask,    WX.shiftAndView)
                   ]
                   >>= (uncurry C.withWorkspacesD)
                 )
