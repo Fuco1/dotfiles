@@ -24,8 +24,8 @@ actuallBrightnessFrac = do
   actb <- actuallBrightness
   return $ (actb - minb) / (maxb - minb)
 
-setBrightness :: Double -> IO ()
-setBrightness b = do
+setBrightnessIO :: Double -> IO ()
+setBrightnessIO b = do
   maxb <- maxBrightness
   minb <- minBrightness
   let range = maxb - minb
@@ -33,8 +33,9 @@ setBrightness b = do
       new = (new' `min` maxb) `max` minb
   safeSpawn "sudo" ["/home/matus/bin/set-brightness", show $ floor $ new]
 
-decBrightness :: IO ()
-decBrightness = actuallBrightnessFrac >>= \x -> setBrightness $ 0.1 `max` (x - 0.1)
+decBrightness :: X ()
+decBrightness = liftIO $ actuallBrightnessFrac >>= \x -> setBrightnessIO $ 0.1 `max` (x - 0.1)
 
-incBrightness :: IO ()
-incBrightness = actuallBrightnessFrac >>= \x -> setBrightness (x + 0.1)
+incBrightness :: X ()
+incBrightness = liftIO $ actuallBrightnessFrac >>= \x -> setBrightnessIO (x + 0.1)
+
