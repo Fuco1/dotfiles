@@ -31,7 +31,7 @@ mountavfs
 tagsistant "/home/matus/files"
 feh --bg-scale '/home/matus/media/pictures/haskell.png'
 
-bash /home/matus/.inputsetup
+bash /home/matus/bin/inputsetup
 sh "/home/matus/.screenlayout/$(cat /home/matus/.whereami).sh"
 
 bash /home/matus/bin/setup-tunnels
