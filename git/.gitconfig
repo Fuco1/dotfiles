@@ -1,7 +1,7 @@
 [push]
 	default = simple
 [user]
-	email = dota.keys@gmail.com
+	email = matus.goljer@gmail.com
 	name = Matus Goljer
 [gui]
 	recentrepo = C:/Users/Matus/AppData/Roaming/.emacs.d/vendor/smartparens
