@@ -23,6 +23,11 @@ if [ ! -f ~/.mpd/pid ] ; then
     mpd
 fi
 
+# start mpDris to enable mpris control of mpd
+if [ ! -z $(which mpDris2) ]; then
+    mpDris2 &
+fi
+
 eval $(gpg-agent)
 eval $(ssh-agent -s)
 ssh-add "/home/matus/.ssh/id_rsa"
