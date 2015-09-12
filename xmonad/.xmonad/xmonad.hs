@@ -26,6 +26,7 @@ import Workspaces
 import PulseAudio
 import Interactive
 import Brightness
+import Mpris
 
 -- TODO: we might want to set urgency for the "to be focused" window in the future.
 -- TODO: test that the window sending the event is in fact the firefox
@@ -73,16 +74,15 @@ main = do
                 , focusedBorderColor = "#008800"
                 , workspaces         = C.workspaces
                 } `additionalKeysP`
-                [ ("<XF86AudioPlay>", MPD.toggle)
-                , ("<XF86AudioStop>", MPD.stop)
-                , ("<XF86AudioPrev>", MPD.previous)
-                , ("<XF86AudioNext>", MPD.next)
-                , (leader <%> "t",        MPD.toggle)
-                , (leader <%> "s",        MPD.stop)
-                , (leader <%> "p",        MPD.previous)
-                , (leader <%> "n",        MPD.next)
-                , (leader <%> "<Print>",  MPD.toggle)
-                , (leader <%> "<Delete>", MPD.next)
+                [ ("<XF86AudioPlay>", Mpris.toggle)
+                , ("<XF86AudioStop>", Mpris.stopCurrent)
+                , ("<XF86AudioPrev>", Mpris.previousCurrent)
+                , ("<XF86AudioNext>", Mpris.nextCurrent)
+                , (leader <%> "t",        Mpris.toggle)
+                , (leader <%> "s",        Mpris.stopCurrent)
+                , (leader <%> "p",        Mpris.previousCurrent)
+                , (leader <%> "<Delete>", Mpris.nextCurrent)
+                , (leader <%> "<Print>",  Mpris.toggleCurrent)
                 , (leader <%> "d",        MPD.deleteCurrent)
                 , (leader <%> "c",        MPD.clear)
                 , (leader <%> "<F9>",     MPD.playPlaylist Clear)
