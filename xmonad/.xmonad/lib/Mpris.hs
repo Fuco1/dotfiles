@@ -98,7 +98,7 @@ toggle = do
 mprisPlayersPrompt :: X (Maybe String)
 mprisPlayersPrompt = do
   players <- liftIO mpris
-  mkXPromptWithReturn (MPRISPrompt "Recursive? ") Constants.prompt (playerCompl players) return
+  mkXPromptWithReturn (MPRISPrompt "Player ") Constants.prompt (playerCompl players) return
 
 playerCompl :: [String] -> String -> IO [String]
 playerCompl players pick = return $ L.filter (matchAllWords pick . strToLower) players
