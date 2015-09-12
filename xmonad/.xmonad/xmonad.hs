@@ -92,8 +92,6 @@ main = do
                 , (leader <%> "u" <%> "<F10>", MPD.playArtist Add)
                 , (leader <%> "u" <%> "<F11>", MPD.playDirectory Add)
                 , (leader <%> "<F12>",   MPD.jumpToTrack)
-                , (leader <%> "0", spawn "playerctl next")
-                , (leader <%> "-", spawn "playerctl play-pause")
                 , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 3%+")
                 , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 3%-")
                 , ("<XF86AudioMute>",        spawn "amixer -q -D pulse sset Master toggle")
