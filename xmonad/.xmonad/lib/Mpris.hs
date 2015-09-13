@@ -10,11 +10,14 @@ module Mpris
        , previousCurrent
        ) where
 
+import Control.Monad (when)
+
 import DBus
 import DBus.Client
 
 import System.Locale (defaultTimeLocale)
 
+import Data.Maybe (isJust, fromJust)
 import Data.List as L
 import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 import Data.Time.Format (formatTime)
@@ -30,9 +33,9 @@ import Mpris.Utils (unpack)
 import Utils
 import Constants
 
-data CurrentPlayer = CurrentPlayer String deriving (Typeable, Read, Show)
+data CurrentPlayer = CurrentPlayer (Maybe String) deriving (Typeable, Read, Show)
 instance ExtensionClass CurrentPlayer where
-  initialValue = CurrentPlayer ""
+  initialValue = CurrentPlayer Nothing
   extensionType = PersistentExtension
 
 data MPRISPrompt = MPRISPrompt String
@@ -71,7 +74,7 @@ callPrevious = callMpris "Previous"
 
 withCurrent :: (String -> IO ()) -> X ()
 withCurrent action = do
-  CurrentPlayer target <- XS.get
+  CurrentPlayer (Just target) <- XS.get
   liftIO $ action target
 
 stopCurrent :: X ()
@@ -91,8 +94,8 @@ toggle = do
   Just player <- mprisPlayersPrompt
   let target = takeWhile (/= ' ') player
   CurrentPlayer current <- XS.get
-  liftIO $ callPause current
-  XS.put (CurrentPlayer target)
+  when (isJust current) (liftIO $ callPause (fromJust current))
+  XS.put (CurrentPlayer (Just target))
   liftIO $ callPlayPause target
 
 mprisPlayersPrompt :: X (Maybe String)
