@@ -8,6 +8,7 @@ set -x TEXMFVAR "/home/matus/.texmf-var"
 set -x TEXMFCONFIG "/home/matus/.texmf-config"
 set -x GPG_TTY (tty)
 set -x MAIL "$HOME/Maildir"
+set -x LEDGER_FILE "$HOME/org/ledger.ledger"
 # to unconfuse AWT about Xmonad
 set -x _JAVA_AWT_WM_NONREPARENTING 1
 set -x GPG_TTY (tty)
