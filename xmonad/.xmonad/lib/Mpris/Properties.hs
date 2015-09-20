@@ -1,12 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Mpris.Properties
        ( getPosition
+       , getStatus
        , getMetadata
        , getAuthor
        , getUrl
        , getTitle
        , getLength
        , Metadata
+       , PlayerStatus(..)
        ) where
 
 import DBus
@@ -29,6 +31,17 @@ getPosition :: Client -> String -> IO Integer
 getPosition client destination = do
   reply <- getProperty client destination "Position"
   return . fromIntegral $ ((unpack . unpack . head . methodReturnBody $ reply) :: Int64)
+
+data PlayerStatus = Playing | Paused | Stopped deriving (Eq, Show)
+
+getStatus :: Client -> String -> IO PlayerStatus
+getStatus client destination = do
+  reply <- getProperty client destination "PlaybackStatus"
+  return $ case ((unpack . unpack . head . methodReturnBody $ reply) :: String) of
+    "Playing" -> Playing
+    "Stopped" -> Stopped
+    "Paused"  -> Paused
+    _         -> Stopped
 
 type Metadata = Map String Variant
 
