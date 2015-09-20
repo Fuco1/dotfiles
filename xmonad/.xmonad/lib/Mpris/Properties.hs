@@ -51,20 +51,20 @@ getMetadata client destination = do
   return ((unpack . unpack $ head (methodReturnBody reply)) :: Map String Variant)
 
 -- | Get author
-getAuthor :: Metadata -> String
+getAuthor :: Metadata -> Maybe String
 getAuthor m = case M.lookup "xesam:artist" m of
-  Just x  -> head (unpack x)
-  Nothing -> ""
+  Just x  -> Just $ head (unpack x)
+  Nothing -> Nothing
 
-getTitle :: Metadata -> String
+getTitle :: Metadata -> Maybe String
 getTitle m = case M.lookup "xesam:title" m of
-  Just x  -> unpack x
-  Nothing -> ""
+  Just x  -> Just $ unpack x
+  Nothing -> Nothing
 
-getUrl :: Metadata -> String
+getUrl :: Metadata -> Maybe String
 getUrl m = case M.lookup "xesam:url" m of
-  Just x  -> unpack x
-  Nothing -> ""
+  Just x  -> Just $ unpack x
+  Nothing -> Nothing
 
 getLength :: Metadata -> Integer
 getLength m = case M.lookup "mpris:length" m of

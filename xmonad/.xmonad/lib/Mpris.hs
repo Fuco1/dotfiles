@@ -8,6 +8,9 @@ module Mpris
        , stopCurrent
        , nextCurrent
        , previousCurrent
+       , withMprisPlayers
+       , Player(..)
+       , module Mpris.Properties
        ) where
 
 import Control.Monad (when)
@@ -23,7 +26,7 @@ import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 import Data.Time.Format (formatTime)
 import qualified Data.Text as T
 
-import XMonad hiding ((=?))
+import XMonad hiding ((=?), title)
 import XMonad.Prompt
 import qualified XMonad.Util.ExtensibleState as XS
 
@@ -106,10 +109,18 @@ mprisPlayersPrompt = do
 playerCompl :: [String] -> String -> IO [String]
 playerCompl players pick = return $ L.filter (matchAllWords pick . strToLower) players
 
--- | Return all available MPRIS clients together with information on
--- what they are playing.
-mpris :: IO [String]
-mpris = do
+data Player = Player { player   :: String
+                     , status   :: PlayerStatus
+                     , author   :: Maybe String
+                     , title    :: Maybe String
+                     , file     :: Maybe String
+                     , duration :: Integer
+                     , seek     :: Integer
+                     } deriving (Eq, Show)
+
+-- TODO: move to a library
+getMprisPlayers :: IO [Player]
+getMprisPlayers = do
   client <- connectSession
   rep <- call_ client listNamesCall
   let plist = unpack $ head (methodReturnBody rep)
@@ -117,19 +128,44 @@ mpris = do
   playing <- mapM (\x -> do
     m <- getMetadata client x
     pos <- getPosition client x
-    return (m,pos)) players
-  let candidates = L.map (\(player, (m, pos)) -> drop 23 player ++ " " ++ formatPlayerInfo m pos) (zip players playing)
-  return candidates
+    status <- getStatus client x
+    return (m,pos,status)) players
+  return $ L.map (\(player, (m, pos, status)) ->
+    Player { player = player
+            , status = status
+            , author = getAuthor m
+            , title  = getTitle m
+            , file   = getUrl m
+            , duration = getLength m
+            , seek = pos
+            })
+    (zip players playing)
 
--- | Metadata, seek position
-formatPlayerInfo :: Metadata -> Integer -> String
-formatPlayerInfo m seek = s ++ " " ++ desc
-  where author = getAuthor m
-        desc = if author == ""
-               then formatURL . getUrl $ m
-               else author ++ ": " ++ getTitle m
-        s = "[" ++ formatDuration seek ++ "/" ++ formatDuration (getLength m) ++ "]"
+withMprisPlayers :: ([Player] -> IO a) -> IO a
+withMprisPlayers action = do
+  players <- getMprisPlayers
+  action players
 
+-- | Return all available MPRIS clients together with information on
+-- what they are playing.
+mpris :: IO [String]
+mpris = withMprisPlayers $ return . map formatPlayer
+
+formatPlayer :: Player -> String
+formatPlayer Player { player = player
+                    , author = author
+                    , title = title
+                    , file = file
+                    , duration = duration
+                    , seek = seek } =
+  drop 23 player ++ " " ++ time ++ " " ++ meta
+  where meta = case author of
+          Just a -> a ++ ": " ++ fromJust title
+          Nothing ->
+            case file of
+              Just f -> formatURL f
+              Nothing -> ""
+        time = "[" ++ formatDuration seek ++ "/" ++ formatDuration duration ++ "]"
 
 formatDuration :: Integer -> String
 formatDuration dur = formatTime defaultTimeLocale "%M:%S" durInSec
