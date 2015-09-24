@@ -183,3 +183,4 @@ define_webjump("l", "http://linguax.com/lexica/old.php?searchedLG=%s");
 define_webjump("ud", "http://www.urbandictionary.com/define.php?term=%s");
 define_webjump("lide", "https://is.muni.cz/auth/lide/?searchid=%s&Hledat=Hledat");
 define_webjump("df", "http://df.magmawiki.com/index.php?search=%s&go=Go");
+define_webjump("yf", "http://finance.yahoo.com/echarts?s=%s");
