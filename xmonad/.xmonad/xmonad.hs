@@ -102,6 +102,8 @@ main = do
                 , (leader <%> "v", setVolumeSinkInput)
                 , (leader <%> "<Insert>",    spawn "amixer -q -D pulse sset Master toggle")
                 , (leader <%> "<F7>",        spawn "/home/matus/bin/toggle-touchpad")
+                , (leader <%> "o", mountDevice)
+                , (leader <%> "S-o", umountDevice)
                 , ("M4-S-<Return>", runInTerm "" "fish")
                 , ("<XF86Sleep>", spawn "sudo pm-suspend")
                 , ("<Print>" <%> "<Print>", spawn "/home/matus/bin/take-screenshot")
