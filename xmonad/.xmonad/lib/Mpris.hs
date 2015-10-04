@@ -8,6 +8,7 @@ module Mpris
        , stopCurrent
        , nextCurrent
        , previousCurrent
+       , getMprisPlayer
        , withMprisPlayers
        , Player(..)
        , module Mpris.Properties
@@ -118,6 +119,22 @@ data Player = Player { player   :: BusName
                      , seek     :: Integer
                      } deriving (Eq, Show)
 
+getMprisPlayer :: Client -- | dbus client
+                  -> BusName -- | dbus busname
+                  -> IO Player
+getMprisPlayer client name = do
+  m <- getMetadata client name
+  pos <- getPosition client name
+  status <- getStatus client name
+  return Player { player = name
+                , status = status
+                , author = getAuthor m
+                , title  = getTitle m
+                , file   = getUrl m
+                , duration = getLength m
+                , seek = pos
+                }
+
 -- TODO: move to a library
 getMprisPlayers :: IO [Player]
 getMprisPlayers = do
@@ -125,21 +142,7 @@ getMprisPlayers = do
   rep <- call_ client listNamesCall
   let plist = unpack $ head (methodReturnBody rep)
       players = L.filter (/= "org.mpris.MediaPlayer2.vlc") . L.filter (isPrefixOf "org.mpris.MediaPlayer2.") $ plist
-  playing <- mapM (\x -> do
-    m <- getMetadata client x
-    pos <- getPosition client x
-    status <- getStatus client x
-    return (m,pos,status)) players
-  return $ L.map (\(player, (m, pos, status)) ->
-    Player { player = player
-            , status = status
-            , author = getAuthor m
-            , title  = getTitle m
-            , file   = getUrl m
-            , duration = getLength m
-            , seek = pos
-            })
-    (zip players playing)
+  mapM (getMprisPlayer client . busName_) players
 
 withMprisPlayers :: ([Player] -> IO a) -> IO a
 withMprisPlayers action = do
