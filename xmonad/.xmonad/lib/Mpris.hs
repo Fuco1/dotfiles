@@ -9,9 +9,11 @@ module Mpris
        , nextCurrent
        , previousCurrent
        , getMprisPlayer
+       , formatPlayer
        , withMprisPlayers
        , Player(..)
        , module Mpris.Properties
+       , module Mpris.Utils
        ) where
 
 import Control.Monad (when)
