@@ -26,6 +26,7 @@ import Workspaces
 import PulseAudio
 import Interactive
 import Brightness
+import Mount
 import Mpris
 
 -- TODO: we might want to set urgency for the "to be focused" window in the future.
