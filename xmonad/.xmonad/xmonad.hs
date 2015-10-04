@@ -2,12 +2,11 @@ import Data.Monoid (All(..))
 import System.Exit (exitSuccess)
 import System.IO (hPutStrLn)
 import System.IO.Strict as IOS (readFile)
-import System.Process (readProcess)
 import XMonad
 import XMonad.Actions.CycleWS (toggleWS)
 import XMonad.Actions.CycleWindows (cycleRecentWindows)
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, ppOutput)
-import XMonad.Hooks.EwmhDesktops (ewmh, ewmhDesktopsStartup, fullscreenEventHook)
+import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
 import XMonad.Hooks.ManageDocks (docksEventHook, ToggleStruts (..))
 import XMonad.Hooks.SetWMName (setWMName)
 import XMonad.Hooks.UrgencyHook (withUrgencyHook, NoUrgencyHook (..))
@@ -15,7 +14,7 @@ import XMonad.Prompt.RunOrRaise (runOrRaisePrompt)
 import XMonad.Prompt.Window (windowPromptGoto)
 import XMonad.Util.EZConfig (additionalKeys, additionalKeysP)
 import XMonad.Util.ExtensibleState as XS
-import XMonad.Util.Run (spawnPipe, runInTerm, safeSpawn)
+import XMonad.Util.Run (spawnPipe, runInTerm)
 import qualified XMonad.StackSet as W
 
 import qualified Constants as C
@@ -40,8 +39,9 @@ withoutNetActiveWindow c = c { handleEventHook = \e -> do
                                         ClientMessageEvent { ev_message_type = mt } -> do
                                           a_aw <- getAtom "_NET_ACTIVE_WINDOW"
                                           return (mt /= a_aw)
-                                        otherwise -> return True
+                                        _ -> return True
                                   if p then handleEventHook c e else return (All True) }
+main :: IO ()
 main = do
        w <- IOS.readFile "/home/matus/.whereami"
        let (left, middle, right) = case w of
@@ -158,7 +158,7 @@ main = do
                   , (controlMask .|. mod2Mask, WX.shiftAndGreedyView)
                   , (mod4Mask .|. mod2Mask,    WX.shiftAndView)
                   ]
-                  >>= (uncurry C.withWorkspacesD)
+                  >>= uncurry C.withWorkspacesD
                 )
          where
            leader = "<Pause>"
