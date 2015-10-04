@@ -28,15 +28,15 @@ getProperty client name property =
     }
 
 getPosition :: Client -> String -> IO Integer
-getPosition client destination = do
-  reply <- getProperty client destination "Position"
+getPosition client name = do
+  reply <- getProperty client name "Position"
   return . fromIntegral $ ((unpack . unpack . head . methodReturnBody $ reply) :: Int64)
 
 data PlayerStatus = Playing | Paused | Stopped deriving (Eq, Show)
 
 getStatus :: Client -> String -> IO PlayerStatus
-getStatus client destination = do
-  reply <- getProperty client destination "PlaybackStatus"
+getStatus client name = do
+  reply <- getProperty client name "PlaybackStatus"
   return $ case ((unpack . unpack . head . methodReturnBody $ reply) :: String) of
     "Playing" -> Playing
     "Stopped" -> Stopped
