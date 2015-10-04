@@ -24,7 +24,7 @@ import DBus.Client
 
 import System.Locale (defaultTimeLocale)
 
-import Data.Maybe (isJust, fromJust)
+import Data.Maybe (isJust, fromJust, fromMaybe)
 import Data.List as L
 import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 import Data.Time.Format (formatTime)
@@ -165,8 +165,8 @@ formatPlayer Player { player = player
                     , duration = duration
                     , seek = seek } =
   (drop 23 $ formatBusName player) ++ " " ++ time ++ " " ++ meta
-  where meta = case author of
-          Just a -> a ++ ": " ++ fromJust title
+  where meta = case title of
+          Just t -> t ++ ": " ++ fromMaybe "" author
           Nothing ->
             case file of
               Just f -> formatURL f
@@ -181,9 +181,9 @@ formatPlayerXmobar Player { status = status
                           , duration = duration
                           , seek = seek } =
   meta ++ state' ++ formatDuration duration
-  where meta = case author of
-          Just a -> "<fc=#888a85>" ++ fromJust title ++
-                    "</fc><fc=#729fcf>" ++ a ++ "</fc>"
+  where meta = case title of
+          Just t -> "<fc=#888a85>" ++ t ++
+                    "</fc><fc=#729fcf>" ++ fromMaybe "" author ++ "</fc>"
           Nothing ->
             case file of
               Just f -> "<fc=#888a85>" ++ formatURL f ++ "</fc>"
