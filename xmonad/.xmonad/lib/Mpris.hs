@@ -10,6 +10,7 @@ module Mpris
        , previousCurrent
        , getMprisPlayer
        , formatPlayer
+       , formatPlayerXmobar
        , withMprisPlayers
        , Player(..)
        , module Mpris.Properties
@@ -171,6 +172,27 @@ formatPlayer Player { player = player
               Just f -> formatURL f
               Nothing -> ""
         time = "[" ++ formatDuration seek ++ "/" ++ formatDuration duration ++ "]"
+
+formatPlayerXmobar :: Player -> String
+formatPlayerXmobar Player { status = status
+                          , author = author
+                          , title = title
+                          , file = file
+                          , duration = duration
+                          , seek = seek } =
+  meta ++ state' ++ formatDuration duration
+  where meta = case author of
+          Just a -> "<fc=#888a85>" ++ fromJust title ++
+                    "</fc><fc=#729fcf>" ++ a ++ "</fc>"
+          Nothing ->
+            case file of
+              Just f -> "<fc=#888a85>" ++ formatURL f ++ "</fc>"
+              Nothing -> "Unknown"
+        seek' =  formatDuration seek
+        state' = case status of
+          Playing -> "<fc=#8ae234>" ++ seek' ++ "</fc>"
+          Paused -> "<fc=#edd400>" ++ seek' ++ "</fc>"
+          Stopped -> "<fc=#ef2929>" ++ seek' ++ "</fc>"
 
 formatDuration :: Integer -> String
 formatDuration dur = formatTime defaultTimeLocale "%M:%S" durInSec
