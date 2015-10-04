@@ -19,22 +19,22 @@ import Data.Map as M
 
 import Mpris.Utils
 
-getProperty :: Client -> String -> String -> IO MethodReturn
+getProperty :: Client -> BusName -> String -> IO MethodReturn
 getProperty client name property =
   call_ client (methodCall "/org/mpris/MediaPlayer2" "org.freedesktop.DBus.Properties" "Get")
-    { methodCallDestination = Just (busName_ name)
+    { methodCallDestination = Just name
     , methodCallBody = [ toVariant ("org.mpris.MediaPlayer2.Player" :: String),
                          toVariant property ]
     }
 
-getPosition :: Client -> String -> IO Integer
+getPosition :: Client -> BusName -> IO Integer
 getPosition client name = do
   reply <- getProperty client name "Position"
   return . fromIntegral $ ((unpack . unpack . head . methodReturnBody $ reply) :: Int64)
 
 data PlayerStatus = Playing | Paused | Stopped deriving (Eq, Show)
 
-getStatus :: Client -> String -> IO PlayerStatus
+getStatus :: Client -> BusName -> IO PlayerStatus
 getStatus client name = do
   reply <- getProperty client name "PlaybackStatus"
   return $ case ((unpack . unpack . head . methodReturnBody $ reply) :: String) of
@@ -45,7 +45,7 @@ getStatus client name = do
 
 type Metadata = Map String Variant
 
-getMetadata :: Client -> String -> IO Metadata
+getMetadata :: Client -> BusName -> IO Metadata
 getMetadata client destination = do
   reply <- getProperty client destination "Metadata"
   return ((unpack . unpack $ head (methodReturnBody reply)) :: Map String Variant)

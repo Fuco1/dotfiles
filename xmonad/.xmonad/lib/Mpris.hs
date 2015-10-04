@@ -109,7 +109,7 @@ mprisPlayersPrompt = do
 playerCompl :: [String] -> String -> IO [String]
 playerCompl players pick = return $ L.filter (matchAllWords pick . strToLower) players
 
-data Player = Player { player   :: String
+data Player = Player { player   :: BusName
                      , status   :: PlayerStatus
                      , author   :: Maybe String
                      , title    :: Maybe String
@@ -158,7 +158,7 @@ formatPlayer Player { player = player
                     , file = file
                     , duration = duration
                     , seek = seek } =
-  drop 23 player ++ " " ++ time ++ " " ++ meta
+  (drop 23 $ formatBusName player) ++ " " ++ time ++ " " ++ meta
   where meta = case author of
           Just a -> a ++ ": " ++ fromJust title
           Nothing ->
