@@ -180,7 +180,9 @@ formatPlayerXmobar Player { status = status
                           , file = file
                           , duration = duration
                           , seek = seek } =
-  meta ++ state' ++ formatDuration duration
+  meta ++ state' ++ if duration < 1000 -- this is in microseconds
+                    then ""
+                    else formatDuration duration
   where meta = case title of
           Just t -> "<fc=#888a85>" ++ t ++
                     "</fc><fc=#729fcf>" ++ fromMaybe "" author ++ "</fc>"
