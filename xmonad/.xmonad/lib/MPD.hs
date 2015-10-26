@@ -14,20 +14,16 @@ module MPD
        , MPD.toggle
        ) where
 
-import Control.Applicative ((<$>))
 import Control.Arrow ((&&&))
-import Control.Monad (when, void, mapM_, (<=<), (>=>), ap, liftM)
-import Control.Monad.Trans (lift)
+import Control.Monad (when, liftM)
 import Data.Function (on)
-import Data.List (elemIndex, isInfixOf, groupBy, nubBy)
-import Data.Maybe (fromJust, isJust)
+import Data.List (isInfixOf, groupBy, nubBy)
 import Data.Map (lookup)
 import Data.String (fromString)
 import Network.MPD as M
-import Network.MPD.Commands.Extensions (addMany, listArtists, getPlaylist)
+import Network.MPD.Commands.Extensions (addMany, listArtists)
 import XMonad hiding ((=?))
 import XMonad.Prompt
-import XMonad.Util.Run (runProcessWithInput)
 import Prelude hiding (lookup)
 
 import qualified Data.ByteString.Char8 as C
