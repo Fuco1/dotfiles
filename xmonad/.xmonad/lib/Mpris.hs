@@ -8,6 +8,7 @@ module Mpris
        , stopCurrent
        , nextCurrent
        , previousCurrent
+       , setCurrent
        , getMprisPlayer
        , formatPlayer
        , formatPlayerXmobar
@@ -79,6 +80,7 @@ callNext = callMpris "Next"
 callPrevious :: String -> IO ()
 callPrevious = callMpris "Previous"
 
+-- | Run an IO action passing to it the name of current player
 withCurrent :: (String -> IO ()) -> X ()
 withCurrent action = do
   CurrentPlayer (Just target) <- XS.get
@@ -96,13 +98,16 @@ previousCurrent = withCurrent callPrevious
 toggleCurrent :: X ()
 toggleCurrent = withCurrent callPlayPause
 
+setCurrent :: String -> X ()
+setCurrent = XS.put . CurrentPlayer . Just
+
 toggle :: X ()
 toggle = do
   Just player <- mprisPlayersPrompt
   let target = takeWhile (/= ' ') player
   CurrentPlayer current <- XS.get
   when (isJust current) (liftIO $ callPause (fromJust current))
-  XS.put (CurrentPlayer (Just target))
+  setCurrent target
   liftIO $ callPlayPause target
 
 mprisPlayersPrompt :: X (Maybe String)
