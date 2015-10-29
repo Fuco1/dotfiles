@@ -3,7 +3,8 @@
 
 -- | Current means current player.  Toggle changes current player.
 module Mpris
-       ( toggle
+       ( switch
+       , switchTo
        , toggleCurrent
        , stopCurrent
        , nextCurrent
@@ -46,6 +47,11 @@ instance ExtensionClass CurrentPlayer where
   initialValue = CurrentPlayer Nothing
   extensionType = PersistentExtension
 
+data LastPlayer = LastPlayer (Maybe String) deriving (Typeable, Read, Show)
+instance ExtensionClass LastPlayer where
+  initialValue = LastPlayer Nothing
+  extensionType = PersistentExtension
+
 data MPRISPrompt = MPRISPrompt String
 instance XPrompt MPRISPrompt where
     showXPrompt (MPRISPrompt s) = s ++ ": "
@@ -74,6 +80,9 @@ callStop = callMpris "Stop"
 callPause :: String -> IO ()
 callPause = callMpris "Pause"
 
+callPlay :: String -> IO ()
+callPlay = callMpris "Play"
+
 callNext :: String -> IO ()
 callNext = callMpris "Next"
 
@@ -101,19 +110,31 @@ toggleCurrent = withCurrent callPlayPause
 setCurrent :: String -> X ()
 setCurrent = XS.put . CurrentPlayer . Just
 
-toggle :: X ()
-toggle = do
-  Just player <- mprisPlayersPrompt
-  let target = takeWhile (/= ' ') player
+-- | Switch to new target.  Pause the current player and call action
+-- on the new one.
+switchTo :: String -> (String -> IO ()) -> X ()
+switchTo target action = do
   CurrentPlayer current <- XS.get
   when (isJust current) (liftIO $ callPause (fromJust current))
+  XS.put . LastPlayer $ current
   setCurrent target
-  liftIO $ callPlayPause target
+  liftIO $ action target
 
+switch :: X ()
+switch = do
+  target <- mprisPlayersPrompt
+  case target of
+   Just "" -> do
+     LastPlayer (Just l) <- XS.get
+     switchTo l callPlayPause
+   Just t -> switchTo t callPlayPause
+   Nothing -> return ()
+
+-- | Ask the user for a target
 mprisPlayersPrompt :: X (Maybe String)
 mprisPlayersPrompt = do
   players <- liftIO mpris
-  mkXPromptWithReturn (MPRISPrompt "Player ") Constants.prompt (playerCompl players) return
+  mkXPromptWithReturn (MPRISPrompt "Player ") Constants.prompt (playerCompl players) (return . takeWhile (/= ' '))
 
 playerCompl :: [String] -> String -> IO [String]
 playerCompl players pick = return $ L.filter (matchAllWords pick . strToLower) players

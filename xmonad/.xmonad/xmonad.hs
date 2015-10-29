@@ -75,11 +75,11 @@ main = do
                 , focusedBorderColor = "#008800"
                 , workspaces         = C.workspaces
                 } `additionalKeysP`
-                [ ("<XF86AudioPlay>", Mpris.toggle)
+                [ ("<XF86AudioPlay>", Mpris.switch)
                 , ("<XF86AudioStop>", Mpris.stopCurrent)
                 , ("<XF86AudioPrev>", Mpris.previousCurrent)
                 , ("<XF86AudioNext>", Mpris.nextCurrent)
-                , (leader <%> "t",        Mpris.toggle)
+                , (leader <%> "t",        Mpris.switch)
                 , (leader <%> "s",        Mpris.stopCurrent)
                 , (leader <%> "p",        Mpris.previousCurrent)
                 , (leader <%> "<Delete>", Mpris.nextCurrent)
