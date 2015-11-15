@@ -14,7 +14,7 @@ set -x _JAVA_AWT_WM_NONREPARENTING 1
 set -x GPG_TTY (tty)
 set -x AUTOSSH_POLL 60
 
-eval (python -m virtualfish)
+eval (python -m virtualfish auto_activation)
 
 # ls aliases
 alias ll "ls -l --group-directories-first"
