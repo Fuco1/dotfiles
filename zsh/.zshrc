@@ -68,3 +68,5 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 ZSH_HIGHLIGHT_STYLES[globbing]='fg=cyan'
 
 bindkey -e '^w' kill-region
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

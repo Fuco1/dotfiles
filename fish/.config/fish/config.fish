@@ -13,6 +13,7 @@ set -x LEDGER_FILE "$HOME/org/ledger.ledger"
 set -x _JAVA_AWT_WM_NONREPARENTING 1
 set -x GPG_TTY (tty)
 set -x AUTOSSH_POLL 60
+set -x FZF_DEFAULT_OPTS "-x"
 
 eval (python -m virtualfish auto_activation)
 
@@ -64,6 +65,7 @@ alias cvlca "cvlc --vout none"
 # bindings
 function fish_user_key_bindings
   bind \eg my_fish_grep
+  fzf_key_bindings
 end
 
 function runjava
