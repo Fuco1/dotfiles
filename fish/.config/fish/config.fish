@@ -25,6 +25,7 @@ alias lle "ll --color-never | le"
 alias lg "ls -lA | grep -i "
 
 # navigation
+alias - "cd -"
 alias .. "cd .."
 alias ... "cd ../.."
 alias .... "cd ../../.."
