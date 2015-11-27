@@ -1,10 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
--- | Current means current player.  Toggle changes current player.
+-- | Current means current player.  Switch changes current player.
 module Mpris
        ( switch
        , switchTo
+       , callPlayPause
+       , callStop
+       , callPause
+       , callPlay
+       , callNext
+       , callPrevious
        , toggleCurrent
        , stopCurrent
        , nextCurrent
