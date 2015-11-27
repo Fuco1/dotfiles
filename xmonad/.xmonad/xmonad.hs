@@ -86,13 +86,13 @@ main = do
                 , (leader <%> "<Print>",  Mpris.toggleCurrent)
                 , (leader <%> "d",        MPD.deleteCurrent)
                 , (leader <%> "c",        MPD.clear)
-                , (leader <%> "<F9>",     MPD.playPlaylist Clear)
-                , (leader <%> "<F10>",    MPD.playArtist Clear)
-                , (leader <%> "<F11>",    MPD.playDirectory Clear)
-                , (leader <%> "u" <%> "<F9>",  MPD.playPlaylist Add)
-                , (leader <%> "u" <%> "<F10>", MPD.playArtist Add)
-                , (leader <%> "u" <%> "<F11>", MPD.playDirectory Add)
-                , (leader <%> "<F12>",   MPD.jumpToTrack)
+                , (leader <%> "<F9>",     MPD.playPlaylist Clear >>= whenJust_ (mpd Mpris.callPlay))
+                , (leader <%> "<F10>",    MPD.playArtist Clear >>= whenJust_ (mpd Mpris.callPlay) )
+                , (leader <%> "<F11>",    MPD.playDirectory Clear >>= whenJust_ (mpd Mpris.callPlay))
+                , (leader <%> "u" <%> "<F9>",  MPD.playPlaylist Add >>= whenJust_ (mpd Mpris.callPlay))
+                , (leader <%> "u" <%> "<F10>", MPD.playArtist Add >>= whenJust_ (mpd Mpris.callPlay))
+                , (leader <%> "u" <%> "<F11>", MPD.playDirectory Add >>= whenJust_ (mpd Mpris.callPlay))
+                , (leader <%> "<F12>",   MPD.jumpToTrack >>= whenJust_ (mpd Mpris.callPlay))
                 , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 3%+")
                 , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 3%-")
                 , ("<XF86AudioMute>",        spawn "amixer -q -D pulse sset Master toggle")
@@ -162,6 +162,7 @@ main = do
                 )
          where
            leader = "<Pause>"
+           mpd = Mpris.switchTo "mpd"
 
 -- brno letisko LKTB
 -- sliac letisko LZSL
