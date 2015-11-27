@@ -15,3 +15,9 @@ if [ -z $(pgrep xfce4-power-manager) ]; then
     xfce4-power-manager &
     echo " done"
 fi
+
+if [ -z $(pgrep trayer-icon) ]; then
+    echo -n "Starting trayer-icon..."
+    trayer-icon &
+    echo " done"
+fi

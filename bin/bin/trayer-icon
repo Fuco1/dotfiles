@@ -1,0 +1,51 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import gtk
+from subprocess import call
+
+
+class SystrayIconApp:
+    def __init__(self):
+        self.tray = gtk.StatusIcon()
+        self.tray.set_from_file("/usr/share/icons/gnome/32x32/status/info.png")
+        self.tray.connect('popup-menu', self.on_right_click)
+        self.tray.set_tooltip(('Sample tray app'))
+
+    def on_right_click(self, icon, event_button, event_time):
+        self.make_menu(event_button, event_time)
+
+    def restart_xmobar(self, widget):
+        call(["pkill", "xmobar"])
+
+    def restart_xmonad(self, widget):
+        call(["xmonad", "--restart"])
+
+    def make_menu(self, event_button, event_time):
+        menu = gtk.Menu()
+
+        # restart xmobar
+        xmobar = gtk.MenuItem("Kill xmobar")
+        xmobar.show()
+        menu.append(xmobar)
+        xmobar.connect('activate', self.restart_xmobar)
+
+        # restart xmobar
+        xmonad = gtk.MenuItem("Restart xmonad")
+        xmonad.show()
+        menu.append(xmonad)
+        xmonad.connect('activate', self.restart_xmonad)
+
+        # add quit item
+        quit = gtk.MenuItem("Quit")
+        quit.show()
+        menu.append(quit)
+        quit.connect('activate', gtk.main_quit)
+
+        menu.popup(None, None, gtk.status_icon_position_menu,
+                   event_button, event_time, self.tray)
+
+
+if __name__ == "__main__":
+    SystrayIconApp()
+    gtk.main()
