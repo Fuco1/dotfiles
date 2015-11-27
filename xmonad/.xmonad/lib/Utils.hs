@@ -8,6 +8,7 @@ module Utils
        , (<%>)
        , notifySend
        , runInTermOrRaise
+       , whenJust_
        ) where
 
 import Control.Monad (void)
@@ -52,3 +53,6 @@ runInTermOrRaise :: String -> WorkspaceId -> X ()
 runInTermOrRaise prog ws = raiseMaybe (runInTerm ("-name " ++ prog) prog >> windows (W.greedyView ws)) (resource =? prog)
 
 -- TODO: add submap support
+
+whenJust_ :: Monad m => m () -> Maybe a -> m ()
+whenJust_ = flip whenJust . const

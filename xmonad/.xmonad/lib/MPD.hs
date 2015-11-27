@@ -15,7 +15,9 @@ module MPD
        ) where
 
 import Control.Arrow ((&&&))
+import Control.Error.Util (hush)
 import Control.Monad (when, liftM)
+import Control.Monad.Trans.Maybe
 import Data.Function (on)
 import Data.List (isInfixOf, groupBy, nubBy)
 import Data.Map (lookup)
@@ -38,44 +40,42 @@ instance XPrompt MPDPrompt where
 
 data Action = Clear | Add deriving (Show, Eq)
 
-playPlaylist :: Action -> X ()
+playPlaylist :: Action -> X (Maybe ())
 playPlaylist = playGeneric
                getPlaylists
                "playlist"
                (load . PlaylistName . C.pack)
 
-playArtist :: Action -> X ()
+playArtist :: Action -> X (Maybe ())
 playArtist = playGeneric
              listArtists
              "artist"
              (\x -> findAdd (Artist =? fromString x))
 
-playGeneric :: ToString a => MPD [a] -> String -> (String -> MPD ()) -> Action -> X ()
-playGeneric getter prompt mpd action = do
-  Right choices <- liftMPD getter
-  Just pick <- askPrompt
-               ((if action == Clear then "Play " else "Add ") ++ prompt)
-               . map toString $ choices
-  liftMPD_ $ do
+playGeneric :: ToString a => MPD [a] -> String -> (String -> MPD ()) -> Action -> X (Maybe ())
+playGeneric getter prompt mpd action = runMaybeT $ do
+  choices <- MaybeT . liftM hush . liftMPD $ getter
+  pick <- MaybeT $ askPrompt ((if action == Clear then "Play " else "Add ") ++ prompt) . map toString $ choices
+  liftMT . liftMPD_ $ do
     when (action == Clear) M.clear
     mpd pick
     when (action == Clear) $ play Nothing
 
-playDirectory :: Action -> X ()
-playDirectory action = do
-  Just dir <- listDirectorySongs ""
-  Just recursive <- mkXPromptWithReturn (MPDPrompt "Recursive? ") Constants.prompt (mkComplFunFromList' ["recursive", "non-recursive"]) return
+playDirectory :: Action -> X (Maybe ())
+playDirectory action = runMaybeT $ do
+  dir <- MaybeT $ listDirectorySongs ""
+  recursive <- MaybeT $ mkXPromptWithReturn (MPDPrompt "Recursive? ") Constants.prompt (mkComplFunFromList' ["recursive", "non-recursive"]) return
   let r = recursive == "recursive" || recursive == ""
-  liftMPD_ $ do
+  liftMT . liftMPD_ $ do
     when (action == Clear) M.clear
     songs <- getSongs r dir
     addMany "" songs
     when (action == Clear) $ play Nothing
 
-jumpToTrack :: X ()
-jumpToTrack = do
-  Right choices <- liftMPD $ playlistInfo Nothing
-  mkXPrompt
+jumpToTrack :: X (Maybe ())
+jumpToTrack = runMaybeT $ do
+  choices <- MaybeT . liftM hush . liftMPD $ playlistInfo Nothing
+  liftMT $ mkXPrompt
     (MPDPrompt "Jump to track")
     Constants.prompt
     (trackCompl choices)
@@ -169,6 +169,10 @@ liftMPD = liftIO . withMPD
 
 liftMPD_ :: MonadIO m => MPD a -> m ()
 liftMPD_ = liftM (const ()) . liftMPD
+
+-- this is not implemented in transformers 0.3, and newer would break stuff...
+liftMT :: Monad m => m a -> MaybeT m a
+liftMT = MaybeT . liftM Just
 
 ---------------------------------------- playlist control
 
