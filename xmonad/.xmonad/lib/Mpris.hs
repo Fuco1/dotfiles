@@ -173,14 +173,16 @@ getMprisPlayer client name = do
                 , seek = pos
                 }
 
+getMprisPlayerNames :: Client -> IO [BusName]
+getMprisPlayerNames client = do
+  plist <- listNames client
+  return $ L.map busName_ . L.filter (/= "org.mpris.MediaPlayer2.vlc") . L.filter (isPrefixOf "org.mpris.MediaPlayer2.") $ plist
+
 -- TODO: move to a library
 getMprisPlayers :: IO [Player]
 getMprisPlayers = do
   client <- connectSession
-  rep <- call_ client listNamesCall
-  let plist = unpack $ head (methodReturnBody rep)
-      players = L.filter (/= "org.mpris.MediaPlayer2.vlc") . L.filter (isPrefixOf "org.mpris.MediaPlayer2.") $ plist
-  mapM (getMprisPlayer client . busName_) players
+  getMprisPlayerNames client >>= mapM (getMprisPlayer client)
 
 withMprisPlayers :: ([Player] -> IO a) -> IO a
 withMprisPlayers action = do
