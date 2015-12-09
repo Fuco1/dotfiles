@@ -67,6 +67,9 @@ listNamesCall :: MethodCall
 listNamesCall = (methodCall "/org/freedesktop/DBus" "org.freedesktop.DBus" "ListNames")
   { methodCallDestination = Just "org.freedesktop.DBus" }
 
+listNames :: Client -> IO [String]
+listNames client = call_ client listNamesCall >>= return . unpack . head . methodReturnBody
+
 mprisPlayerCall :: String -> String -> MethodCall
 mprisPlayerCall name target = (methodCall "/org/mpris/MediaPlayer2" "org.mpris.MediaPlayer2.Player" (memberName_ name))
   { methodCallDestination = Just . busName_ $ "org.mpris.MediaPlayer2." ++ target }
