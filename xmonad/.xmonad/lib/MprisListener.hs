@@ -50,8 +50,8 @@ loop currentPlayer client = do
   threadDelay 800000
   currentPlayer' <- readIORef currentPlayer
   case currentPlayer' of
-   Just p -> do
-     p' <- getMprisPlayer client . Mpris.player $ p
-     putStrLn $ formatPlayerXmobar p'
-   Nothing -> return ()
+    Just p -> withMprisPlayer client (Mpris.player p) printPlayer
+    Nothing -> return ()
   loop currentPlayer client
+  where printPlayer (Just p) = putStrLn $ formatPlayerXmobar p
+        printPlayer Nothing = writeIORef currentPlayer Nothing >> putStrLn "Player died"
