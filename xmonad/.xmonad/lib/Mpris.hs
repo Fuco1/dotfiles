@@ -19,6 +19,7 @@ module Mpris
        , getMprisPlayer
        , formatPlayer
        , formatPlayerXmobar
+       , withMprisPlayer
        , withMprisPlayers
        , Player(..)
        , module Mpris.Properties
@@ -172,6 +173,13 @@ getMprisPlayer client name = do
                 , duration = getLength m
                 , seek = pos
                 }
+
+withMprisPlayer :: Client -> BusName -> (Maybe Player -> IO ()) -> IO ()
+withMprisPlayer client name action = do
+   busNames <- map busName_ `fmap` listNames client
+   if name `elem` busNames
+     then getMprisPlayer client name >>= action . Just
+     else action Nothing
 
 getMprisPlayerNames :: Client -> IO [BusName]
 getMprisPlayerNames client = do
