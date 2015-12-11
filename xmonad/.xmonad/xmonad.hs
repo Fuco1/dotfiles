@@ -43,126 +43,126 @@ withoutNetActiveWindow c = c { handleEventHook = \e -> do
                                   if p then handleEventHook c e else return (All True) }
 main :: IO ()
 main = do
-       w <- IOS.readFile "/home/matus/.whereami"
-       let (left, middle, right) = case w of
-                   "brno" -> (2,0,1)
-                   "home" -> (2,1,0)
-                   "logio" -> (2,0,1)
-                   _ -> (2,0,1)
-       let (S xmobarScreen) = case w of
-                         "brno" -> right
-                         "home" -> left
-                         "logio" -> middle
-                         _ -> middle
-       xmproc <- spawnPipe $ "/home/matus/.cabal/bin/xmobar -x " ++ show xmobarScreen ++ " /home/matus/.xmonad/xmobarrc"
-       xmonad $
-         (\c -> c { startupHook = do
-                       XS.put (Workspaces.ScreenOrder [left, middle, right])
-                       startupHook c
-                       setWMName "LG3D" }) $
-         withoutNetActiveWindow $
-         ewmh $
-         withUrgencyHook NoUrgencyHook defaultConfig
-                {
-                  manageHook         = C.manageHook
-                , layoutHook         = C.layout
-                , logHook            = dynamicLogWithPP C.printer { ppOutput = hPutStrLn xmproc }
-                , handleEventHook    = fullscreenEventHook <+> docksEventHook
-                , modMask            = mod4Mask
-                , borderWidth        = 1
-                , terminal           = "urxvtc"
-                , normalBorderColor  = "#000000"
-                , focusedBorderColor = "#008800"
-                , workspaces         = C.workspaces
-                } `additionalKeysP`
-                [ ("<XF86AudioPlay>", Mpris.toggleCurrent)
-                , ("<XF86AudioStop>", Mpris.stopCurrent)
-                , ("<XF86AudioPrev>", Mpris.previousCurrent)
-                , ("<XF86AudioNext>", Mpris.nextCurrent)
-                , (leader <%> "t",        Mpris.switch)
-                , (leader <%> "s",        Mpris.stopCurrent)
-                , (leader <%> "p",        Mpris.previousCurrent)
-                , (leader <%> "<Delete>", Mpris.nextCurrent)
-                , (leader <%> "<Print>",  Mpris.toggleCurrent)
-                , (leader <%> "d",        MPD.deleteCurrent)
-                , (leader <%> "c",        MPD.clear)
-                , (leader <%> "<F9>",     MPD.playPlaylist Clear >>= whenJust_ (mpd Mpris.callPlay))
-                , (leader <%> "<F10>",    MPD.playArtist Clear >>= whenJust_ (mpd Mpris.callPlay) )
-                , (leader <%> "<F11>",    MPD.playDirectory Clear >>= whenJust_ (mpd Mpris.callPlay))
-                , (leader <%> "u" <%> "<F9>",  MPD.playPlaylist Add >>= whenJust_ (mpd Mpris.callPlay))
-                , (leader <%> "u" <%> "<F10>", MPD.playArtist Add >>= whenJust_ (mpd Mpris.callPlay))
-                , (leader <%> "u" <%> "<F11>", MPD.playDirectory Add >>= whenJust_ (mpd Mpris.callPlay))
-                , (leader <%> "<F12>",   MPD.jumpToTrack >>= whenJust_ (mpd Mpris.callPlay))
-                , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 3%+")
-                , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 3%-")
-                , ("<XF86AudioMute>",        spawn "amixer -q -D pulse sset Master toggle")
-                , (leader <%> "<Left>", decBrightness)
-                , (leader <%> "<Right>", incBrightness)
-                , (leader <%> "b", setBrightness)
-                , (leader <%> "m", muteSinkInput)
-                , (leader <%> "v", setVolumeSinkInput)
-                , (leader <%> "<Insert>",    spawn "amixer -q -D pulse sset Master toggle")
-                , (leader <%> "<F7>",        spawn "/home/matus/bin/toggle-touchpad")
-                , (leader <%> "o", mountDevice)
-                , (leader <%> "S-o", umountDevice)
-                , ("M4-S-<Return>", runInTerm "" "fish")
-                , ("<XF86Sleep>", spawn "sudo pm-suspend")
-                , ("<Print>" <%> "<Print>", spawn "/home/matus/bin/take-screenshot")
-                , ("<Print>" <%> "u" <%> "<Print>", spawn "/home/matus/bin/take-screenshot noupload")
-                , (leader <%> "<F1>" <%> "<F1>", spawn "xfce4-settings-manager")
-                , (leader <%> "<F1>" <%> "<F2>", spawn "xfce4-appfinder")
-                  -- create a submap for these
-                , (leader <%> "=" <%> "a", runInTermOrRaise "alsamixer" "0")
-                , (leader <%> "=" <%> "p", runInTermOrRaise "pacmixer" "0")
-                , (leader <%> "=" <%> "n", runInTermOrRaise "ncmpcpp" "0")
-                , (leader <%> "=" <%> "c", runInTermOrRaise "pavucontrol" "0")
-                , ("M2-<Backspace>", toggleWS)
-                , ("M2-S-<Pause>", io exitSuccess)
-                , ("M2-<Pause>", recompileXMonad)
-                , ("M2-p", runOrRaisePrompt C.prompt)
-                , (leader <%> leader, windowPromptGoto C.prompt)
-                , ("M2-c", kill)
-                , ("M2-m", withScreen left W.view)
-                , ("M2-,", withScreen middle W.view)
-                , ("M2-.", withScreen right W.view)
-                , ("M2-C-m", withScreen left WX.shiftAndView)
-                , ("M2-C-,", withScreen middle WX.shiftAndView)
-                , ("M2-C-.", withScreen right WX.shiftAndView)
-                , ("M2-M4-m", withScreen left WX.shiftAndGreedyView)
-                , ("M2-M4-,", withScreen middle WX.shiftAndGreedyView)
-                , ("M2-M4-.", withScreen right WX.shiftAndGreedyView)
-                , ("M2-S-m", withScreen left W.shift)
-                , ("M2-S-,", withScreen middle W.shift)
-                , ("M2-S-.", withScreen right W.shift)
-                , ("M2-/", windows WX.shiftToOtherScreen)
-                , ("M4-p", windows W.focusDown)
-                , ("M4-n", windows W.focusUp)
-                , ("M4-P", windows W.swapDown)
-                , ("M4-N", windows W.swapUp)
-                , ("M2-[", windows W.focusDown)
-                , ("M2-]", windows W.focusUp)
-                , ("M2-=", cycleRecentWindows [xK_Alt_R] xK_equal xK_minus)
-                , ("M4-b", sendMessage ToggleStruts)
-                , ("M4-S-b", broadcastMessage ToggleStruts >> refresh)
-                , (leader <%> "=" <%> "o", inotify)
-                , (leader <%> "=" <%> "i", inotify2)
-                , (leader <%> "=" <%> "u", urxvtc)
-                , (leader <%> "=" <%> "m", iMWindow)
-                -- TODO: pridat "hide all" a "show all"
-                ] `additionalKeys`
-                (
-                  [ (mod2Mask,                   W.greedyView)
-                  , (mod4Mask,                   W.greedyView)
-                  , (shiftMask .|. mod2Mask,   W.shift)
-                  , (shiftMask .|. mod4Mask,   W.shift)
-                  , (controlMask .|. mod2Mask, WX.shiftAndGreedyView)
-                  , (mod4Mask .|. mod2Mask,    WX.shiftAndView)
-                  ]
-                  >>= uncurry C.withWorkspacesD
-                )
-         where
-           leader = "<Pause>"
-           mpd = Mpris.switchTo "mpd"
+  w <- IOS.readFile "/home/matus/.whereami"
+  let (left, middle, right) = case w of
+              "brno" -> (2,0,1)
+              "home" -> (2,1,0)
+              "logio" -> (2,0,1)
+              _ -> (2,0,1)
+  let (S xmobarScreen) = case w of
+                    "brno" -> right
+                    "home" -> left
+                    "logio" -> middle
+                    _ -> middle
+  xmproc <- spawnPipe $ "/home/matus/.cabal/bin/xmobar -x " ++ show xmobarScreen ++ " /home/matus/.xmonad/xmobarrc"
+  xmonad $
+    (\c -> c { startupHook = do
+                  XS.put (Workspaces.ScreenOrder [left, middle, right])
+                  startupHook c
+                  setWMName "LG3D" }) $
+    withoutNetActiveWindow $
+    ewmh $
+    withUrgencyHook NoUrgencyHook defaultConfig
+           {
+             manageHook         = C.manageHook
+           , layoutHook         = C.layout
+           , logHook            = dynamicLogWithPP C.printer { ppOutput = hPutStrLn xmproc }
+           , handleEventHook    = fullscreenEventHook <+> docksEventHook
+           , modMask            = mod4Mask
+           , borderWidth        = 1
+           , terminal           = "urxvtc"
+           , normalBorderColor  = "#000000"
+           , focusedBorderColor = "#008800"
+           , workspaces         = C.workspaces
+           } `additionalKeysP`
+           [ ("<XF86AudioPlay>", Mpris.toggleCurrent)
+           , ("<XF86AudioStop>", Mpris.stopCurrent)
+           , ("<XF86AudioPrev>", Mpris.previousCurrent)
+           , ("<XF86AudioNext>", Mpris.nextCurrent)
+           , (leader <%> "t",        Mpris.switch)
+           , (leader <%> "s",        Mpris.stopCurrent)
+           , (leader <%> "p",        Mpris.previousCurrent)
+           , (leader <%> "<Delete>", Mpris.nextCurrent)
+           , (leader <%> "<Print>",  Mpris.toggleCurrent)
+           , (leader <%> "d",        MPD.deleteCurrent)
+           , (leader <%> "c",        MPD.clear)
+           , (leader <%> "<F9>",     MPD.playPlaylist Clear >>= whenJust_ (mpd Mpris.callPlay))
+           , (leader <%> "<F10>",    MPD.playArtist Clear >>= whenJust_ (mpd Mpris.callPlay) )
+           , (leader <%> "<F11>",    MPD.playDirectory Clear >>= whenJust_ (mpd Mpris.callPlay))
+           , (leader <%> "u" <%> "<F9>",  MPD.playPlaylist Add >>= whenJust_ (mpd Mpris.callPlay))
+           , (leader <%> "u" <%> "<F10>", MPD.playArtist Add >>= whenJust_ (mpd Mpris.callPlay))
+           , (leader <%> "u" <%> "<F11>", MPD.playDirectory Add >>= whenJust_ (mpd Mpris.callPlay))
+           , (leader <%> "<F12>",   MPD.jumpToTrack >>= whenJust_ (mpd Mpris.callPlay))
+           , ("<XF86AudioRaiseVolume>", spawn "amixer -q sset Master 3%+")
+           , ("<XF86AudioLowerVolume>", spawn "amixer -q sset Master 3%-")
+           , ("<XF86AudioMute>",        spawn "amixer -q -D pulse sset Master toggle")
+           , (leader <%> "<Left>", decBrightness)
+           , (leader <%> "<Right>", incBrightness)
+           , (leader <%> "b", setBrightness)
+           , (leader <%> "m", muteSinkInput)
+           , (leader <%> "v", setVolumeSinkInput)
+           , (leader <%> "<Insert>",    spawn "amixer -q -D pulse sset Master toggle")
+           , (leader <%> "<F7>",        spawn "/home/matus/bin/toggle-touchpad")
+           , (leader <%> "o", mountDevice)
+           , (leader <%> "S-o", umountDevice)
+           , ("M4-S-<Return>", runInTerm "" "fish")
+           , ("<XF86Sleep>", spawn "sudo pm-suspend")
+           , ("<Print>" <%> "<Print>", spawn "/home/matus/bin/take-screenshot")
+           , ("<Print>" <%> "u" <%> "<Print>", spawn "/home/matus/bin/take-screenshot noupload")
+           , (leader <%> "<F1>" <%> "<F1>", spawn "xfce4-settings-manager")
+           , (leader <%> "<F1>" <%> "<F2>", spawn "xfce4-appfinder")
+             -- create a submap for these
+           , (leader <%> "=" <%> "a", runInTermOrRaise "alsamixer" "0")
+           , (leader <%> "=" <%> "p", runInTermOrRaise "pacmixer" "0")
+           , (leader <%> "=" <%> "n", runInTermOrRaise "ncmpcpp" "0")
+           , (leader <%> "=" <%> "c", runInTermOrRaise "pavucontrol" "0")
+           , ("M2-<Backspace>", toggleWS)
+           , ("M2-S-<Pause>", io exitSuccess)
+           , ("M2-<Pause>", recompileXMonad)
+           , ("M2-p", runOrRaisePrompt C.prompt)
+           , (leader <%> leader, windowPromptGoto C.prompt)
+           , ("M2-c", kill)
+           , ("M2-m", withScreen left W.view)
+           , ("M2-,", withScreen middle W.view)
+           , ("M2-.", withScreen right W.view)
+           , ("M2-C-m", withScreen left WX.shiftAndView)
+           , ("M2-C-,", withScreen middle WX.shiftAndView)
+           , ("M2-C-.", withScreen right WX.shiftAndView)
+           , ("M2-M4-m", withScreen left WX.shiftAndGreedyView)
+           , ("M2-M4-,", withScreen middle WX.shiftAndGreedyView)
+           , ("M2-M4-.", withScreen right WX.shiftAndGreedyView)
+           , ("M2-S-m", withScreen left W.shift)
+           , ("M2-S-,", withScreen middle W.shift)
+           , ("M2-S-.", withScreen right W.shift)
+           , ("M2-/", windows WX.shiftToOtherScreen)
+           , ("M4-p", windows W.focusDown)
+           , ("M4-n", windows W.focusUp)
+           , ("M4-P", windows W.swapDown)
+           , ("M4-N", windows W.swapUp)
+           , ("M2-[", windows W.focusDown)
+           , ("M2-]", windows W.focusUp)
+           , ("M2-=", cycleRecentWindows [xK_Alt_R] xK_equal xK_minus)
+           , ("M4-b", sendMessage ToggleStruts)
+           , ("M4-S-b", broadcastMessage ToggleStruts >> refresh)
+           , (leader <%> "=" <%> "o", inotify)
+           , (leader <%> "=" <%> "i", inotify2)
+           , (leader <%> "=" <%> "u", urxvtc)
+           , (leader <%> "=" <%> "m", iMWindow)
+           -- TODO: pridat "hide all" a "show all"
+           ] `additionalKeys`
+           (
+             [ (mod2Mask,                   W.greedyView)
+             , (mod4Mask,                   W.greedyView)
+             , (shiftMask .|. mod2Mask,   W.shift)
+             , (shiftMask .|. mod4Mask,   W.shift)
+             , (controlMask .|. mod2Mask, WX.shiftAndGreedyView)
+             , (mod4Mask .|. mod2Mask,    WX.shiftAndView)
+             ]
+             >>= uncurry C.withWorkspacesD
+           )
+    where
+      leader = "<Pause>"
+      mpd = Mpris.switchTo "mpd"
 
 -- brno letisko LKTB
 -- sliac letisko LZSL
