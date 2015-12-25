@@ -1,4 +1,5 @@
 :set prompt "> "
+:set -isrc
 :m +Control.Monad
 :m +Control.Applicative
 :m +Control.Arrow
