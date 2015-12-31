@@ -18,6 +18,9 @@ class SystrayIconApp:
     def kill_xmobar(self, widget):
         call(["pkill", "xmobar"])
 
+    def kill_emacs(self, widget):
+        call(["pkill", "-9", "emacs"])
+
     def restart_xmonad(self, widget):
         call(["xmonad", "--restart"])
 
@@ -26,6 +29,12 @@ class SystrayIconApp:
 
         # kill xmobar
         menu_item = gtk.MenuItem("Kill xmobar")
+        menu_item.show()
+        menu.append(menu_item)
+        menu_item.connect('activate', self.kill_xmobar)
+
+        # kill emacs
+        menu_item = gtk.MenuItem("Kill emacs")
         menu_item.show()
         menu.append(menu_item)
         menu_item.connect('activate', self.kill_xmobar)
