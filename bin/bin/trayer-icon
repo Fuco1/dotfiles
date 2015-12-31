@@ -15,7 +15,7 @@ class SystrayIconApp:
     def on_right_click(self, icon, event_button, event_time):
         self.make_menu(event_button, event_time)
 
-    def restart_xmobar(self, widget):
+    def kill_xmobar(self, widget):
         call(["pkill", "xmobar"])
 
     def restart_xmonad(self, widget):
@@ -24,17 +24,17 @@ class SystrayIconApp:
     def make_menu(self, event_button, event_time):
         menu = gtk.Menu()
 
-        # restart xmobar
-        xmobar = gtk.MenuItem("Kill xmobar")
-        xmobar.show()
-        menu.append(xmobar)
-        xmobar.connect('activate', self.restart_xmobar)
+        # kill xmobar
+        menu_item = gtk.MenuItem("Kill xmobar")
+        menu_item.show()
+        menu.append(menu_item)
+        menu_item.connect('activate', self.kill_xmobar)
 
-        # restart xmobar
-        xmonad = gtk.MenuItem("Restart xmonad")
-        xmonad.show()
-        menu.append(xmonad)
-        xmonad.connect('activate', self.restart_xmonad)
+        # restart xmonad
+        menu_item = gtk.MenuItem("Restart xmonad")
+        menu_item.show()
+        menu.append(menu_item)
+        menu_item.connect('activate', self.restart_xmonad)
 
         # add quit item
         quit = gtk.MenuItem("Quit")
