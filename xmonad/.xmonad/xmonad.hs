@@ -82,6 +82,7 @@ main = do
            , (leader <%> "t",        Mpris.switch)
            , (leader <%> "s",        Mpris.stopCurrent)
            , (leader <%> "p",        Mpris.previousCurrent)
+           , (leader <%> "<Backspace>", Mpris.stopCurrent >> Mpris.toggleCurrent)
            , (leader <%> "<Delete>", Mpris.nextCurrent)
            , (leader <%> "<Print>",  Mpris.toggleCurrent)
            , (leader <%> "d",        MPD.deleteCurrent)
