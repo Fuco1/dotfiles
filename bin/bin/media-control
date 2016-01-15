@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+/home/matus/dev/haskell/media-control/media-control 2>/dev/null
+
+# Local Variables:
+# mode: shell-script
+# End:
