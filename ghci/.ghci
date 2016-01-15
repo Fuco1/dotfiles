@@ -4,3 +4,6 @@
 :m +Control.Applicative
 :m +Control.Arrow
 :m +Data.List
+:m +Data.Maybe
+:m +Data.Foldable
+:m +Data.Default
