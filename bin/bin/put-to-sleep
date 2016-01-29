@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# for dev in $(df -h | grep 'sd[b-z]' | cut -d ' ' -f 1); do
+#     echo -n "Unmounting $dev..."
+#     sudo umount "$dev"
+#     re=$?
+#     if [ $re -ne 0 ]; then
+#         exit $re
+#     else
+#         echo " done"
+#     fi
+# done
+
+sudo sync
+sudo pm-suspend
