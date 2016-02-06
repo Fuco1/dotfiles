@@ -50,7 +50,7 @@ withSinks prompt action = do
         _ -> return ()
 
 sinkCompletionFunc :: [SinkInput] -> String -> IO [String]
-sinkCompletionFunc sinks pick = return $ map name picked
+sinkCompletionFunc sinks pick = return $ map (\x -> name x ++ " [" ++ show (state x) ++ "]") picked
   where picked = filter (matchAllWords pick . strToLower . name) sinks
 
 sinkPicker :: [SinkInput] -> String -> X (Maybe String)
