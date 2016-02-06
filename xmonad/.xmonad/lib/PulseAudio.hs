@@ -27,10 +27,10 @@ data MuteCmd = Mute | Unmute | Toggle deriving (Show, Eq)
 
 withSinks :: String -> (SinkInput -> X ()) -> X ()
 withSinks prompt action = do
-  inputs <- liftIO $ getSinkInputs
+  inputs <- liftIO getSinkInputs
   case inputs of
     Left x -> liftIO $ notifySend 5 "Error" $ show x
-    Right [] -> liftIO $ notifySend 5 "Error" $ "No sinks available."
+    Right [] -> liftIO $ notifySend 5 "Error" "No sinks available."
     Right [s] -> action s
     Right sinks -> do
       let sinks' = sortBy (compare `on` muted) sinks
