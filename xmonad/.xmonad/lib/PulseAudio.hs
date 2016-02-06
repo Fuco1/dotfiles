@@ -1,13 +1,15 @@
 module PulseAudio
        ( muteSinkInput
        , setVolumeSinkInput
+       , paIncreaseVolumeRunning
+       , paDecreaseVolumeRunning
        ) where
 
 import Data.List (find, sortBy)
 import Data.Function (on)
 import Text.Parsec
 import Text.Parsec.String (Parser)
-import XMonad
+import XMonad hiding (state)
 import XMonad.Prompt
 import XMonad.Util.Run (runProcessWithInput, safeSpawn)
 
@@ -18,10 +20,14 @@ data PAPrompt = PAPrompt String
 instance XPrompt PAPrompt where
     showXPrompt (PAPrompt s) = s ++ ": "
 
+data SinkState = Corked | Running deriving (Show, Eq)
+
 data SinkInput = SinkInput { index :: Int
                            , name :: String
                            , vol :: Int
-                           , muted :: Bool } deriving (Show)
+                           , muted :: Bool
+                           , state :: SinkState
+                           } deriving (Show)
 
 data MuteCmd = Mute | Unmute | Toggle deriving (Show, Eq)
 
@@ -114,17 +120,23 @@ volume = do
   many (char ' ')
   number
 
+sinkState :: Parser SinkState
+sinkState = (string "CORKED" >> return Corked) <|>
+            (string "RUNNING" >> return Running)
+
 sink :: Parser SinkInput
 sink = do
   manyTill anyChar (try (string "index: "))
   index <- number
+  manyTill anyChar (try (string "state: "))
+  state <- sinkState
   manyTill anyChar (try (string "volume: 0:"))
   vol <- volume
   manyTill anyChar (try (string "muted: "))
   muted <- yesno
   manyTill anyChar (try (string "application.name = \""))
   name <- try alsaPluginName <|> manyTill anyChar (try (char '"'))
-  return $ SinkInput index name vol muted
+  return $ SinkInput index name vol muted state
 
 alsaPluginName :: Parser String
 alsaPluginName = do
