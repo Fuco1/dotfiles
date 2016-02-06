@@ -3,6 +3,7 @@ module PulseAudio
        , setVolumeSinkInput
        , paIncreaseVolumeRunning
        , paDecreaseVolumeRunning
+       , paSetVolumeRunning
        ) where
 
 import Data.List (find, sortBy)
@@ -107,6 +108,9 @@ paIncreaseVolumeRunning = liftIO $ paChangeVolumeRunning "+5%"
 
 paDecreaseVolumeRunning :: X ()
 paDecreaseVolumeRunning = liftIO $ paChangeVolumeRunning "-5%"
+
+paSetVolumeRunning :: String -> X ()
+paSetVolumeRunning = liftIO . paChangeVolumeRunning
 
 ----------------------------------------
 -- parsing of the "pacmd" output... blerg
