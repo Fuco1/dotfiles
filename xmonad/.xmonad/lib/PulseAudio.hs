@@ -76,10 +76,10 @@ setVolumeSinkInput = withSinks "Select sink" setVolume
 pacmdMute :: SinkInput -> MuteCmd -> IO ()
 pacmdMute sink cmd = do
   let toggle = case cmd of
-        Mute   -> 1
-        Unmute -> 0
-        Toggle -> let m = muted sink in if m then 0 else 1
-  safeSpawn "pacmd" ["set-sink-input-mute", show $ index sink, show toggle]
+        Mute   -> "1"
+        Unmute -> "0"
+        Toggle -> let m = muted sink in if m then "0" else "1"
+  safeSpawn "pacmd" ["set-sink-input-mute", show $ index sink, toggle]
 
 pacmdSetVolume :: SinkInput -> String -> IO ()
 pacmdSetVolume sink level =
