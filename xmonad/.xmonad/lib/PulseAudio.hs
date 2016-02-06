@@ -20,7 +20,7 @@ data PAPrompt = PAPrompt String
 instance XPrompt PAPrompt where
     showXPrompt (PAPrompt s) = s ++ ": "
 
-data SinkState = Corked | Running deriving (Show, Eq)
+data SinkState = Running | Corked deriving (Show, Eq, Ord)
 
 data SinkInput = SinkInput { index :: Int
                            , name :: String
@@ -39,7 +39,7 @@ withSinks prompt action = do
     Right [] -> liftIO $ notifySend 5 "Error" "No sinks available."
     Right [s] -> action s
     Right sinks -> do
-      let sinks' = sortBy (compare `on` muted) sinks
+      let sinks' = sortBy (compare `on` state) sinks
       pick <- sinkPicker sinks' prompt
       let sink = case pick of
                    Just "" -> Just $ head sinks'
