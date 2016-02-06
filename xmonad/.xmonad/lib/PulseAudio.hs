@@ -82,7 +82,7 @@ pacmdMute sink cmd = do
   safeSpawn "pacmd" ["set-sink-input-mute", show $ index sink, show toggle]
 
 pacmdSetVolume :: SinkInput -> String -> IO ()
-pacmdSetVolume sink level = do
+pacmdSetVolume sink level =
   safeSpawn "pactl" ["set-sink-input-volume", show $ index sink, level ++ "%"]
 
 ----------------------------------------
@@ -139,8 +139,7 @@ sinkInput = do
   nos <- numberOfSinks
   if nos == 0
     then return []
-    else do
-      count nos sink
+    else count nos sink
 
 getSinkInputs :: IO (Either ParseError [SinkInput])
 getSinkInputs = do
