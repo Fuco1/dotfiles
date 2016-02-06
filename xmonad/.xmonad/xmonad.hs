@@ -160,6 +160,10 @@ main = do
              , (mod4Mask .|. mod2Mask,    WX.shiftAndView)
              ]
              >>= uncurry C.withWorkspacesD
+           ) `additionalKeys`
+           (
+             [ ((mod2Mask .|. mod5Mask, xK_0), paSetVolumeRunning "100%") ] ++
+             [ ((mod2Mask .|. mod5Mask, key), paSetVolumeRunning $ show (10 * i) ++ "%") | (key, i) <- zip [xK_1 .. xK_9] [1..]]
            )
     where
       leader = "<Pause>"
