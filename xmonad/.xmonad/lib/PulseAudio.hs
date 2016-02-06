@@ -89,7 +89,24 @@ pacmdMute sink cmd = do
 
 pacmdSetVolume :: SinkInput -> String -> IO ()
 pacmdSetVolume sink level =
-  safeSpawn "pactl" ["set-sink-input-volume", show $ index sink, level ++ "%"]
+  safeSpawn "pactl" ["set-sink-input-volume", show $ index sink, "--", level ++ "%"]
+
+paChangeVolumeRunning :: String -> IO ()
+paChangeVolumeRunning delta = do
+  sinks <- getSinkInputs
+  case sinks of
+   Right s@(x:_) -> do
+     let running = filter ((== Running) . state) s
+     mapM_ (\x -> safeSpawn "pactl"
+                  ["set-sink-input-volume", show $ index x, "--", delta])
+       running
+   _ -> return ()
+
+paIncreaseVolumeRunning :: X ()
+paIncreaseVolumeRunning = liftIO $ paChangeVolumeRunning "+5%"
+
+paDecreaseVolumeRunning :: X ()
+paDecreaseVolumeRunning = liftIO $ paChangeVolumeRunning "-5%"
 
 ----------------------------------------
 -- parsing of the "pacmd" output... blerg
