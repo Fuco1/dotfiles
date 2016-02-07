@@ -96,7 +96,7 @@ paChangeVolumeRunning :: String -> IO ()
 paChangeVolumeRunning delta = do
   sinks <- getSinkInputs
   case sinks of
-   Right s@(x:_) -> do
+   Right s@(_:_) -> do
      let running = filter ((== Running) . state) s
      mapM_ (\x -> safeSpawn "pactl"
                   ["set-sink-input-volume", show $ index x, "--", delta])
