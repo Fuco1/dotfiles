@@ -73,8 +73,9 @@ setVolume sink = do
               (mkComplFunFromList $ map show [0..100])
               return
   liftIO $ case volume of
-             Just v -> pacmdSetVolume sink v
-             _ -> pacmdMute sink Toggle
+    Just "" -> pacmdMute sink Toggle
+    Just v -> pacmdSetVolume sink v
+    Nothing -> return ()
 
 setVolumeSinkInput :: X ()
 setVolumeSinkInput = withSinks "Select sink" setVolume
