@@ -62,8 +62,7 @@ sinkPicker sinks prompt = mkXPromptWithReturn
                           return
 
 muteSinkInput :: X ()
-muteSinkInput =
-  withSinks "Mute sink" (\sink -> liftIO $ pacmdMute sink Toggle)
+muteSinkInput = withSinks "Mute sink" (\s -> liftIO $ pacmdMute s Toggle)
 
 setVolume :: SinkInput -> X ()
 setVolume sink = do
