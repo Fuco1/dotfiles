@@ -104,10 +104,10 @@ paChangeVolumeRunning delta = do
    _ -> return ()
 
 paIncreaseVolumeRunning :: X ()
-paIncreaseVolumeRunning = liftIO $ paChangeVolumeRunning "+5%"
+paIncreaseVolumeRunning = paSetVolumeRunning "+5%"
 
 paDecreaseVolumeRunning :: X ()
-paDecreaseVolumeRunning = liftIO $ paChangeVolumeRunning "-5%"
+paDecreaseVolumeRunning = paSetVolumeRunning "-5%"
 
 paSetVolumeRunning :: String -> X ()
 paSetVolumeRunning = liftIO . paChangeVolumeRunning
