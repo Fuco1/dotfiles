@@ -19,6 +19,7 @@ module Mpris
        , module Mpris.Utils
        ) where
 
+import Control.Applicative ((<$>))
 import Control.Monad (when)
 
 import DBus
@@ -64,7 +65,7 @@ listNamesCall = (methodCall "/org/freedesktop/DBus" "org.freedesktop.DBus" "List
   { methodCallDestination = Just "org.freedesktop.DBus" }
 
 listNames :: Client -> IO [String]
-listNames client = DBus.Client.call_ client listNamesCall >>= return . unpack . head . methodReturnBody
+listNames client = unpack . head . methodReturnBody <$> DBus.Client.call_ client listNamesCall
 
 callMpris :: (BusName -> MP.Mpris ()) -> String -> IO ()
 callMpris action target =
