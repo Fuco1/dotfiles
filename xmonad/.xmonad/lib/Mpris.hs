@@ -9,7 +9,6 @@ module Mpris
        , stopCurrent
        , nextCurrent
        , previousCurrent
-       , setCurrent
        , getMprisPlayer
        , formatPlayer
        , formatPlayerXmobar
