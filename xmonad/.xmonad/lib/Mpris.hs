@@ -5,12 +5,6 @@
 module Mpris
        ( switch
        , switchTo
-       , callPlayPause
-       , callStop
-       , callPause
-       , callPlay
-       , callNext
-       , callPrevious
        , toggleCurrent
        , stopCurrent
        , nextCurrent
@@ -30,9 +24,11 @@ import Control.Monad (when)
 
 import DBus
 import DBus.Client
+import qualified DBus.Mpris as MP
 
 import System.Locale (defaultTimeLocale)
 
+import Data.Default
 import Data.Maybe (isJust, fromJust, fromMaybe)
 import Data.List as L
 import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
@@ -69,66 +65,41 @@ listNamesCall = (methodCall "/org/freedesktop/DBus" "org.freedesktop.DBus" "List
   { methodCallDestination = Just "org.freedesktop.DBus" }
 
 listNames :: Client -> IO [String]
-listNames client = call_ client listNamesCall >>= return . unpack . head . methodReturnBody
+listNames client = DBus.Client.call_ client listNamesCall >>= return . unpack . head . methodReturnBody
 
-mprisPlayerCall :: String -> String -> MethodCall
-mprisPlayerCall name target = (methodCall "/org/mpris/MediaPlayer2" "org.mpris.MediaPlayer2.Player" (memberName_ name))
-  { methodCallDestination = Just . busName_ $ "org.mpris.MediaPlayer2." ++ target }
+callMpris :: (BusName -> MP.Mpris ()) -> String -> IO ()
+callMpris action target =
+  liftIO $ MP.mpris def (action (busName_ $ "org.mpris.MediaPlayer2." ++ target))
 
--- | Member name, target
-callMpris :: String -> String -> IO ()
-callMpris member target = do
-  client <- connectSession
-  callNoReply client $ mprisPlayerCall member target
-
-callPlayPause :: String -> IO ()
-callPlayPause = callMpris "PlayPause"
-
-callStop :: String -> IO ()
-callStop = callMpris "Stop"
-
-callPause :: String -> IO ()
-callPause = callMpris "Pause"
-
-callPlay :: String -> IO ()
-callPlay = callMpris "Play"
-
-callNext :: String -> IO ()
-callNext = callMpris "Next"
-
-callPrevious :: String -> IO ()
-callPrevious = callMpris "Previous"
-
--- | Run an IO action passing to it the name of current player
-withCurrent :: (String -> IO ()) -> X ()
+withCurrent :: (BusName -> MP.Mpris ()) -> X ()
 withCurrent action = do
   CurrentPlayer (Just target) <- XS.get
-  liftIO $ action target
+  liftIO $ callMpris action target
 
 stopCurrent :: X ()
-stopCurrent = withCurrent callStop
+stopCurrent = withCurrent MP.stop
 
 nextCurrent :: X ()
-nextCurrent = withCurrent callNext
+nextCurrent = withCurrent MP.next
 
 previousCurrent :: X ()
-previousCurrent = withCurrent callPrevious
+previousCurrent = withCurrent MP.previous
 
 toggleCurrent :: X ()
-toggleCurrent = withCurrent callPlayPause
+toggleCurrent = withCurrent MP.playPause
 
 setCurrent :: String -> X ()
 setCurrent = XS.put . CurrentPlayer . Just
 
 -- | Switch to new target.  Pause the current player and call action
 -- on the new one.
-switchTo :: String -> (String -> IO ()) -> X ()
+switchTo :: String -> (BusName -> MP.Mpris ()) -> X ()
 switchTo target action = do
   CurrentPlayer current <- XS.get
-  when (isJust current) (liftIO $ callPause (fromJust current))
+  when (isJust current) (liftIO $ callMpris MP.pause (fromJust current))
   XS.put . LastPlayer $ current
   setCurrent target
-  liftIO $ action target
+  liftIO $ callMpris action target
 
 switch :: X ()
 switch = do
@@ -136,8 +107,8 @@ switch = do
   case target of
    Just "" -> do
      LastPlayer (Just l) <- XS.get
-     switchTo l callPlayPause
-   Just t -> switchTo t callPlayPause
+     switchTo l MP.playPause
+   Just t -> switchTo t MP.playPause
    Nothing -> return ()
 
 -- | Ask the user for a target
