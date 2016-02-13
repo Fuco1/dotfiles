@@ -143,7 +143,7 @@ switch = do
 -- | Ask the user for a target
 mprisPlayersPrompt :: X (Maybe String)
 mprisPlayersPrompt = do
-  players <- liftIO mpris
+  players <- liftIO mprisPlayers
   mkXPromptWithReturn (MPRISPrompt "Player ") Constants.prompt (playerCompl players) (return . takeWhile (/= ' '))
 
 playerCompl :: [String] -> String -> IO [String]
@@ -199,8 +199,8 @@ withMprisPlayers action = do
 
 -- | Return all available MPRIS clients together with information on
 -- what they are playing.
-mpris :: IO [String]
-mpris = withMprisPlayers $ return . map formatPlayer
+mprisPlayers :: IO [String]
+mprisPlayers = withMprisPlayers $ return . map formatPlayer
 
 formatPlayer :: Player -> String
 formatPlayer Player { player = player
