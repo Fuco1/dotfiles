@@ -168,7 +168,7 @@ main = do
            )
     where
       leader = "<Pause>"
-      mpd = Mpris.switchTo "mpd"
+      mpd = Mpris.switchTo "org.mpris.MediaPlayer2.mpd"
 
 -- brno letisko LKTB
 -- sliac letisko LZSL

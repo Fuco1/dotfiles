@@ -9,12 +9,7 @@ module Mpris
        , stopCurrent
        , nextCurrent
        , previousCurrent
-       , getMprisPlayer
        , formatPlayer
-       , formatPlayerXmobar
-       , withMprisPlayer
-       , withMprisPlayers
-       , Player(..)
        , module Mpris.Properties
        , module Mpris.Utils
        ) where
@@ -23,7 +18,6 @@ import Control.Applicative ((<$>))
 import Control.Monad (when)
 
 import DBus
-import DBus.Client
 import qualified DBus.Mpris as MP
 
 import System.Locale (defaultTimeLocale)
@@ -60,16 +54,8 @@ instance XPrompt MPRISPrompt where
     showXPrompt (MPRISPrompt s) = s ++ ": "
     commandToComplete _ = id
 
-listNamesCall :: MethodCall
-listNamesCall = (methodCall "/org/freedesktop/DBus" "org.freedesktop.DBus" "ListNames")
-  { methodCallDestination = Just "org.freedesktop.DBus" }
-
-listNames :: Client -> IO [String]
-listNames client = unpack . head . methodReturnBody <$> DBus.Client.call_ client listNamesCall
-
 callMpris :: (BusName -> MP.Mpris ()) -> String -> IO ()
-callMpris action target =
-  liftIO $ MP.mpris def (action (busName_ $ "org.mpris.MediaPlayer2." ++ target))
+callMpris action target = liftIO $ MP.mpris def (action (busName_ target))
 
 withCurrent :: (BusName -> MP.Mpris ()) -> X ()
 withCurrent action = do
@@ -111,106 +97,37 @@ switch = do
    Just t -> switchTo t MP.playPause
    Nothing -> return ()
 
--- | Ask the user for a target
 mprisPlayersPrompt :: X (Maybe String)
 mprisPlayersPrompt = do
-  players <- liftIO mprisPlayers
+  players <- map formatPlayer <$> liftIO (MP.mpris def MP.getPlayers)
   mkXPromptWithReturn (MPRISPrompt "Player ") Constants.prompt (playerCompl players) (return . takeWhile (/= ' '))
 
 playerCompl :: [String] -> String -> IO [String]
 playerCompl players pick = return $ L.filter (matchAllWords pick . strToLower) players
 
-data Player = Player { player   :: BusName
-                     , status   :: PlayerStatus
-                     , author   :: Maybe String
-                     , title    :: Maybe String
-                     , file     :: Maybe String
-                     , duration :: Integer
-                     , seek     :: Integer
-                     } deriving (Eq, Show)
 
-getMprisPlayer :: Client -- | dbus client
-                  -> BusName -- | dbus busname
-                  -> IO Player
-getMprisPlayer client name = do
-  m <- getMetadata client name
-  pos <- getPosition client name
-  status <- getStatus client name
-  return Player { player = name
-                , status = status
-                , author = getAuthor m
-                , title  = getTitle m
-                , file   = getUrl m
-                , duration = getLength m
-                , seek = pos
-                }
-
-withMprisPlayer :: Client -> BusName -> (Maybe Player -> IO ()) -> IO ()
-withMprisPlayer client name action = do
-   busNames <- map busName_ `fmap` listNames client
-   if name `elem` busNames
-     then getMprisPlayer client name >>= action . Just
-     else action Nothing
-
-getMprisPlayerNames :: Client -> IO [BusName]
-getMprisPlayerNames client = do
-  plist <- listNames client
-  return $ L.map busName_ . L.filter (/= "org.mpris.MediaPlayer2.vlc") . L.filter (isPrefixOf "org.mpris.MediaPlayer2.") $ plist
-
--- TODO: move to a library
-getMprisPlayers :: IO [Player]
-getMprisPlayers = do
-  client <- connectSession
-  getMprisPlayerNames client >>= mapM (getMprisPlayer client)
-
-withMprisPlayers :: ([Player] -> IO a) -> IO a
-withMprisPlayers action = do
-  players <- getMprisPlayers
-  action players
-
--- | Return all available MPRIS clients together with information on
--- what they are playing.
-mprisPlayers :: IO [String]
-mprisPlayers = withMprisPlayers $ return . map formatPlayer
-
-formatPlayer :: Player -> String
-formatPlayer Player { player = player
-                    , author = author
-                    , title = title
-                    , file = file
-                    , duration = duration
-                    , seek = seek } =
-  (drop 23 $ formatBusName player) ++ " " ++ time ++ " " ++ meta
-  where meta = case title of
-          Just t -> t ++ ": " ++ fromMaybe "" author
-          Nothing ->
-            case file of
-              Just f -> formatURL f
-              Nothing -> ""
-        time = "[" ++ formatDuration seek ++ "/" ++ formatDuration duration ++ "]"
-
-formatPlayerXmobar :: Player -> String
-formatPlayerXmobar Player { status = status
-                          , author = author
-                          , title = title
-                          , file = file
-                          , duration = duration
-                          , seek = seek } =
-  meta ++ state' ++ if duration < 1000 -- this is in microseconds
-                    then ""
-                    else formatDuration duration
-  where meta = case title of
-          Just t -> "<fc=#888a85>" ++ t ++
-                    "</fc><fc=#729fcf>" ++ fromMaybe "" author ++ "</fc>"
-          Nothing ->
-            case file of
-              Just f -> "<fc=#888a85>" ++ formatURL f ++ "</fc>"
-              Nothing -> "Unknown"
-        seek' =  formatDuration seek
-        state' = case status of
-          Playing -> "<fc=#8ae234>" ++ seek' ++ "</fc>"
-          Paused -> "<fc=#edd400>" ++ seek' ++ "</fc>"
-          Stopped -> "<fc=#ef2929>" ++ seek' ++ "</fc>"
+formatPlayer :: MP.Player -> String
+formatPlayer MP.Player { MP.playerBusname = bus
+                       , MP.playerName = name
+                       , MP.playerPosition = position
+                       , MP.playerMetadata =
+                         Just (MP.Metadata { MP.artist = artist
+                                           , MP.title = title
+                                           , MP.len = len
+                                           , MP.url = url
+                                           }) } = formatBusName bus ++ " " ++ fromMaybe "" name ++ " " ++ time ++ " " ++ meta
+  where time = case (position, len) of
+                (Just p, Just l) -> "[" ++ formatDuration p ++ "/" ++ formatDuration l ++ "]"
+                _ -> ""
+        meta = case title of
+                Just t -> t ++ ": " ++ fromMaybe "" artist
+                Nothing -> case url of
+                  Just u -> formatURL u
+                  Nothing -> ""
+formatPlayer MP.Player { MP.playerBusname = bus
+                       , MP.playerName = name
+                       , MP.playerMetadata = Nothing }
+  = formatBusName bus ++ " " ++ fromMaybe "" name
 
 formatDuration :: Integer -> String
 formatDuration dur = formatTime defaultTimeLocale "%M:%S" durInSec
