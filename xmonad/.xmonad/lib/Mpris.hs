@@ -27,7 +27,8 @@ import Data.Maybe (isJust, fromJust, fromMaybe)
 import Data.List as L
 import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 import Data.Time.Format (formatTime)
-import qualified Data.Text as T
+
+import Network.HTTP (urlDecode)
 
 import XMonad hiding ((=?), title)
 import XMonad.Prompt
@@ -136,5 +137,5 @@ formatDuration dur = formatTime defaultTimeLocale "%M:%S" durInSec
 -- | Return file portion of URL if file:///, otherwise do nothing
 formatURL :: String -> String
 formatURL url = if "file:///" `isPrefixOf` url
-                 then T.unpack . T.replace "%20" " " . T.pack . reverse . takeWhile (/= '/') . reverse $ url
+                 then urlDecode . reverse . takeWhile (/= '/') . reverse $ url
                  else url
