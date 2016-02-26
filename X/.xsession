@@ -33,7 +33,10 @@ eval $(ssh-agent -s)
 ssh-add "/home/matus/.ssh/id_rsa"
 
 mountavfs
-tagsistant "/home/matus/files"
+if [ ! -z $(which tagsistant) ]; then
+    tagsistant "/home/matus/files"
+fi
+
 feh --bg-scale '/home/matus/media/pictures/haskell.png'
 
 bash /home/matus/bin/inputsetup
