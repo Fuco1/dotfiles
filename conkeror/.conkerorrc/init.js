@@ -170,6 +170,7 @@ define_opensearch_webjump("wl", "wikipedia-la.xml");
 define_opensearch_webjump("wr", "wikipedia-ru.xml");
 define_opensearch_webjump("wd", "wiktionary.xml");
 define_opensearch_webjump("y", "youtube.xml");
+define_opensearch_webjump("php", "phpnet.xml");
 
 define_webjump("imdb", "http://www.imdb.com/find?q=%s");
 define_webjump("r", "http://reddit.com/r/%s");
