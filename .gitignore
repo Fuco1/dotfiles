@@ -1,2 +1,4 @@
 /mpd/.ncmpcpp/patterns.list
 /xmonad/.xmonad/lib/MprisListener
+*.o
+*.hi
