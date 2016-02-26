@@ -45,6 +45,8 @@ alias ds "du -sm"
 alias du1 "du -h --max-depth 1"
 alias mc "mc -S fuco"
 
+alias dh "df -h"
+
 # archives
 alias untar "tar xvfz"
 
