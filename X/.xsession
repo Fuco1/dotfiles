@@ -42,7 +42,6 @@ feh --bg-scale '/home/matus/media/pictures/haskell.png'
 bash /home/matus/bin/inputsetup
 sh "/home/matus/.screenlayout/$(cat /home/matus/.whereami).sh"
 
-bash /home/matus/bin/setup-tunnels
 bash /home/matus/bin/setup-trayer
 
 if [ ! -z $(which ibus-daemon) ]; then
