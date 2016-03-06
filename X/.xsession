@@ -28,6 +28,11 @@ if [ ! -z $(which mpDris2) ]; then
     mpDris2 &
 fi
 
+if [ ! -z $(which twmnd) ]; then
+    pkill notify-osd
+    twmnd &
+fi
+
 eval $(gpg-agent)
 eval $(ssh-agent -s)
 ssh-add "/home/matus/.ssh/id_rsa"
