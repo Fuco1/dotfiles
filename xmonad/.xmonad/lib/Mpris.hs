@@ -10,8 +10,6 @@ module Mpris
        , nextCurrent
        , previousCurrent
        , formatPlayer
-       , module Mpris.Properties
-       , module Mpris.Utils
        ) where
 
 import Control.Applicative ((<$>))
@@ -33,9 +31,6 @@ import Network.HTTP (urlDecode)
 import XMonad hiding ((=?), title)
 import XMonad.Prompt
 import qualified XMonad.Util.ExtensibleState as XS
-
-import Mpris.Properties
-import Mpris.Utils (unpack)
 
 import Utils
 import Constants
