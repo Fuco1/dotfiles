@@ -1,5 +1,5 @@
 # exports
-set -x PATH "/opt/netbeans-8.0/bin" "$HOME/.cabal/bin" "$HOME/.cask/bin" "$HOME/bin" "$HOME/sources/gocode/bin" $PATH
+set -x PATH "/opt/netbeans-8.0/bin" "$HOME/.cabal/bin" "$HOME/.cask/bin" "$HOME/bin" "$HOME/sources/gocode/bin" "/opt/Unity/Editor" $PATH
 set -x EDITOR "emacsclient -nw"
 set -x VISUAL "/home/matus/bin/ecedit"
 set -x XDG_CONFIG_HOME "/home/matus/.config"
