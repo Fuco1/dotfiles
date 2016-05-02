@@ -89,7 +89,7 @@ manageHook = (composeOne . concat $ --  <&&> resource =? "TeamViewer.exe"
     <+> manageDocks
     <+> XMonad.manageHook defaultConfig
     where
-        myCFloats = ["sun-awt-X11-XFramePeer", "net-sourceforge-jnlp-runtime-Boot"]
+        myCFloats = ["sun-awt-X11-XFramePeer", "net-sourceforge-jnlp-runtime-Boot", "Unity"]
         myTFloats = ["GLFW-b-demo"]
         myRFloats = []
         myCIgnores = []
