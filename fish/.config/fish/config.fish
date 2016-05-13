@@ -76,3 +76,21 @@ function runjava
 end
 
 alias centos "sudo docker run -ti centos:7"
+
+if test -n (echo $INSIDE_EMACS)
+    if test -n (echo $TMUX)
+        function -e fish_prompt prompt_AnSiT
+            printf "\033Ptmux;\033\033AnSiTc %s\n\033\\" $PWD
+        end
+
+        printf "\033Ptmux;\033\033AnSiTu %s\n\033\\" $USER
+        printf "\033Ptmux;\033\033AnSiTc %s\n\033\\" $PWD
+    else
+        function -e fish_prompt prompt_AnSiT
+            printf "\033AnSiTc %s\n" $PWD
+        end
+
+        printf "\033AnSiTu %s\n" $USER
+        printf "\033AnSiTc %s\n" $PWD
+    end
+end
