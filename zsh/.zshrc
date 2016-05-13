@@ -70,3 +70,28 @@ ZSH_HIGHLIGHT_STYLES[globbing]='fg=cyan'
 bindkey -e '^w' kill-region
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+PROMPT_COMMAND=true
+
+if [ -n "$TMUX" ]; then
+    function set-eterm-dir {
+        printf "\033Ptmux;\033\033AnSiTu %s\n\033\\" $LOGNAME
+        printf "\033Ptmux;\033\033AnSiTc %s\n\033\\" $PWD
+        printf "\033Ptmux;\033\033AnSiTh %s\n\033\\" $(hostname -s)
+        history -a
+    }
+else
+    function set-eterm-dir {
+        echo -e "\033AnSiTu" "$LOGNAME"
+        echo -e "\033AnSiTc" "$(pwd)"
+        echo -e "\033AnSiTh" "$(hostname -s)"
+        history -a
+    }
+fi
+
+# Track directory, username, and cwd for remote logons.
+if [ -n "$INSIDE_EMACS" ]; then
+    PROMPT_COMMAND="$PROMPT_COMMAND && set-eterm-dir"
+fi
+
+export PROMPT_COMMAND
