@@ -30,6 +30,7 @@ fi
 
 if [ ! -z $(which twmnd) ]; then
     pkill notify-osd
+    pkill notifyd
     twmnd &
 fi
 
