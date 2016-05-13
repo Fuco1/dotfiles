@@ -1,7 +1,8 @@
 function quad --description "Setup 4 tmux panes in a quad layout."
-    tmux split-window -h
-    tmux split-window
+    set -l recon (tmux-reconnect)
+    tmux split-window -h "$recon"
+    tmux split-window "$recon"
     tmux select-pane -L
-    tmux split-window
+    tmux split-window "$recon"
     tmux select-pane -U
 end
