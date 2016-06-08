@@ -58,6 +58,9 @@ main = do
   xmproc <- spawnPipe $ "/home/matus/.cabal/bin/xmobar -x " ++ show xmobarScreen ++ " /home/matus/.xmonad/xmobarrc"
   xmonad $
     (\c -> c { startupHook = do
+                  root <- theRoot `fmap` ask
+                  d <- display `fmap` ask
+                  liftIO $ selectInput d root $ substructureRedirectMask .|. substructureNotifyMask .|. enterWindowMask .|. leaveWindowMask .|. structureNotifyMask .|. buttonPressMask .|. propertyChangeMask
                   XS.put (Workspaces.ScreenOrder [left, middle, right])
                   startupHook c
                   setWMName "LG3D" }) $
