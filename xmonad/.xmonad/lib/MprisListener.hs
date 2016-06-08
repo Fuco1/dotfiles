@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+-- This program is deprecated, media-control is used instead
 
 import Mpris
 
