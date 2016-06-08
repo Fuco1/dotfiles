@@ -9,6 +9,7 @@ module Mpris
        , stopCurrent
        , nextCurrent
        , previousCurrent
+       , resetCurrent
        , formatPlayer
        ) where
 
@@ -72,6 +73,18 @@ toggleCurrent = withCurrent MP.playPause
 
 setCurrent :: String -> X ()
 setCurrent = XS.put . CurrentPlayer . Just
+
+-- | Set the last player to current and reset the current player to the input
+resetCurrent :: String -> X ()
+resetCurrent target = do
+  CurrentPlayer current <- XS.get
+  case current of
+    Just c -> when (c /= target) $ do
+      XS.put . LastPlayer $ current
+      setCurrent target
+    Nothing -> do
+      XS.put . LastPlayer $ Nothing
+      setCurrent target
 
 -- | Switch to new target.  Pause the current player and call action
 -- on the new one.
