@@ -1,4 +1,7 @@
+import Control.Monad (when)
 import Data.Monoid (All(..))
+import Data.Maybe (isJust, fromJust)
+import Data.Foldable (forM_)
 import DBus.Mpris
 import System.Exit (exitSuccess)
 import System.IO (hPutStrLn)
@@ -42,6 +45,21 @@ withoutNetActiveWindow c = c { handleEventHook = \e -> do
                                           return (mt /= a_aw)
                                         _ -> return True
                                   if p then handleEventHook c e else return (All True) }
+
+propertyHook :: XMonad.Event -> X All
+propertyHook e = do
+  case e of
+    PropertyEvent { ev_atom = atom
+                  , ev_window = window
+                  , ev_propstate = st } -> do
+      root <- theRoot `fmap` ask
+      a <- getAtom "MPRIS_CURRENT_ACTIVE_DBUS"
+      when (window == root && atom == a && st == propertyNewValue) $ do
+        d <- display `fmap` ask
+        dat <- getStringProperty d window "MPRIS_CURRENT_ACTIVE_DBUS"
+        forM_ dat Mpris.resetCurrent
+  return (All False)
+
 main :: IO ()
 main = do
   w <- IOS.readFile "/home/matus/.whereami"
@@ -68,10 +86,24 @@ main = do
     ewmh $
     withUrgencyHook NoUrgencyHook defaultConfig
            {
+             -- <geekosaur> given the limitations of client message
+             -- events currently, I would consider using a root window
+             -- property for communication because you get full
+             -- control over the message format instead of the
+             -- hardwired one the X11 binding uses for clientMessage
+             -- events
+             -- <geekosaur> then in handleEventHook you can look for
+             -- PropertyNotify events and check if the property that
+             -- changed is the one you are using
+             -- <geekosaur> and maybe the best part: you would have to
+             -- write a program to send a custom clientMessage, but
+             -- you can use xprop -root -set for the root window
+             -- property (admittedly it's ugly to use)
+
              manageHook         = C.manageHook
            , layoutHook         = C.layout
            , logHook            = dynamicLogWithPP C.printer { ppOutput = hPutStrLn xmproc }
-           , handleEventHook    = fullscreenEventHook <+> docksEventHook
+           , handleEventHook    = propertyHook <+> fullscreenEventHook <+> docksEventHook
            , modMask            = mod4Mask
            , borderWidth        = 1
            , terminal           = "urxvtc"
