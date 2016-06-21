@@ -6,6 +6,7 @@ The `xmonad.hs` file contains only updates to the default config and tons of key
 
 * `Brightness.hs` has some code to set brightness levels.
 * `Constants.hs` contains constants and settings, such as managehooks, printers, prompts and so on.
+* `IdoFile.hs` is a prompt mirroring `ido-find-file` behaviour from emacs
 * `MPD.hs` is an interface to `mpd`.  It has some custom prompts and lifts some of `Network.MPD` actions into `X` monad.  Might interest you if you use `mpd`.
 * `Mount.hs` is some magic for semi-automatic mounting of volumes.   Very experimenta.
 * `Mpris.hs` is an interface to [mpris2](https://specifications.freedesktop.org/mpris-spec/latest/) protocol, powered by my other library: [mpris](https://github.com/Fuco1/mpris).  It has some interop with `MPD.hs` to allow for seamless switching.
