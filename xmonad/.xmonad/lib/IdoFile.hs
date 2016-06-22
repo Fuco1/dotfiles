@@ -23,7 +23,7 @@ idoFilePrompt :: FilePath -- ^ Initial directory
                  -> XPConfig -- ^ Prompt config
                  -> X (Maybe FilePath)
 idoFilePrompt initial xpConfig = do
-  files <- liftIO $ (:) "." . filter (not . flip elem [".", ".."] ) <$> getDirectoryContents initial
+  files <- liftIO $ (:) "." . filter (`notElem` [".", ".."] ) <$> getDirectoryContents initial
   ref <- liftIO $ newIORef Nothing
   file <- mkXPromptWithReturn
    (IdoFilePrompt "Find file")
