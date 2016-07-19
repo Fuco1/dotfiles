@@ -1,6 +1,5 @@
 import Control.Monad (when)
 import Data.Monoid (All(..))
-import Data.Maybe (isJust, fromJust)
 import Data.Foldable (forM_)
 import DBus.Mpris
 import System.Exit (exitSuccess)
