@@ -18,7 +18,7 @@ import XMonad.Prompt.RunOrRaise (runOrRaisePrompt)
 import XMonad.Prompt.Window (windowPromptGoto)
 import XMonad.Util.EZConfig (additionalKeys, additionalKeysP)
 import XMonad.Util.ExtensibleState as XS
-import XMonad.Util.Run (spawnPipe, runInTerm)
+import XMonad.Util.Run (spawnPipe, runInTerm, safeSpawn)
 import qualified XMonad.StackSet as W
 
 import qualified Constants as C
@@ -31,6 +31,7 @@ import Interactive
 import Brightness
 import Mount
 import Mpris
+import IdoFile
 
 -- TODO: we might want to set urgency for the "to be focused" window in the future.
 -- TODO: test that the window sending the event is in fact the firefox
@@ -153,6 +154,10 @@ main = do
            , (leader <%> "=" <%> "p", runInTermOrRaise "pacmixer" "0")
            , (leader <%> "=" <%> "n", runInTermOrRaise "ncmpcpp" "0")
            , (leader <%> "=" <%> "c", runInTermOrRaise "pavucontrol" "0")
+           , (leader <%> "=" <%> "t", do
+               Just file <- myIdoFilePrompt "/home/matus/download/"
+               safeSpawn "xdg-open" [file]
+             )
            , ("M2-<Backspace>", toggleWS)
            , ("M2-S-<Pause>", io exitSuccess)
            , ("M2-<Pause>", recompileXMonad)
