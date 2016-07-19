@@ -39,12 +39,13 @@ idoFilePrompt initial xpConfig = do
        Just "" -> normalize initial
        Just "." -> normalize initial
        Just f -> do
-         isFile <- liftIO $ doesFileExist f
+         let full = initial ++ "/" ++ f
+         isFile <- liftIO $ doesFileExist full
          if isFile
            then
-             normalize f
+             normalize full
            else
-             idoFilePrompt (initial ++ "/" ++ f) xpConfig
+             idoFilePrompt full xpConfig
   where
     normalize = fmap Just . liftIO . canonicalizePath
     done = setSuccess True >> setDone True
