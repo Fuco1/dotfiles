@@ -81,16 +81,15 @@ if test -n (echo $INSIDE_EMACS)
     if test -n (echo $TMUX)
         function -e fish_prompt prompt_AnSiT
             printf "\033Ptmux;\033\033AnSiTc %s\n\033\\" $PWD
+            printf "\033Ptmux;\033\033AnSiTu %s\n\033\\" $LOGNAME
+            printf "\033Ptmux;\033\033AnSiTh %s\n\033\\" (hostname -s)
+            printf "\033Ptmux;\033\033AnSiTt %s\n\033\\" (tmux display-message -p '#S:#I.#P')
         end
-
-        printf "\033Ptmux;\033\033AnSiTu %s\n\033\\" $USER
-        printf "\033Ptmux;\033\033AnSiTc %s\n\033\\" $PWD
     else
         function -e fish_prompt prompt_AnSiT
             printf "\033AnSiTc %s\n" $PWD
+            printf "\033AnSiTu %s\n" $LOGNAME
+            printf "\033AnSiTh %s\n" (hostname -s)
         end
-
-        printf "\033AnSiTu %s\n" $USER
-        printf "\033AnSiTc %s\n" $PWD
     end
 end
