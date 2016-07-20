@@ -93,3 +93,11 @@ if test -n (echo $INSIDE_EMACS)
         end
     end
 end
+
+function preexec_set_title --on-event fish_preexec
+    echo -ne '\033k'$argv[1]'\033\\'
+end
+
+function postexec_set_title --on-event fish_postexec
+    echo -ne '\033kfish\033\\'
+end
