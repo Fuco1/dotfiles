@@ -1,0 +1,11 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Icon=fbreader
+Exec=fbreader %f
+Name=Ebook Viewer
+Comment=Display .epub files and other e-reader formats
+StartupWMClass=ebook-viewer
+MimeType=application/x-mobipocket-ebook;application/epub+zip;
