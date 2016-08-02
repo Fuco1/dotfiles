@@ -14,6 +14,7 @@ set -x _JAVA_AWT_WM_NONREPARENTING 1
 set -x GPG_TTY (tty)
 set -x AUTOSSH_POLL 60
 set -x FZF_DEFAULT_OPTS "-x"
+set -x LC_ALL en_US.utf8
 
 eval (python -m virtualfish auto_activation)
 
