@@ -7,3 +7,5 @@
 	recentrepo = C:/Users/Matus/AppData/Roaming/.emacs.d/vendor/smartparens
 [core]
 	autocrlf = input
+[color]
+	ui = auto
