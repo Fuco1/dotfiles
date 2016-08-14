@@ -53,6 +53,7 @@ alias untar "tar xvfz"
 
 # ssh
 alias dasnet "ssh fuco@dasnet.cz"
+alias irc "ssh -t anaxagoras ta"
 
 # app installation
 alias ins "sudo apt-get install"
