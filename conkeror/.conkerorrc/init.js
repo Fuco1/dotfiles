@@ -3,6 +3,7 @@ require("session.js");
 session_auto_save_auto_load = true;
 
 require("browse-history.js");
+require("org-protocol.js");
 
 require("favicon");
 read_buffer_show_icons = true;
