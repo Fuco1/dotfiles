@@ -15,6 +15,7 @@ set -x GPG_TTY (tty)
 set -x AUTOSSH_POLL 60
 set -x FZF_DEFAULT_OPTS "-x"
 set -x LC_ALL en_US.utf8
+set -x LOCATE_PATH "/home/matus/.config/.media.db"
 
 eval (python -m virtualfish auto_activation)
 
