@@ -3,7 +3,7 @@
 IMAPAccount logio
 Host imap.gmail.com
 User goljer@logio.cz
-PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/secrets/mailpass-logio.gpg"
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d /home/matus/secrets/mailpass-logio.gpg"
 UseIMAPS yes
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
@@ -35,7 +35,7 @@ Channel logio-sent
 IMAPAccount goljer
 Host imap.gmail.com
 User matus.goljer@gmail.com
-PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/secrets/mailpass-goljer.gpg"
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d /home/matus/secrets/mailpass-goljer.gpg"
 UseIMAPS yes
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
@@ -67,7 +67,7 @@ Channel goljer-sent
 IMAPAccount dota
 Host imap.gmail.com
 User dota.keys@gmail.com
-PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/secrets/mailpass-dota.gpg"
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d /home/matus/secrets/mailpass-dota.gpg"
 UseIMAPS yes
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 

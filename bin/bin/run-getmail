@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 mbsync logio
-where=$(cat ~/.whereami)
+where=$(cat /home/matus/.whereami)
 if [[ "$where" = "home" || "$where" = "brno" ]] ; then
     mbsync goljer
     mbsync dota
