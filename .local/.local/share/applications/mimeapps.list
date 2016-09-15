@@ -1,0 +1,13 @@
+[Default Applications]
+application/pdf=userapp-zathura-FV6B1X.desktop
+x-scheme-handler/http=conkeror.desktop
+x-scheme-handler/https=conkeror.desktop
+video/x-flv=vlc.desktop
+video/x-avi=vlc.desktop
+video/mp4=vlc.desktop
+application/epub=fbreader.desktop
+application/epub+zip=fbreader.desktop
+audio/mpeg=vlc.desktop
+
+[Added Associations]
+application/pdf=userapp-zathura-FV6B1X.desktop;
