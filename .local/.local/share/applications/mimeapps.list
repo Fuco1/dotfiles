@@ -8,6 +8,7 @@ video/mp4=vlc.desktop
 application/epub=fbreader.desktop
 application/epub+zip=fbreader.desktop
 audio/mpeg=vlc.desktop
+text/plain=emacsclient.desktop
 
 [Added Associations]
 application/pdf=userapp-zathura-FV6B1X.desktop;
