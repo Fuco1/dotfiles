@@ -161,6 +161,7 @@ main = do
            , ("M2-S-<Pause>", io exitSuccess)
            , ("M2-<Pause>", recompileXMonad)
            , ("M2-p", runOrRaisePrompt C.prompt)
+           , ("M2-l", spawn "xscreensaver-command -lock")
            , (leader <%> leader, windowPromptGoto C.prompt)
            , ("M2-c", kill)
            , ("M2-m", withScreen left W.view)
