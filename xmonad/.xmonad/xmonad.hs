@@ -110,10 +110,13 @@ main = do
            , (leader <%> "<Print>",  Mpris.toggleCurrent)
            , (leader <%> "d",        MPD.deleteCurrent)
            , (leader <%> "c",        MPD.clear)
-           , (leader <%> "<F9>",     MPD.playPlaylist Clear >>= whenJust_ (mpd DBus.Mpris.play))
+           , (leader <%> "<F9>", withPrefixArgument $ \prefix -> do
+                 r <- case prefix of
+                   Raw _ -> MPD.playPlaylist Add
+                   _     -> MPD.playPlaylist Clear
+                 whenJust_ (mpd DBus.Mpris.play) r)
            , (leader <%> "<F10>",    MPD.playArtist Clear >>= whenJust_ (mpd DBus.Mpris.play) )
            , (leader <%> "<F11>",    MPD.playDirectory Clear >>= whenJust_ (mpd DBus.Mpris.play))
-           , (leader <%> "u" <%> "<F9>",  MPD.playPlaylist Add >>= whenJust_ (mpd DBus.Mpris.play))
            , (leader <%> "u" <%> "<F10>", MPD.playArtist Add >>= whenJust_ (mpd DBus.Mpris.play))
            , (leader <%> "u" <%> "<F11>", MPD.playDirectory Add >>= whenJust_ (mpd DBus.Mpris.play))
            , (leader <%> "<F12>",   MPD.jumpToTrack >>= whenJust_ (mpd DBus.Mpris.play))
