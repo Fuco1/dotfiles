@@ -1,8 +1,8 @@
 module Interactive where
 
 import Control.Applicative
-import Control.Monad
 import Control.Monad.Trans.Maybe
+import Data.Maybe (fromMaybe)
 import XMonad
 import XMonad.Actions.WindowBringer
 import XMonad.Prompt
@@ -27,11 +27,7 @@ spec = InteractiveSpecification . MaybeT
 interactive :: InteractiveSpecification (X ()) -> X ()
 interactive (InteractiveSpecification x) = do
   action <- runMaybeT x
-  case action of
-   Just a -> do
-     v <- a
-     return v
-   Nothing -> return ()
+  fromMaybe (return ()) action
 
 data InteractivePrompt = InteractivePrompt String
 instance XPrompt InteractivePrompt where
@@ -41,7 +37,7 @@ instance XPrompt InteractivePrompt where
 prompts :: XPConfig -> String -> InteractiveSpecification String
 prompts c s = spec $ mkXPromptWithReturn (InteractivePrompt s) (c { alwaysHighlight = False }) emptyCompl return
  where
-   emptyCompl = (\_ -> return [])
+   emptyCompl _ = return []
 
 promptS :: XPConfig -> [String] -> String -> InteractiveSpecification String
 promptS c options s = spec $ mkXPromptWithReturn (InteractivePrompt s) c (mkComplFunFromList' options) return
