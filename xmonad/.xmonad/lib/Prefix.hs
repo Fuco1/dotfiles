@@ -172,13 +172,10 @@ handlePrefixArg = do
                    prefix <- XS.get
                    let x = fromJust (Prelude.lookup k keyToNum)
                    case prefix of
-                     Raw _ -> do
-                       XS.put $ Numeric x
-                       handlePrefixArg
-                     Numeric a -> do
-                       XS.put $ Numeric $ a * 10 + x
-                       handlePrefixArg
-                 else mapM_ (uncurry sendKey) ((controlMask, xK_u):[key])
+                     Raw _ -> XS.put $ Numeric x
+                     Numeric a -> XS.put $ Numeric $ a * 10 + x
+                   handlePrefixArg
+                 else mapM_ (uncurry sendKey) [(controlMask, xK_u), key]
         keyToNum = (xK_0, 0) : zip [xK_1 .. xK_9] [1..9]
 
 withPrefixArgument :: (PrefixArgument -> X ()) -> X ()
