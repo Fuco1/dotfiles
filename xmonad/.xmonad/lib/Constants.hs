@@ -4,6 +4,8 @@ module Constants
        , Workspaces.ScreenOrder -- tento reexport je prasarna
        ) where
 
+import Data.List (init, last)
+
 import XMonad
 import XMonad.Actions.CopyWindow (copyToAll)
 import XMonad.Hooks.DynamicLog
@@ -15,11 +17,13 @@ import XMonad.Layout.NoBorders (smartBorders)
 import XMonad.Layout.ResizeScreen
 import XMonad.Prompt
 import XMonad.Util.Loggers
+import XMonad.Util.ExtensibleState as XS
 
 import qualified XMonad.StackSet as W
 
 import Utils
 import Workspaces
+import Prefix
 
 prompt :: XPConfig
 prompt = defaultXPConfig { font = "xft:Monospace-12:narrow"
@@ -61,8 +65,17 @@ printer = defaultPP { ppCurrent         = xmobarColor "#fcaf3e" ""
                     , ppWsSep           = ""
                     , ppTitle           = xmobarColor "#8cc4ff" ""
                     , ppLayout          = (:[]) . head
-                    , ppOrder           = id
-                    , ppExtras          = []
+                    , ppOrder           = \x -> case x of
+                        [_, _, _] -> x
+                        (a:b:c:rest) -> [last rest, a, b, c]
+                    , ppExtras          = [
+                      do
+                        prefix <- XS.get
+                        return $ case prefix of
+                          Raw n -> Just $ foldr1 (\a b -> a ++ " " ++ b) $ replicate n "C-u"
+                          Numeric n -> Just $ "C-u " ++ show n
+                          None -> Nothing
+                      ]
                     , ppSort            = getSortByMyCompare
                     }
 

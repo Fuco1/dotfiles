@@ -31,6 +31,7 @@ import Brightness
 import Mount
 import Mpris
 import IdoFile
+import Prefix
 
 propertyHook :: XMonad.Event -> X All
 propertyHook e = do
@@ -69,6 +70,7 @@ main = do
                   startupHook c
                   setWMName "LG3D" }) $
     ewmh $
+    useDefaultPrefixArgument $
     withUrgencyHook NoUrgencyHook defaultConfig
            {
              -- <geekosaur> given the limitations of client message
