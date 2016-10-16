@@ -21,7 +21,6 @@ import qualified DBus.Mpris as MP
 
 import System.Locale (defaultTimeLocale)
 
-import Data.Default
 import Data.Maybe (isJust, fromJust, fromMaybe)
 import Data.List as L
 import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
@@ -52,7 +51,7 @@ instance XPrompt MPRISPrompt where
     commandToComplete _ = id
 
 callMpris :: (BusName -> MP.Mpris ()) -> String -> IO ()
-callMpris action target = liftIO $ MP.mpris def (action (busName_ target))
+callMpris action target = liftIO $ MP.mpris MP.def (action (busName_ target))
 
 withCurrent :: (BusName -> MP.Mpris ()) -> X ()
 withCurrent action = do
@@ -108,7 +107,7 @@ switch = do
 
 mprisPlayersPrompt :: X (Maybe String)
 mprisPlayersPrompt = do
-  players <- map formatPlayer <$> liftIO (MP.mpris def MP.getPlayers)
+  players <- map formatPlayer <$> liftIO (MP.mpris MP.def MP.getPlayers)
   mkXPromptWithReturn (MPRISPrompt "Player ") Constants.prompt (playerCompl players) (return . takeWhile (/= ' '))
 
 playerCompl :: [String] -> String -> IO [String]

@@ -26,17 +26,17 @@ import Workspaces
 import Prefix
 
 prompt :: XPConfig
-prompt = defaultXPConfig { font = "xft:Monospace-12:narrow"
-                         , bgColor = "black"
-                         , fgColor = "#888a85"
-                         , fgHLight = "#eeeeec"
-                         , bgHLight = "#3465a4"
-                         , borderColor = "#008800"
-                         , promptKeymap = emacsLikeXPKeymap
-                         , height = 25
-                         , searchPredicate = subseq
-                         , alwaysHighlight = True
-                         }
+prompt = def { font = "xft:Monospace-12:narrow"
+             , bgColor = "black"
+             , fgColor = "#888a85"
+             , fgHLight = "#eeeeec"
+             , bgHLight = "#3465a4"
+             , borderColor = "#008800"
+             , promptKeymap = emacsLikeXPKeymap
+             , height = 25
+             , searchPredicate = subseq
+             , alwaysHighlight = True
+             }
 
 workspaces :: [WorkspaceId]
 workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
@@ -56,28 +56,28 @@ layout = mixerdrawer `onBottom` as (Full ||| tiled ||| Mirror tiled)
     tiled = Tall 1 (3/100) (1/2)
     as = avoidStruts . smartBorders
 
-printer = defaultPP { ppCurrent         = xmobarColor "#fcaf3e" ""
-                    , ppVisible         = xmobarColor "#d3d7cf" ""
-                    , ppHidden          = id
-                    , ppHiddenNoWindows = const ""
-                    , ppUrgent          = xmobarColor "#cc0000" ""
-                    , ppSep             = "│"
-                    , ppWsSep           = ""
-                    , ppTitle           = xmobarColor "#8cc4ff" ""
-                    , ppLayout          = (:[]) . head
-                    , ppOrder           = \x -> case x of
-                        [_, _, _] -> x
-                        (a:b:c:rest) -> [last rest, a, b, c]
-                    , ppExtras          = [
-                      do
-                        prefix <- XS.get
-                        return $ case prefix of
-                          Raw n -> Just $ foldr1 (\a b -> a ++ " " ++ b) $ replicate n "C-u"
-                          Numeric n -> Just $ "C-u " ++ show n
-                          None -> Nothing
-                      ]
-                    , ppSort            = getSortByMyCompare
-                    }
+printer = def { ppCurrent         = xmobarColor "#fcaf3e" ""
+              , ppVisible         = xmobarColor "#d3d7cf" ""
+              , ppHidden          = id
+              , ppHiddenNoWindows = const ""
+              , ppUrgent          = xmobarColor "#cc0000" ""
+              , ppSep             = "│"
+              , ppWsSep           = ""
+              , ppTitle           = xmobarColor "#8cc4ff" ""
+              , ppLayout          = (:[]) . head
+              , ppOrder           = \x -> case x of
+                                      [_, _, _] -> x
+                                      (a:b:c:rest) -> [last rest, a, b, c]
+              , ppExtras          = [
+                do
+                  prefix <- XS.get
+                  return $ case prefix of
+                    Raw n -> Just $ foldr1 (\a b -> a ++ " " ++ b) $ replicate n "C-u"
+                    Numeric n -> Just $ "C-u " ++ show n
+                    None -> Nothing
+                ]
+              , ppSort            = getSortByMyCompare
+              }
 
 doKillWindow :: ManageHook
 doKillWindow = ask >>= \w -> liftX (killWindow w) >> doF (W.delete w)
@@ -100,7 +100,7 @@ manageHook = (composeOne . concat $ --  <&&> resource =? "TeamViewer.exe"
     , [ className =? "Xfce4-notifyd" -?> doIgnore ]
     ])
     <+> manageDocks
-    <+> XMonad.manageHook defaultConfig
+    <+> XMonad.manageHook def
     where
         myCFloats = ["sun-awt-X11-XFramePeer", "net-sourceforge-jnlp-runtime-Boot", "Unity"]
         myTFloats = ["GLFW-b-demo"]
