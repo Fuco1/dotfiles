@@ -9,3 +9,5 @@
 	autocrlf = input
 [color]
 	ui = auto
+[status]
+	submodulesummary = 1
