@@ -2,3 +2,4 @@
 /xmonad/.xmonad/lib/MprisListener
 *.o
 *.hi
+/bin/bin/winetricks.backup
