@@ -71,7 +71,7 @@ main = do
                   setWMName "LG3D" }) $
     ewmh $
     useDefaultPrefixArgument $
-    withUrgencyHook NoUrgencyHook defaultConfig
+    withUrgencyHook NoUrgencyHook XMonad.def
            {
              -- <geekosaur> given the limitations of client message
              -- events currently, I would consider using a root window
@@ -193,7 +193,7 @@ main = do
              >>= uncurry C.withWorkspacesD
            ) `additionalKeys`
            (
-             [ ((mod2Mask .|. mod5Mask, xK_0), paSetVolumeRunning "100%") ] ++
+             ((mod2Mask .|. mod5Mask, xK_0), paSetVolumeRunning "100%") :
              [ ((mod2Mask .|. mod5Mask, key), paSetVolumeRunning $ show (10 * i) ++ "%") | (key, i) <- zip [xK_1 .. xK_9] [1..]]
            )
     where
