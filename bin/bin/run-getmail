@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-mbsync logio
-where=$(cat /home/matus/.whereami)
-if [[ "$where" = "home" || "$where" = "brno" ]] ; then
-    mbsync goljer
-    mbsync dota
+/usr/bin/mbsync --config /home/matus/.mbsyncrc logio
+WHERE=$(/bin/cat /home/matus/.whereami)
+if [ "$WHERE" = "home" -o "$WHERE" = "brno" ] ; then
+    /usr/bin/mbsync --config /home/matus/.mbsyncrc goljer
+    /usr/bin/mbsync --config /home/matus/.mbsyncrc dota
 fi
-notmuch new
+/usr/local/bin/notmuch new
