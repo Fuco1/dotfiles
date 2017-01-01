@@ -1,9 +1,16 @@
 #!/bin/sh
 
-/usr/bin/mbsync --config /home/matus/.mbsyncrc logio
+if [ -f "/home/matus/.cache/gpg-agent-info" ]; then
+    . "/home/matus/.cache/gpg-agent-info"
+    export GPG_AGENT_INFO
+fi
+echo "gpg agent is " "$GPG_AGENT_INFO"
+
+/usr/bin/mbsync --config /home/matus/.mbsyncrc logio >> /dev/null 2>&1
 WHERE=$(/bin/cat /home/matus/.whereami)
 if [ "$WHERE" = "home" -o "$WHERE" = "brno" ] ; then
-    /usr/bin/mbsync --config /home/matus/.mbsyncrc goljer
-    /usr/bin/mbsync --config /home/matus/.mbsyncrc dota
+    /usr/bin/mbsync --config /home/matus/.mbsyncrc goljer >> /dev/null 2>&1
+    /usr/bin/mbsync --config /home/matus/.mbsyncrc dota >> /dev/null 2>&1
 fi
+
 /usr/local/bin/notmuch new
