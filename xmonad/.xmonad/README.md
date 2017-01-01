@@ -21,4 +21,4 @@ Also included is `xmobar` config, see the file `xmobarrc`.
 
 ## todo
 
-* Add some code to detect changes in attached displays and automatically reconfigure
+* Add some code to detect changes in attached displays and automatically reconfigure (I now have a small C utility called [xmonitor](https://github.com/Fuco1/xmonitor) for this, maybe I will integrate it with xmonad/haskell one day).
