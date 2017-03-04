@@ -1,5 +1,13 @@
 #!/bin/bash
-trayer --edge top --align right --SetDockType true --SetPartialStrut false --expand true --height 17 --transparent true --alpha 0 --tint 0x000000 --widthtype request --monitor 1 &
+numOfScreens=$(xrandr | grep '\bconnected' | wc -l)
+if [ $numOfScreens -gt 1 ]; then
+    monitor=1
+else
+    monitor=0
+fi
+
+trayer --edge top --align right --SetDockType true --SetPartialStrut false --expand true --height 17 --transparent true --alpha 0 --tint 0x000000 --widthtype request --monitor $monitor &
+
 if [ -z $(pgrep nm-applet) ]; then
     echo -n "Starting nm-appliet..."
     nm-applet &
