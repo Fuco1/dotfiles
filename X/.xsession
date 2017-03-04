@@ -54,4 +54,4 @@ if [ ! -z $(which ibus-daemon) ]; then
     ibus-daemon --xim -d
 fi
 
-exec /usr/bin/xmonad
+exec /home/matus/bin/xmonad
