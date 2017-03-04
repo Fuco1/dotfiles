@@ -118,3 +118,5 @@ end
 function postexec_set_title --on-event fish_postexec
     echo -ne '\033kfish\033\\'
 end
+
+rvm default
