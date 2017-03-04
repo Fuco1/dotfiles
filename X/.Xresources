@@ -1,3 +1,6 @@
+rxvt.print-pipe: "cat > /dev/null"
+urxvt.print-pipe: "cat > /dev/null"
+
 !# flash on bell
 URxvt.urgentOnBell: true
 
