@@ -7,6 +7,7 @@ module Constants
 import Data.List (init, last)
 
 import XMonad
+import XMonad.Actions.Prefix (ppFormatPrefix)
 import XMonad.Actions.CopyWindow (copyToAll)
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks (avoidStruts, manageDocks)
@@ -23,7 +24,6 @@ import qualified XMonad.StackSet as W
 
 import Utils
 import Workspaces
-import Prefix
 
 prompt :: XPConfig
 prompt = def { font = "xft:Monospace-12:narrow"
@@ -68,14 +68,7 @@ printer = def { ppCurrent         = xmobarColor "#fcaf3e" ""
               , ppOrder           = \x -> case x of
                                       [_, _, _] -> x
                                       (a:b:c:rest) -> [last rest, a, b, c]
-              , ppExtras          = [
-                do
-                  prefix <- XS.get
-                  return $ case prefix of
-                    Raw n -> Just $ foldr1 (\a b -> a ++ " " ++ b) $ replicate n "C-u"
-                    Numeric n -> Just $ "C-u " ++ show n
-                    None -> Nothing
-                ]
+              , ppExtras          = [ppFormatPrefix]
               , ppSort            = getSortByMyCompare
               }
 

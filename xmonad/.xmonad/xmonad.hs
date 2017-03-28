@@ -6,6 +6,7 @@ import System.Exit (exitSuccess)
 import System.IO (hPutStrLn)
 import System.IO.Strict as IOS (readFile)
 import XMonad
+import XMonad.Actions.Prefix
 import XMonad.Actions.CycleWS (toggleWS)
 import XMonad.Actions.CycleWindows (cycleRecentWindows)
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, ppOutput)
@@ -31,7 +32,6 @@ import Brightness
 import Mount
 import Mpris
 import IdoFile
-import Prefix
 
 propertyHook :: XMonad.Event -> X All
 propertyHook e = do
@@ -118,10 +118,12 @@ main = do
                    Raw _ -> MPD.playPlaylist Add
                    _     -> MPD.playPlaylist Clear
                  whenJust_ (mpd DBus.Mpris.play) r)
-           , (leader <%> "<F10>",    MPD.playArtist Clear >>= whenJust_ (mpd DBus.Mpris.play) )
-           , (leader <%> "<F11>",    MPD.playDirectory Clear >>= whenJust_ (mpd DBus.Mpris.play))
-           , (leader <%> "u" <%> "<F10>", MPD.playArtist Add >>= whenJust_ (mpd DBus.Mpris.play))
-           , (leader <%> "u" <%> "<F11>", MPD.playDirectory Add >>= whenJust_ (mpd DBus.Mpris.play))
+           , (leader <%> "<F10>", withPrefixArgument $ \p ->
+                 MPD.playArtist (if isPrefixRaw p then Add else Clear)
+                 >>= whenJust_ (mpd DBus.Mpris.play) )
+           , (leader <%> "<F11>", withPrefixArgument $ \p ->
+                 MPD.playDirectory (if isPrefixRaw p then Add else Clear)
+                 >>= whenJust_ (mpd DBus.Mpris.play))
            , (leader <%> "<F12>",   MPD.jumpToTrack >>= whenJust_ (mpd DBus.Mpris.play))
            , ("<XF86AudioRaiseVolume>", paIncreaseVolumeRunning)
            , ("<XF86AudioLowerVolume>", paDecreaseVolumeRunning)
@@ -138,8 +140,9 @@ main = do
            , (leader <%> "S-o", umountDevice)
            , ("M4-S-<Return>", runInTerm "" "fish")
            , ("<XF86Sleep>", spawn "sudo pm-suspend")
-           , ("<Print>" <%> "<Print>", spawn "/home/matus/bin/take-screenshot")
-           , ("<Print>" <%> "u" <%> "<Print>", spawn "/home/matus/bin/take-screenshot noupload")
+           , ("<Print>" <%> "<Print>", withPrefixArgument $ \p -> do
+                 let prog = "/home/matus/bin/take-screenshot"
+                 spawn $ prog ++ (if isPrefixRaw p then " noupload" else ""))
            , (leader <%> "<F1>" <%> "<F1>", spawn "xfce4-settings-manager")
            , (leader <%> "<F1>" <%> "<F2>", spawn "xfce4-appfinder")
              -- create a submap for these
