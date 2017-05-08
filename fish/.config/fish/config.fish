@@ -81,6 +81,7 @@ alias grep "pcregrep --color=auto"
 alias yd "youtube-dl"
 alias vlca "vlc --vout none"
 alias cvlca "cvlc --vout none"
+alias pw "find ~/.password-store | sed -r 's/.*?\.password-store\/(.*?)\.gpg/\1/' | fzf | xargs pass -c"
 
 # bindings
 function fish_user_key_bindings
