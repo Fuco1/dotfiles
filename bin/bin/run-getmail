@@ -4,7 +4,7 @@ if [ -f "/home/matus/.cache/gpg-agent-info" ]; then
     . "/home/matus/.cache/gpg-agent-info"
     export GPG_AGENT_INFO
 fi
-echo "gpg agent is " "$GPG_AGENT_INFO"
+export GNUPGHOME="/home/matus/.gnupg"
 
 /usr/bin/mbsync --config /home/matus/.mbsyncrc logio >> /dev/null 2>&1
 WHERE=$(/bin/cat /home/matus/.whereami)
