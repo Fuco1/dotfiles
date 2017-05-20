@@ -14,6 +14,7 @@ module Mpris
        ) where
 
 import Control.Applicative ((<$>))
+import Control.Exception (SomeException(..))
 import Control.Monad (when)
 
 import DBus
@@ -107,7 +108,7 @@ switch = do
 
 mprisPlayersPrompt :: X (Maybe String)
 mprisPlayersPrompt = do
-  players <- map formatPlayer <$> liftIO (MP.mpris MP.def MP.getPlayers)
+  players <- map formatPlayer <$> catchX (liftIO (MP.mpris MP.def MP.getPlayers)) (return [])
   mkXPromptWithReturn (MPRISPrompt "Player ") Constants.prompt (playerCompl players) (return . takeWhile (/= ' '))
 
 playerCompl :: [String] -> String -> IO [String]
