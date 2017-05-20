@@ -19,6 +19,7 @@ import XMonad.Prompt.Window (windowPromptGoto)
 import XMonad.Util.EZConfig (additionalKeys, additionalKeysP)
 import XMonad.Util.ExtensibleState as XS
 import XMonad.Util.Run (spawnPipe, runInTerm, safeSpawn)
+import XMonad.Util.EntryHelper (withHelper)
 import qualified XMonad.StackSet as W
 
 import qualified Constants as C
@@ -49,7 +50,10 @@ propertyHook e = do
   return (All True)
 
 main :: IO ()
-main = do
+main = withHelper xmonadMain
+
+xmonadMain :: IO ()
+xmonadMain = do
   w <- IOS.readFile "/home/matus/.whereami"
   let (left, middle, right) = case w of
               "brno" -> (2,0,1)
