@@ -34,6 +34,20 @@ import Mount
 import Mpris
 import IdoFile
 
+-- TODO: we might want to set urgency for the "to be focused" window in the future.
+-- TODO: test that the window sending the event is in fact the firefox
+-- window.  So far, this hasn't caused any trouble
+-- | This fixes the annoying issue where opening a link from an
+-- outside application focuses firefox.
+withoutNetActiveWindow :: XConfig a -> XConfig a
+withoutNetActiveWindow c = c { handleEventHook = \e -> do
+                                  p <- case e of
+                                        ClientMessageEvent { ev_message_type = mt } -> do
+                                          a_aw <- getAtom "_NET_ACTIVE_WINDOW"
+                                          return (mt /= a_aw)
+                                        _ -> return True
+                                  if p then handleEventHook c e else return (All True) }
+
 propertyHook :: XMonad.Event -> X All
 propertyHook e = do
   case e of
@@ -74,6 +88,7 @@ xmonadMain = do
                   XS.put (Workspaces.ScreenOrder [left, middle, right])
                   startupHook c
                   setWMName "LG3D" }) $
+    withoutNetActiveWindow $
     ewmh $
     useDefaultPrefixArgument $
     withUrgencyHook NoUrgencyHook XMonad.def
