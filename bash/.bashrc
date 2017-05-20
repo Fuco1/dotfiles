@@ -1,5 +1,5 @@
-export PATH="$PATH:$HOME/.cask/bin:$HOME/.cabal/bin"
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-source /usr/local/bin/virtualenvwrapper.sh
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+source /usr/local/bin/virtualenvwrapper.sh

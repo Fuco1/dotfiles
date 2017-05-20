@@ -1,32 +1,3 @@
-# exports
-set -x PATH \
-  "/opt/netbeans-8.0/bin" \
-  "$HOME/.local/bin" \
-  "$HOME/.composer/vendor/bin" \
-  "$HOME/.cabal/bin" \
-  "$HOME/.cask/bin" \
-  "$HOME/bin" \
-  "$HOME/sources/gocode/bin" \
-  "/opt/Unity/Editor" \
-  $PATH
-set -x EDITOR "emacsclient -nw"
-set -x VISUAL "/home/matus/bin/ecedit"
-set -x XDG_CONFIG_HOME "/home/matus/.config"
-set -x TEXMFHOME "/home/matus/texmf"
-set -x TEXMFVAR "/home/matus/.texmf-var"
-set -x TEXMFCONFIG "/home/matus/.texmf-config"
-set -x GPG_TTY (tty)
-set -x MAIL "$HOME/Maildir"
-set -x LEDGER_FILE "$HOME/org/ledger.ledger"
-# to unconfuse AWT about Xmonad
-set -x _JAVA_AWT_WM_NONREPARENTING 1
-set -x GPG_TTY (tty)
-set -x AUTOSSH_POLL 60
-set -x FZF_DEFAULT_OPTS "-x"
-set -x LC_ALL en_US.utf8
-set -x LOCATE_PATH "/home/matus/.config/.media.db"
-set -x NVM_DIR "/home/matus/.nvm"
-
 function nvm
     bass source ~/.nvm/nvm.sh --no-use ';' nvm $argv
 end

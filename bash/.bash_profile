@@ -1,4 +1,6 @@
+# interactive login-shell     => .bash_profile loads .profile and .bashrc
+# non-interactive login-shell => .bash_profile loads .profile
+# interactive non-login-shell => .bashrc
 
-[[ -s "$HOME/.profile" ]] && source "$HOME/.profile" # Load the default .profile
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+[[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
+[[ $- == *i* && -s "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
