@@ -89,8 +89,9 @@ manageHook = (composeOne . concat $ --  <&&> resource =? "TeamViewer.exe"
     , [ className =? c -?> doIgnore | c <- myCIgnores ]
     , [ title     =? t -?> doIgnore | t <- myTIgnores ]
     , [ resource  =? r -?> doIgnore | r <- myRIgnores ]
-    , [ resource  =? r -?> doShift "0" | r <- ["alsamixer", "pacmixer", "ncmpcpp"]]
-    , [ className =? "Xfce4-notifyd" -?> doIgnore ]
+    , [ className =? r -?> doShift "0" | r <- [
+          "spotify", "alsamixer", "pacmixer", "ncmpcpp"
+          ]]
     ])
     <+> manageDocks
     <+> XMonad.manageHook def
@@ -98,6 +99,6 @@ manageHook = (composeOne . concat $ --  <&&> resource =? "TeamViewer.exe"
         myCFloats = ["sun-awt-X11-XFramePeer", "net-sourceforge-jnlp-runtime-Boot", "Unity"]
         myTFloats = ["GLFW-b-demo"]
         myRFloats = []
-        myCIgnores = []
+        myCIgnores = ["Xfce4-notifyd"]
         myTIgnores = []
         myRIgnores = []
