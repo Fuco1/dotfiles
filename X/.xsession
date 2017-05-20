@@ -34,7 +34,6 @@ if [ ! -z $(which twmnd) ]; then
     twmnd &
 fi
 
-eval $(gpg-agent --daemon --write-env-file "/home/matus/.cache/gpg-agent-info")
 eval $(ssh-agent -s)
 ssh-add "/home/matus/.ssh/id_rsa"
 ssh-add "/home/matus/.ssh/id_rsa_democritos"
