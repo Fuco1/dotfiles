@@ -12,3 +12,4 @@ text/plain=emacsclient.desktop
 
 [Added Associations]
 application/pdf=userapp-zathura-FV6B1X.desktop;
+application/vnd.lotus-organizer=emacsclient.desktop;firefox.desktop;
