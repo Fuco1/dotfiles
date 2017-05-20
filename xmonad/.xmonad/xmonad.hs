@@ -45,7 +45,8 @@ propertyHook e = do
         d <- display `fmap` ask
         dat <- getStringProperty d window "MPRIS_CURRENT_ACTIVE_DBUS"
         forM_ dat Mpris.resetCurrent
-  return (All False)
+    _ -> return ()
+  return (All True)
 
 main :: IO ()
 main = do
