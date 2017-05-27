@@ -12,3 +12,5 @@ templates:
     author-email: matus.goljer@gmail.com
     copyright: 'Copyright: (c) 2017 Matúš Goljer'
     github-username: Fuco1
+
+local-bin-path: /home/matus/bin
