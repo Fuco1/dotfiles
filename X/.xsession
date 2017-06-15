@@ -3,23 +3,22 @@
 
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
 
-# autocutsel -fork &
-# autocutsel -selection PRIMARY -fork &
-xcmenu --daemon
-
-# /usr/bin/udisks --mount /dev/sda1
-# /usr/bin/udisks --mount /dev/sda2
+if [ ! -z $(which xcmenu) ]; then
+    xcmenu --daemon
+fi
 
 # start urxvt daemon
-urxvtc
-if [ $? -eq 2 ] ; then
-    urxvtd -q -f -o
-else
-    pkill urxvtc
+if [ ! -z $(which urxvtc ) ]; then
+    urxvtc
+    if [ $? -eq 2 ] ; then
+       urxvtd -q -f -o
+    else
+       pkill urxvtc
+    fi
 fi
 
 # start mpd
-if [ ! -f ~/.mpd/pid ] ; then
+if [ ! -f ~/.mpd/pid -a ! -z $(which mpd) ] ; then
     mpd
 fi
 
