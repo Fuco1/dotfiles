@@ -85,11 +85,7 @@ alias cvlca "cvlc --vout none"
 # bindings
 function fish_user_key_bindings
   bind \eg my_fish_grep
-  fzf_key_bindings
-end
-
-function runjava
-  javac -cp "guava-17.0.jar" "$argv[1].java"; and java -ea -cp "guava-17.0.jar:." "$argv[1]"
+  #fzf_key_bindings
 end
 
 alias centos "sudo docker run -ti centos:7"
