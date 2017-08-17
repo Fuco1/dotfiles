@@ -2,6 +2,7 @@
 set -x PATH \
   "/opt/netbeans-8.0/bin" \
   "$HOME/.local/bin" \
+  "$HOME/.config/composer/vendor/bin" \
   "$HOME/.composer/vendor/bin" \
   "$HOME/.cabal/bin" \
   "$HOME/.cask/bin" \
