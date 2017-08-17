@@ -4,7 +4,7 @@ client_id="48b3ad480ab90c5"
 upload_connect_timeout="5"
 upload_timeout="120"
 upload_retries="1"
-SCREENS=~/media/screenshots
+SCREENS="$HOME/media/screenshots"
 notify_timeout=5000
 
 # notify <'ok'|'error'> <title> <text>
@@ -42,16 +42,13 @@ function upload_image() {
   fi
 }
 
-LAST=$(ls $SCREENS/screen* | sort | tail -n 1 | xargs basename)
-LAST_NUM_PNG=${LAST##screen}
-LAST_NO=${LAST_NUM_PNG%%\.png}
-NEXT_NO=$(($LAST_NO + 1))
+LAST=$(find "$SCREENS" -name 'screen*.png' | sort -r | head -n 1 | /bin/grep -o '[[:digit:]]*' | sed 's/^0*//')
+NEXT_NO=$(($LAST + 1))
 FILE=$(printf 'screen%04d.png' "$NEXT_NO")
-import $SCREENS/$FILE
+import "$SCREENS/$FILE"
 if [[ ! $1 == "noupload" ]] ; then
-    upload_image $SCREENS/$FILE
+    upload_image "$SCREENS/$FILE"
 fi
-
 
 # Local Variables:
 # mode: shell-script
