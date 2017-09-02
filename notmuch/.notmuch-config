@@ -1,4 +1,4 @@
-# .notmuch-config - Configuration file for the notmuch mail system
+# .notmuch-config - Configuration file for the notmuch mail system -*- mode: conf -*-
 #
 # For more information about notmuch, see http://notmuchmail.org
 
