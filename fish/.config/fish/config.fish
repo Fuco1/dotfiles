@@ -52,7 +52,6 @@ alias pw "find ~/.password-store | sed -r 's/.*?\.password-store\/(.*?)\.gpg/\1/
 # bindings
 function fish_user_key_bindings
   bind \eg my_fish_grep
-  fzf_key_bindings
 end
 
 function runjava
@@ -86,4 +85,4 @@ function postexec_set_title --on-event fish_postexec
     echo -ne '\033kfish\033\\'
 end
 
-rvm default
+#rvm default
