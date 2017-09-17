@@ -1,2 +1,2 @@
 #!/bin/bash
-exec emacsclient -c -F '((name . "org-protocol-capture"))' "$@"
+emacsclient -c -F '((name . "org-protocol-capture"))' "$@"
