@@ -1,7 +1,3 @@
-function nvm
-    bass source ~/.nvm/nvm.sh --no-use ';' nvm $argv
-end
-
 eval (python -m virtualfish auto_activation)
 
 # ls aliases
