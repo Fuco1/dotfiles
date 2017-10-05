@@ -15,7 +15,7 @@ URxvt.borderLess: false
 ! URxvt*shading: 20
 
 !# clickable links
-URxvt.perl-ext: default,matcher
+URxvt.perl-ext: default,matcher,-searchable-scrollback
 URxvt.url-launcher: conkeror
 URxvt.matcher.button: 3
 URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
