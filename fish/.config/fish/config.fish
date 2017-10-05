@@ -83,12 +83,6 @@ alias yd "youtube-dl"
 alias vlca "vlc --vout none"
 alias cvlca "cvlc --vout none"
 
-# bindings
-function fish_user_key_bindings
-  bind \eg my_fish_grep
-  #fzf_key_bindings
-end
-
 alias centos "sudo docker run -ti centos:7"
 
 if test -n (echo $INSIDE_EMACS)
