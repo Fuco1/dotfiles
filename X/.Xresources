@@ -20,7 +20,7 @@ URxvt.url-launcher: firefox
 URxvt.matcher.button: 3
 URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
 URxvt.matcher.pattern.2: (?<=\\s)`(?=\\w)([^']+)(?<=\\w)'
-URxvt.matcher.launcher.2: /home/matus/bin/emacs-show-docs $1
+URxvt.matcher.launcher.2: /home/matus/.local/bin/emacs-show-docs $1
 URxvt.keysym.M-Delete: perl:matcher:list
 
 ! scrollback buffer lines - 65535 is max on most machines (64 is default)
