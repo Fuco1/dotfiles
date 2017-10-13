@@ -1,5 +1,3 @@
-export NVM_DIR="/home/matus/.nvm"
-
 # Set up PATH
 export PATH="$PATH:$HOME/.cask/bin"
 export PATH="$PATH:$HOME/.cabal/bin"
@@ -22,6 +20,7 @@ export AUTOSSH_POLL=60
 export FZF_DEFAULT_OPTS="-x"
 export LC_ALL=en_US.utf8
 export LOCATE_PATH="$HOME/.config/.media.db"
+export NVM_DIR="$HOME/.nvm"
 
 # to unconfuse AWT about Xmonad
 export _JAVA_AWT_WM_NONREPARENTING=1
