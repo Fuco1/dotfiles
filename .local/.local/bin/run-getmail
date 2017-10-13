@@ -1,9 +1,9 @@
 #!/bin/sh
 
-if [ -f "/home/matus/.cache/gpg-agent-info" ]; then
-    . "/home/matus/.cache/gpg-agent-info"
-    export GPG_AGENT_INFO
-fi
+# if [ -f "/home/matus/.cache/gpg-agent-info" ]; then
+#     . "/home/matus/.cache/gpg-agent-info"
+#     export GPG_AGENT_INFO
+# fi
 export GNUPGHOME="/home/matus/.gnupg"
 
 /usr/bin/mbsync --config /home/matus/.mbsyncrc logio >> /dev/null 2>&1

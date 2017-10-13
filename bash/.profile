@@ -4,11 +4,10 @@ export NVM_DIR="/home/matus/.nvm"
 export PATH="$PATH:$HOME/.cask/bin"
 export PATH="$PATH:$HOME/.cabal/bin"
 export PATH="$PATH:$HOME/.rvm/bin"
-export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.composer/vendor/bin"
 export PATH="$PATH:$HOME/sources/gocode/bin"
 export PATH="$PATH:/opt/Unity/Editor"
-export PATH="$HOME/bin:$PATH" # highest priority
+export PATH="$HOME/.local/bin:$PATH"  # highest priority
 
 export EDITOR="emacsclient -nw"
 export VISUAL="$HOME/bin/ecedit"
