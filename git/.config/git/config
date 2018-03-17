@@ -3,6 +3,7 @@
 [user]
 	email = matus.goljer@gmail.com
 	name = Matus Goljer
+	signingkey = F1800B80
 [gui]
 	recentrepo = C:/Users/Matus/AppData/Roaming/.emacs.d/vendor/smartparens
 [core]
@@ -11,3 +12,7 @@
 	ui = auto
 [status]
 	submodulesummary = 1
+[commit]
+	gpgsign = true
+[gpg]
+	program = gpg2
