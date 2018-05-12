@@ -29,7 +29,7 @@ if [[ "$where" = "home" || "$where" = "brno" ]] ; then
 
     echo "Repository: Annex data"
     cd ~/data/
-    git add documents/ >/dev/null 2>&1
+    git add -u documents/ >/dev/null 2>&1
     echo "===== $(date --iso-8601=seconds) =====" >> /home/matus/git-annex.log
     git commit -m "$(date --iso-8601=seconds)" &>> /home/matus/git-annex.log
     git annex sync --content &>> /home/matus/git-annex.log
