@@ -1,0 +1,39 @@
+set editorcmd ecedit
+
+" * Binding
+bind l back
+bind ;c hint -c [class*="toggle"],[class*="expand"]
+
+" * Search
+set searchurls.y https://www.youtube.com/results?search_query=%s
+set searchurls.imdb http://www.imdb.com/find?q=%s
+set searchurls.r http://reddit.com/r/%s
+set searchurls.wa http://www.wolframalpha.com/input/?i=%s
+set searchurls.gi http://www.google.com/images?q=%s
+set searchurls.tpb http://thepiratebay.se/s/?q=%s&page=0&orderby=99
+set searchurls.lide https://is.muni.cz/auth/lide/?searchid=%s&Hledat=Hledat
+
+" ** Stocks
+set searchurls.yf http://finance.yahoo.com/echarts?s=%s
+set searchurls.gf https://www.google.com/finance?q=%s
+
+" ** Wikis
+set searchurls.w https://en.wikipedia.org/w/index.php?search=%s
+set searchurls.wg https://de.wikipedia.org/w/index.php?search=%s
+set searchurls.wi https://it.wikipedia.org/w/index.php?search=%s
+set searchurls.wcs https://cs.wikipedia.org/w/index.php?search=%s
+set searchurls.wl https://la.wikipedia.org/w/index.php?search=%s
+set searchurls.wr https://ru.wikipedia.org/w/index.php?search=%s
+set searchurls.wd https://en.wiktionary.org/w/index.php?search=%s
+
+set searchurls.wf http://fallout.wikia.com/wiki/index.php?search=%s&fulltext=0
+set searchurls.df http://df.magmawiki.com/index.php?search=%s&go=Go
+
+" ** Dictionaries
+set searchurls.e http://www.etymonline.com/index.php?allowed_in_frame=0&search=%s&searchmode=none
+set searchurls.juls http://slovnik.juls.savba.sk/?w=%s&s=exact&c=ia8c&d=kssj4&d=psp&ie=utf-8&oe=utf-8
+set searchurls.l http://linguax.com/lexica/old.php?searchedLG=%s
+set searchurls.ud http://www.urbandictionary.com/define.php?term=%s
+
+" * Urlmod
+autocmd DocStart www.reddit.com js tri.excmds.urlmodify("-t", "www", "old")
