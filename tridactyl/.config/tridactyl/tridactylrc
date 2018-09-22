@@ -1,7 +1,11 @@
 set editorcmd ecedit
 
 " * Binding
+unbind <C-x>
+bind <C-x><C-a> buffer #
 bind l back
+bind v hint -b
+bind V composite hint -pipe a href | tabopen
 bind ;c hint -c [class*="toggle"],[class*="expand"]
 bind ;l composite hint -pipe ul,ol textContent | yank
 
