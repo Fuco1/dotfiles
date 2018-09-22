@@ -45,7 +45,7 @@ function upload_image() {
 LAST=$(ls $SCREENS/screen* | sort | tail -n 1 | xargs basename)
 LAST_NUM_PNG=${LAST##screen}
 LAST_NO=${LAST_NUM_PNG%%\.png}
-NEXT_NO=$(($LAST_NO + 1))
+NEXT_NO=$((10#$LAST_NO + 1))
 FILE=$(printf 'screen%04d.png' "$NEXT_NO")
 import $SCREENS/$FILE
 if [[ ! $1 == "noupload" ]] ; then
