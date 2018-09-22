@@ -3,6 +3,7 @@ set editorcmd ecedit
 " * Binding
 bind l back
 bind ;c hint -c [class*="toggle"],[class*="expand"]
+bind ;l composite hint -pipe ul,ol textContent | yank
 
 " * Search
 set searchurls.y https://www.youtube.com/results?search_query=%s
