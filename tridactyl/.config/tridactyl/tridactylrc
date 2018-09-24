@@ -1,4 +1,6 @@
 set editorcmd ecedit
+set hintfiltermode vimperator-reflow
+set hintchars 5432167890
 
 " * Binding
 unbind <C-x>
