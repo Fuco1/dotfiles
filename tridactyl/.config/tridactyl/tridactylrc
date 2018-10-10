@@ -1,6 +1,7 @@
 set editorcmd ecedit
 set hintfiltermode vimperator-reflow
 set hintchars 5432167890
+set newtabfocus urlbar
 
 " * Binding
 unbind <C-x>
