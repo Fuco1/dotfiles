@@ -5,5 +5,9 @@ notmuch tag +logio -- tag:new and to:logio.cz
 notmuch tag +logio -- tag:new and from:logio.cz
 notmuch tag +twitter -- tag:new and from:twitter.com
 
+# newsletters
+notmuch tag +newsletter -- tag:new and from:jakub@programmingdigest.net
+notmuch tag +newsletter -- tag:new and from:newsletter@brainpickings.org
+
 # finally, retag all "new" messages "inbox" and "unread"
 notmuch tag +inbox -new -- tag:new
