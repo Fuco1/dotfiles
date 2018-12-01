@@ -3,6 +3,7 @@ export PATH="$PATH:$HOME/.cask/bin"
 export PATH="$PATH:$HOME/.cabal/bin"
 export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$PATH:$HOME/.composer/vendor/bin"
+export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 export PATH="$PATH:$HOME/sources/gocode/bin"
 export PATH="$PATH:/opt/Unity/Editor"
 export PATH="$HOME/.local/bin:$PATH"  # highest priority
