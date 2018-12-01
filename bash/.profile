@@ -7,6 +7,8 @@ export PATH="$PATH:$HOME/sources/gocode/bin"
 export PATH="$PATH:/opt/Unity/Editor"
 export PATH="$HOME/.local/bin:$PATH"  # highest priority
 
+export GOPATH="$HOME/sources/gocode"
+
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_RUNTIME_HOME="$HOME/.local/tmp"
