@@ -1,5 +1,5 @@
 # XScreenSaver Preferences File
-# Written by xscreensaver-demo 5.15 for matus on Fri Oct 14 19:05:52 2016.
+# Written by xscreensaver-demo 5.34 for matus on Wed Mar 22 10:16:05 2017.
 # http://www.jwz.org/xscreensaver/
 
 timeout:	0:05:00
@@ -24,22 +24,22 @@ fadeTicks:	20
 captureStderr:	True
 ignoreUninstalledPrograms:False
 font:		*-medium-r-*-140-*-m-*
-dpmsEnabled:	False
-dpmsQuickOff:	False
-dpmsStandby:	2:00:00
-dpmsSuspend:	2:00:00
-dpmsOff:	4:00:00
+dpmsEnabled:	True
+dpmsQuickOff:	True
+dpmsStandby:	0:10:00
+dpmsSuspend:	0:10:00
+dpmsOff:	0:15:00
 grabDesktopImages:  True
 grabVideoFrames:    False
 chooseRandomImages: False
-imageDirectory:	
+imageDirectory:
 
 mode:		one
 selected:	39
 
 textMode:	url
 textLiteral:	XScreenSaver
-textFile:	
+textFile:
 textProgram:	fortune
 textURL:	http://fridge.ubuntu.com/node/feed
 
@@ -244,6 +244,20 @@ programs:								      \
   GL: 				hilbert -root				    \n\
   GL: 				tronbit -root				    \n\
 				unicode -root				    \n\
+- GL: 				geodesic -root				    \n\
+				hexadrop -root				    \n\
+- GL: 				kaleidocycle -root			    \n\
+- GL: 				quasicrystal -root			    \n\
+- GL: 				unknownpleasures -root			    \n\
+				binaryring -root			    \n\
+- GL: 				cityflow -root				    \n\
+- GL: 				geodesicgears -root			    \n\
+- GL: 				projectiveplane -root			    \n\
+- GL: 				romanboy -root				    \n\
+				tessellimage -root			    \n\
+- GL: 				winduprobot -root			    \n\
+- GL: 				splitflap -root				    \n\
+				testx11 -root				    \n\
 
 
 pointerPollTime:    0:00:05
@@ -254,4 +268,4 @@ GetViewPortIsFullOfLies:False
 procInterrupts:	True
 xinputExtensionDev: False
 overlayStderr:	True
-
+authWarningSlack:   20
