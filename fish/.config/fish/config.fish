@@ -1,15 +1,12 @@
 # exports
 set -x PATH \
-  "/opt/netbeans-8.0/bin" \
   "$HOME/.evm/bin" \
   "$HOME/.local/bin" \
   "$HOME/.config/composer/vendor/bin" \
-  "$HOME/.composer/vendor/bin" \
   "$HOME/.cabal/bin" \
   "$HOME/.cask/bin" \
   "$HOME/bin" \
-  "$HOME/sources/gocode/bin" \
-  "/opt/Unity/Editor" \
+  "$HOME/sources/go/bin" \
   "/usr/lib/go-1.10/bin" \
   $PATH
 set -x EDITOR "emacsclient -nw"
