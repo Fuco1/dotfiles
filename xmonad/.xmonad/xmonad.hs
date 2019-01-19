@@ -8,7 +8,7 @@ import System.IO.Strict as IOS (readFile)
 import XMonad
 import XMonad.Actions.CycleWS (toggleWS)
 import XMonad.Actions.CycleWindows (cycleRecentWindows)
-import XMonad.Hooks.DynamicLog (dynamicLogWithPP, ppOutput)
+import XMonad.Hooks.DynamicLog (dynamicLogWithPP, ppOutput, xmobar)
 import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
 import XMonad.Hooks.ManageDocks (docksEventHook, ToggleStruts (..))
 import XMonad.Hooks.SetWMName (setWMName)
@@ -17,7 +17,7 @@ import XMonad.Prompt.RunOrRaise (runOrRaisePrompt)
 import XMonad.Prompt.Window (windowPromptGoto)
 import XMonad.Util.EZConfig (additionalKeys, additionalKeysP)
 import XMonad.Util.ExtensibleState as XS
-import XMonad.Util.Run (spawnPipe, runInTerm, safeSpawn)
+import XMonad.Util.Run (spawnPipe, runInTerm, safeSpawn, runProcessWithInput)
 import qualified XMonad.StackSet as W
 
 import qualified Constants as C
@@ -47,8 +47,10 @@ propertyHook e = do
         forM_ dat Mpris.resetCurrent
   return (All False)
 
-main :: IO ()
-main = do
+main = main' --xmonad =<< xmobar def
+
+main' :: IO ()
+main' = do
   w <- IOS.readFile "/home/matus/.whereami"
   let (left, middle, right) = case w of
               "brno" -> (2,0,1)
@@ -60,7 +62,7 @@ main = do
                     "home" -> left
                     "logio" -> middle
                     _ -> middle
-  xmproc <- spawnPipe $ "/home/matus/.cabal/bin/xmobar -x " ++ show xmobarScreen ++ " /home/matus/.xmonad/xmobarrc"
+  xmproc <- spawnPipe $ "/home/matus/sources/xmobar/dist/build/xmobar/xmobar -x " ++ show xmobarScreen ++ " /home/matus/.xmonad/xmobarrc"
   xmonad $
     (\c -> c { startupHook = do
                   root <- theRoot `fmap` ask
@@ -102,6 +104,7 @@ main = do
            , ("<XF86AudioStop>", Mpris.stopCurrent)
            , ("<XF86AudioPrev>", Mpris.previousCurrent)
            , ("<XF86AudioNext>", Mpris.nextCurrent)
+           , (leader <%> "e", spawn "/home/matus/.emacs_anywhere/bin/run")
            , (leader <%> "t",        Mpris.switch)
            , ("<Home>" <%> "t",      Mpris.switch)
            , (leader <%> "s",        Mpris.stopCurrent)
@@ -138,8 +141,10 @@ main = do
            , (leader <%> "S-o", umountDevice)
            , ("M4-S-<Return>", runInTerm "" "fish")
            , ("<XF86Sleep>", spawn "sudo pm-suspend")
-           , ("<Print>" <%> "<Print>", spawn "/home/matus/bin/take-screenshot")
-           , ("<Print>" <%> "u" <%> "<Print>", spawn "/home/matus/bin/take-screenshot noupload")
+           , ("<Print>" <%> "<Print>", withPrefixArgument $ \prefix -> do
+                 case prefix of
+                   Raw _ -> spawn "/home/matus/bin/take-screenshot"
+                   _     -> spawn "/home/matus/bin/take-screenshot noupload")
            , (leader <%> "<F1>" <%> "<F1>", spawn "xfce4-settings-manager")
            , (leader <%> "<F1>" <%> "<F2>", spawn "xfce4-appfinder")
              -- create a submap for these
@@ -180,6 +185,11 @@ main = do
            , ("M2-=", cycleRecentWindows [xK_Alt_R] xK_equal xK_minus)
            , ("M4-b", sendMessage ToggleStruts)
            , ("M4-S-b", broadcastMessage ToggleStruts >> refresh)
+           , (leader <%> "i", do
+                 output <- liftIO $ runProcessWithInput "bash" ["-c", "cd /home/matus/dev/iban-scraper/ && yarn get-iban | tr -d '\n'"] ""
+                 spawn $ "echo -n " ++ output ++ " | xsel -ib"
+                 spawn $ "twmnc IBAN " ++ output
+             )
            , (leader <%> "=" <%> "o", inotify)
            , (leader <%> "=" <%> "i", inotify2)
            , (leader <%> "=" <%> "u", urxvtc)
@@ -200,6 +210,7 @@ main = do
              ((mod2Mask .|. mod5Mask, xK_0), paSetVolumeRunning "100%") :
              [ ((mod2Mask .|. mod5Mask, key), paSetVolumeRunning $ show (10 * i) ++ "%") | (key, i) <- zip [xK_1 .. xK_9] [1..]]
            )
+
     where
       leader = "<Pause>"
       mpd = Mpris.switchTo "org.mpris.MediaPlayer2.mpd"

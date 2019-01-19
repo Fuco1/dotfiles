@@ -138,8 +138,8 @@ submapDefaultWithKeys defAction keys = do
 -- of exception, 'cleanup' is executed anyway.
 --
 -- Return the return value of 'job'.
-finallyX :: X a -> X a -> X a
-finallyX job cleanup = catchX (job >>= \r -> cleanup >> return r) cleanup
+--finallyX :: X a -> X a -> X a
+--finallyX job cleanup = catchX (job >>= \r -> cleanup >> return r) cleanup
 
 usePrefixArgument :: LayoutClass l Window
                   => (XConfig Layout -> (KeyMask, KeySym))
@@ -148,15 +148,17 @@ usePrefixArgument :: LayoutClass l Window
 usePrefixArgument prefix conf = conf {
     keys = liftM2 M.union keys' (keys conf)
   }
-  where keys' = flip M.singleton handlePrefixArg . prefix
+  where keys' conf' =
+          let binding = prefix conf'
+          in M.singleton binding (handlePrefixArg [binding])
 
 useDefaultPrefixArgument :: LayoutClass l Window
                          => XConfig l
                          -> XConfig l
 useDefaultPrefixArgument = usePrefixArgument (\_ -> (controlMask, xK_u))
 
-handlePrefixArg :: X ()
-handlePrefixArg = do
+handlePrefixArg :: [(KeyMask, KeySym)] -> X ()
+handlePrefixArg events = do
   ks <- asks keyActions
   logger <- asks (logHook . config)
   flip finallyX (XS.put None >> logger) $ do
@@ -166,16 +168,22 @@ handlePrefixArg = do
       None -> XS.put $ Raw 1
       _ -> return ()
     logger
-    submapDefaultWithKeys def ks
-  where def key@(m, k) = if k `elem` (xK_0 : [xK_1 .. xK_9]) && m == noModMask
-                 then do
-                   prefix <- XS.get
-                   let x = fromJust (Prelude.lookup k keyToNum)
-                   case prefix of
-                     Raw _ -> XS.put $ Numeric x
-                     Numeric a -> XS.put $ Numeric $ a * 10 + x
-                   handlePrefixArg
-                 else mapM_ (uncurry sendKey) [(controlMask, xK_u), key]
+    submapDefaultWithKeys defaultKey ks
+  where defaultKey key@(m, k) =
+          if k `elem` (xK_0 : [xK_1 .. xK_9]) && m == noModMask
+          then do
+            prefix <- XS.get
+            let x = fromJust (Prelude.lookup k keyToNum)
+            case prefix of
+              Raw _ -> XS.put $ Numeric x
+              Numeric a -> XS.put $ Numeric $ a * 10 + x
+              None -> return () -- should never happen
+            handlePrefixArg (key:events)
+          else do
+            prefix <- XS.get
+            mapM_ (uncurry sendKey) $ case prefix of
+              Raw a -> replicate a (head events) ++ [key]
+              _ -> reverse (key:events)
         keyToNum = (xK_0, 0) : zip [xK_1 .. xK_9] [1..9]
 
 withPrefixArgument :: (PrefixArgument -> X ()) -> X ()

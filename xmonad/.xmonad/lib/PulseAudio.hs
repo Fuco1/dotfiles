@@ -96,10 +96,11 @@ paChangeVolumeRunning :: String -> IO ()
 paChangeVolumeRunning delta = do
   sinks <- getSinkInputs
   case sinks of
-   Right s@(_:_) -> do
+   Right s -> do
      let running = filter ((== Running) . state) s
-     mapM_ (\x -> safeSpawn "pactl"
-                  ["set-sink-input-volume", show $ index x, "--", delta])
+     mapM_ (\x -> do
+               putStrLn $ show $ index x
+               safeSpawn "pactl" ["set-sink-input-volume", show $ index x, delta])
        running
    _ -> return ()
 
@@ -138,6 +139,7 @@ yesno = (string "yes" >> return True) <|>
 
 volume :: Parser Int
 volume = do
+  manyTill anyChar (try $ string "/")
   many (char ' ')
   number
 
@@ -151,7 +153,7 @@ sink = do
   index <- number
   manyTill anyChar (try (string "state: "))
   state <- sinkState
-  manyTill anyChar (try (string "volume: 0:"))
+  manyTill anyChar (try (string "volume: "))
   vol <- volume
   manyTill anyChar (try (string "muted: "))
   muted <- yesno
@@ -168,7 +170,7 @@ alsaPluginName = do
 
 sinkInput :: Parser [SinkInput]
 sinkInput = do
-  welcome
+  -- try welcome
   nos <- numberOfSinks
   if nos == 0
     then return []

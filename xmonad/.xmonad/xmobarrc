@@ -3,6 +3,7 @@ Config { font = "xft:Monospace-8:narrow"
        , bgColor = "black"
        , fgColor = "#888a85"
        , position = Top
+       , lowerOnStart = False
        , commands = [ Run Weather "LKTB" ["-t","<tempC>","-L","64","-H","77",
                                           "--normal","#8ae234","--high","#ef2929","--low","#8cc4ff"] 36000
                     , Run MultiCpu ["-t", "<autototal>", "-p", "2", "-L","10","-H","50","--normal","#8ae234","--high","#ef2929"] 10

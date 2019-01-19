@@ -19,7 +19,8 @@ import Control.Monad (when)
 import DBus
 import qualified DBus.Mpris as MP
 
-import System.Locale (defaultTimeLocale)
+--import System.Locale (defaultTimeLocale)
+import Data.Time.Format (defaultTimeLocale)
 
 import Data.Maybe (isJust, fromJust, fromMaybe)
 import Data.List as L

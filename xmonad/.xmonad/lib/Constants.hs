@@ -1,4 +1,4 @@
-{-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE NoMonomorphismRestriction, FlexibleContexts #-}
 module Constants
        ( module Constants
        , Workspaces.ScreenOrder -- tento reexport je prasarna
