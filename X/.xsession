@@ -3,13 +3,6 @@
 
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
 
-# autocutsel -fork &
-# autocutsel -selection PRIMARY -fork &
-xcmenu --daemon
-
-# /usr/bin/udisks --mount /dev/sda1
-# /usr/bin/udisks --mount /dev/sda2
-
 # start urxvt daemon
 urxvtc
 if [ $? -eq 2 ] ; then
@@ -18,41 +11,20 @@ else
     pkill urxvtc
 fi
 
-# start mpd
-if [ ! -f ~/.mpd/pid ] ; then
-    mpd
-fi
-
-# start mpDris to enable mpris control of mpd
-if [ ! -z $(which mpDris2) ]; then
-    mpDris2 &
-fi
-
 if [ ! -z $(which twmnd) ]; then
-    pkill notify-osd
-    pkill notifyd
-    twmnd &
+   pkill notify-osd
+   pkill notifyd
+   twmnd &
 fi
 
 eval $(gpg-agent --daemon --write-env-file "/home/matus/.cache/gpg-agent-info")
 eval $(ssh-agent -s)
 ssh-add "/home/matus/.ssh/id_rsa"
-ssh-add "/home/matus/.ssh/id_rsa_democritos"
-
-mountavfs
-if [ ! -z $(which tagsistant) ]; then
-    tagsistant "/home/matus/files"
-fi
-
-feh --bg-scale '/home/matus/media/pictures/haskell.png'
+ssh-add "/home/matus/.ssh/id_rsa_personal"
 
 bash /home/matus/bin/inputsetup
 sh "/home/matus/.screenlayout/$(cat /home/matus/.whereami).sh"
 
 bash /home/matus/bin/setup-trayer
-
-if [ ! -z $(which ibus-daemon) ]; then
-    ibus-daemon --xim -d
-fi
 
 exec /home/matus/bin/xmonad
