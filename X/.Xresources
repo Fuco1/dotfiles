@@ -32,8 +32,8 @@ URxvt.saveLines: 12000
 URxvt.letterSpace: -1
 
 ! xft:Inconsolata:pixelsize=14:antialias=true:hinting=true
-URxvt.font: xft:Monospace:pixelsize=14:antialias=true:hinting=true
-URxvt.boldFont: xft:Monospace:pixelsize=14:antialias=true:hinting=true
+URxvt.font: xft:Monospace:pixelsize=15:antialias=true:hinting=true
+URxvt.boldFont: xft:Monospace:pixelsize=15:antialias=true:hinting=true
 
 ! set color depth
 URxvt.depth: 32
