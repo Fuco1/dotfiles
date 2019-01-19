@@ -1,7 +1,7 @@
 [push]
 	default = simple
 [user]
-	email = matus.goljer@gmail.com
+	email = matus@saleschamp.nl
 	name = Matus Goljer
 [gui]
 	recentrepo = C:/Users/Matus/AppData/Roaming/.emacs.d/vendor/smartparens
@@ -11,3 +11,7 @@
 	ui = auto
 [status]
 	submodulesummary = 1
+[credential]
+	helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+[tag]
+	sort = version:refname
