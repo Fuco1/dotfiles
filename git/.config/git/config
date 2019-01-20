@@ -1,7 +1,7 @@
 [push]
     default = simple
 [user]
-    email = matus.goljer@gmail.com
+    email = goljer@logio.cz
     name = Matus Goljer
     signingkey = F1800B80
 [core]
