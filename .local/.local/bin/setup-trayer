@@ -1,30 +1,33 @@
 #!/bin/bash
-numOfScreens=$(xrandr | grep '\bconnected' | wc -l)
-if [ $numOfScreens -gt 1 ]; then
-    monitor=1
+
+pkill -x trayer
+
+numOfScreens=$(xrandr | grep -c '\bconnected')
+if [ "$numOfScreens" -gt 1 ]; then
+    monitor=0
 else
     monitor=0
 fi
 
 trayer --edge top --align right --SetDockType true --SetPartialStrut false --expand true --height 17 --transparent true --alpha 0 --tint 0x000000 --widthtype request --monitor $monitor &
 
-if [ -z $(pgrep nm-applet) ]; then
+if [ -z "$(pgrep nm-applet)" ]; then
     echo -n "Starting nm-appliet..."
     nm-applet &
     echo " done"
 fi
-if [ ! -z $(which pasystray) ] && [ -z $(pgrep pasystray) ]; then
+if [ -n "$(which pasystray)" ] && [ -z "$(pgrep pasystray)" ]; then
     echo -n "Starting pasystray..."
     pasystray &
     echo " done"
 fi
-if [ -z $(pgrep xfce4-power-manager) ]; then
+if [ -z "$(pgrep xfce4-power-manager)" ]; then
     echo -n "Starting power manager..."
     xfce4-power-manager &
     echo " done"
 fi
 
-if [ -z $(pgrep trayer-icon) ]; then
+if [ -z "$(pgrep trayer-icon)" ]; then
     echo -n "Starting trayer-icon..."
     trayer-icon &
     echo " done"
