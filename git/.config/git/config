@@ -1,18 +1,16 @@
 [push]
-	default = simple
+    default = simple
 [user]
-	email = matus.goljer@gmail.com
-	name = Matus Goljer
-	signingkey = F1800B80
-[gui]
-	recentrepo = C:/Users/Matus/AppData/Roaming/.emacs.d/vendor/smartparens
+    email = matus.goljer@gmail.com
+    name = Matus Goljer
+    signingkey = F1800B80
 [core]
-	autocrlf = input
+    autocrlf = input
 [color]
-	ui = auto
+    ui = auto
 [status]
-	submodulesummary = 1
+    submodulesummary = 1
 [commit]
-	gpgsign = true
+    gpgsign = true
 [gpg]
-	program = gpg2
+    program = gpg2
