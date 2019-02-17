@@ -86,3 +86,4 @@ function postexec_set_title --on-event fish_postexec
 end
 
 #rvm default
+if test -f /home/matus/.local/share/autojump/autojump.fish; . /home/matus/.local/share/autojump/autojump.fish; end
