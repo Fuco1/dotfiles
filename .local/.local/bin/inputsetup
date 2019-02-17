@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# swap control and capslock
-setxkbmap -option ctrl:swapcaps
-
 # set up the modifiers
 xmodmap /home/matus/.xmodmap
 
