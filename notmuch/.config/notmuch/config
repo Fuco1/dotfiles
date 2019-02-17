@@ -31,7 +31,7 @@ path=/home/matus/Maildir
 [user]
 name=Matúš Goljer
 primary_email=matus.goljer@gmail.com
-other_email=dota.keys@gmail.com;goljer@logio.cz
+other_email=dota.keys@gmail.com;goljer@logio.cz;matus@saleschamp.nl
 
 # Configuration for "notmuch new"
 #

@@ -1,16 +1,15 @@
 #!/bin/sh
 
-# if [ -f "/home/matus/.cache/gpg-agent-info" ]; then
-#     . "/home/matus/.cache/gpg-agent-info"
-#     export GPG_AGENT_INFO
-# fi
 export GNUPGHOME="/home/matus/.gnupg"
 
-/usr/bin/mbsync --config /home/matus/.config/isync/mbsyncrc logio >> /dev/null 2>&1
+/usr/bin/mbsync --config /home/matus/.config/isync/mbsyncrc logio
+
 WHERE=$(/bin/cat /home/matus/.whereami)
-if [ "$WHERE" = "home" -o "$WHERE" = "brno" ] ; then
-    /usr/bin/mbsync --config /home/matus/.config/isync/mbsyncrc goljer >> /dev/null 2>&1
-    /usr/bin/mbsync --config /home/matus/.config/isync/mbsyncrc dota >> /dev/null 2>&1
+
+if [ "$WHERE" = "home" ] || [ "$WHERE" = "brno" ] ; then
+    /usr/bin/mbsync --config /home/matus/.config/isync/mbsyncrc goljer
+    /usr/bin/mbsync --config /home/matus/.config/isync/mbsyncrc dota
+    /usr/bin/mbsync --config /home/matus/.config/isync/mbsyncrc saleschamp
 fi
 
-/usr/bin/notmuch new
+/usr/local/bin/notmuch --config /home/matus/.config/notmuch/config new

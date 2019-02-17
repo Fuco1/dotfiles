@@ -30,6 +30,38 @@ Group logio
 Channel logio-all
 Channel logio-sent
 
+# SalesChamp account
+
+IMAPAccount saleschamp
+Host imap.gmail.com
+User matus@saleschamp.nl
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/secrets/mailpass-saleschamp.gpg"
+UseIMAPS yes
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore saleschamp-remote
+Account saleschamp
+
+MaildirStore saleschamp-local
+Path ~/Maildir/Saleschamp/
+Inbox ~/Maildir/Saleschamp/inbox
+
+Channel saleschamp-all
+Master :saleschamp-remote:"[Gmail]/All Mail"
+Slave :saleschamp-local:all
+Create Slave
+SyncState *
+
+Channel saleschamp-sent
+Master :saleschamp-remote:"[Gmail]/Sent Mail"
+Slave :saleschamp-local:sent
+Create Slave
+SyncState *
+
+Group saleschamp
+Channel saleschamp-all
+Channel saleschamp-sent
+
 # Goljer account
 
 IMAPAccount goljer
@@ -93,3 +125,7 @@ SyncState *
 Group dota
 Channel dota-all
 Channel dota-sent
+
+# Local Variables:
+# mode: conf-space
+# End:
