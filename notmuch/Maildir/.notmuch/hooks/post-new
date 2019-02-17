@@ -12,7 +12,13 @@ notmuch tag +saleschamp -- tag:new and from:saleschamp.nl
 # newsletters
 notmuch tag +newsletter -- tag:new and from:jakub@programmingdigest.net
 notmuch tag +newsletter -- tag:new and from:newsletter@brainpickings.org
-notmuch tag -inbox -- tag:newsletter
+notmuch tag -inbox -unread -- tag:new and tag:newsletter
+
+# Jira
+notmuch tag -inbox -unread +deleted -- tag:new and from:jira@saleschamp.atlassian.net added a worklog on
+
+# Avoid sentry spam
+notmuch tag -inbox -unread +deleted -- tag:new and from:noreply@md.getsentry.com and not weekly
 
 # finally, retag all "new" messages "inbox" and "unread"
 notmuch tag +inbox -new -- tag:new
