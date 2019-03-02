@@ -27,7 +27,7 @@ function upload_image() {
     img_url=$(echo $response | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["data"]["link"]')
     del_url=$(echo $response | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["data"]["deletehash"]')
     echo "image  link: $img_url"
-    echo "delete link: $del_url"
+    echo "delete link: https://imgur.com/delete/$del_url"
 
     echo -n "$img_url" | xclip -selection clipboard
     echo "URL copied to clipboard"
@@ -49,7 +49,7 @@ NEXT_NO=$((10#$LAST_NO + 1))
 FILE=$(printf 'screen%04d.png' "$NEXT_NO")
 import $SCREENS/$FILE
 if [[ ! $1 == "noupload" ]] ; then
-    upload_image $SCREENS/$FILE
+    upload_image "$SCREENS/$FILE" >> "$SCREENS/take-screenshot.log"
 fi
 
 
