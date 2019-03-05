@@ -15,3 +15,5 @@
 	helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
 [tag]
 	sort = version:refname
+[includeIf "gitdir:~/.emacs.d/"]
+	path = ~/.emacs.d/.gitconfig
