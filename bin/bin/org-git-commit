@@ -1,37 +1,20 @@
 #!/bin/bash
 # Add org file changes to the repository
 
-where=$(cat ~/.whereami)
+echo "Repository: org"
+cd ~/org
+# Remove deleted files
+git ls-files --deleted -z | xargs -0 git rm
+# Add new files
+git add . >> ~/org-git-commit.log
+git commit -m "saleschamp: $(date --iso-8601=seconds)"
+git push origin saleschamp >> ~/org-git-commit.log
 
-if [[ "$where" = "home" || "$where" = "brno" ]] ; then
-    echo "Repository: org"
-    cd ~/org
-    # Remove deleted files
-    git ls-files --deleted -z | xargs -0 git rm >/dev/null 2>&1
-    # Add new files
-    git add . >/dev/null 2>&1
-    git commit -m "$(date --iso-8601=seconds)"
-    git push
 
-    echo "Repository: Languages"
-    cd ~/languages/
-    git ls-files --deleted -z | xargs -0 git rm >/dev/null 2>&1
-    git add . >/dev/null 2>&1
-    git commit -m "$(date --iso-8601=seconds)"
-    git push
-
-    echo "Repository: Secrets"
-    cd ~/secrets/
-    git ls-files --deleted -z | xargs -0 git rm >/dev/null 2>&1
-    git add . >/dev/null 2>&1
-    git commit -m "$(date --iso-8601=seconds)"
-fi
-
-if [[ "$where" = "logio" ]] ; then
-    echo "Repository: Logio"
-    cd ~/logio/
-    git ls-files --deleted -z | xargs -0 git rm >/dev/null 2>&1
-    git add . >/dev/null 2>&1
-    git commit -m "$(date --iso-8601=seconds)"
-    git push
-fi
+echo "Repository: Annex data"
+cd ~/data/
+git add -u documents/ >/dev/null 2>&1
+git add documents/journal.org.gpg >/dev/null 2>&1
+echo "===== $(date --iso-8601=seconds) =====" &>> ~/git-annex.log
+git commit -m "saleschamp: $(date --iso-8601=seconds)" &>> ~/git-annex.log
+git annex sync --content &>> ~/git-annex.log
