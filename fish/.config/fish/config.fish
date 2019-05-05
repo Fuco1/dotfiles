@@ -1,5 +1,8 @@
 eval (python -m virtualfish auto_activation)
 
+# ledger
+alias l "ledger -X Kc --sort date"
+
 # ls aliases
 alias ll "ls -l --group-directories-first"
 alias la "ls -A --group-directories-first"
