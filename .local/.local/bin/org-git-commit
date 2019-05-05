@@ -1,7 +1,7 @@
 #!/bin/bash
 # Add org file changes to the repository
 
-export PATH="/home/matus/.local/bin:$PATH"
+export PATH="/home/matus/.local/bin:/usr/local/bin:$PATH"
 
 echo "Repository: org"
 cd ~/org
