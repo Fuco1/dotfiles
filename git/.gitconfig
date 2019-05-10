@@ -17,3 +17,5 @@
 	sort = version:refname
 [includeIf "gitdir:~/.emacs.d/"]
 	path = ~/.emacs.d/.gitconfig
+[includeIf "gitdir:~/dev/haskell/"]
+	path = ~/.emacs.d/.gitconfig
