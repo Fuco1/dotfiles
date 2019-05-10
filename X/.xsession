@@ -21,6 +21,7 @@ eval $(gpg-agent --daemon --write-env-file "/home/matus/.cache/gpg-agent-info")
 eval $(ssh-agent -s)
 ssh-add "/home/matus/.ssh/id_rsa"
 ssh-add "/home/matus/.ssh/id_rsa_personal"
+env | grep '^SSH_' > /home/matus/.cache/ssh-agent-info
 
 bash /home/matus/bin/inputsetup
 sh "/home/matus/.screenlayout/$(cat /home/matus/.whereami).sh"

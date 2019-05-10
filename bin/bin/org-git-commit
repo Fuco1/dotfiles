@@ -1,14 +1,26 @@
 #!/bin/bash
 # Add org file changes to the repository
 
+# see https://stackoverflow.com/a/45971167 for explanation of how the
+# `set -a` works:
+# @Otto -a is equivalent to allexport. In other words, every variable
+# assignment in the shell is exported into the environment (to be used
+# by multiple child processes). Also see this article
+# gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
+set -a
+. '/home/matus/.cache/ssh-agent-info'
+set +a
+
+export PATH="/home/matus/.local/bin:/home/matus/bin:$PATH"
+
 echo "Repository: org"
 cd ~/org
 # Remove deleted files
 git ls-files --deleted -z | xargs -0 git rm
 # Add new files
-git add . >> ~/org-git-commit.log
+git add . &>> ~/org-git-commit.log
 git commit -m "saleschamp: $(date --iso-8601=seconds)"
-git push origin saleschamp >> ~/org-git-commit.log
+git push origin saleschamp &>> ~/org-git-commit.log
 
 
 echo "Repository: Annex data"
