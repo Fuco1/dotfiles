@@ -1,14 +1,14 @@
+export GOPATH="$HOME/dev/go"
+
 # Set up PATH
 export PATH="$PATH:$HOME/.cask/bin"
 export PATH="$PATH:$HOME/.cabal/bin"
 export PATH="$PATH:$HOME/.rvm/bin"
 export PATH="$PATH:$HOME/.composer/vendor/bin"
 export PATH="$PATH:$HOME/.config/composer/vendor/bin"
-export PATH="$PATH:$HOME/sources/gocode/bin"
+export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:/opt/Unity/Editor"
 export PATH="$HOME/.local/bin:$PATH"  # highest priority
-
-export GOPATH="$HOME/sources/gocode"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
