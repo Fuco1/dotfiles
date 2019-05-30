@@ -14,3 +14,9 @@
     gpgsign = true
 [gpg]
     program = gpg2
+[tag]
+    sort = version:refname
+[includeIf "gitdir:~/.emacs.d/"]
+    path = ~/.emacs.d/.gitconfig
+[includeIf "gitdir:~/.emacs.d/"]
+    path = ~/.emacs.d/.gitconfig
