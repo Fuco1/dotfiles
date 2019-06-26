@@ -1,0 +1,13 @@
+[Unit]
+Description=twmn server
+After=graphical.target
+
+[Service]
+Type=simple
+StandardOutput=null
+Restart=on-failure
+Environment="DISPLAY=:0"
+ExecStart=/usr/local/bin/twmnd
+
+[Install]
+WantedBy=default.target
