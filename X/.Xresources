@@ -16,7 +16,7 @@ URxvt.borderLess: false
 
 !# clickable links
 URxvt.perl-ext: default,matcher
-URxvt.url-launcher: firefox
+URxvt.url-launcher: google-chrome
 URxvt.matcher.button: 3
 URxvt.matcher.pattern.1: \\bwww\\.[\\w-]\\.[\\w./?&@#-]*[\\w/-]
 URxvt.matcher.pattern.2: (?<=\\s)`(?=\\w)([^']+)(?<=\\w)'
