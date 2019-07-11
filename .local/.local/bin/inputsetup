@@ -4,9 +4,9 @@
 xmodmap /home/matus/.xmodmap
 
 # mouse setup
-mouseid=$(xinput | /bin/grep -i OPTICAL | cut -f 2 | sed s/id=//)
+mouseid=$(xinput | /bin/grep -i Explorer | cut -f 2 | sed s/id=//)
 if [[ ! -z $mouseid ]] ; then
-    xinput set-button-map $mouseid 3 2 1 4 5 6 7 8 9 10 11 12 13
+    xinput set-button-map $mouseid 1 2 3 4 5 6 7 8 9 10 11 12 13
 fi
 case $(cat /home/matus/.whereami) in
     "home") synclient TouchpadOff=1 ;;
