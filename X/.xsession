@@ -17,20 +17,9 @@ if [ ! -z $(which urxvtc ) ]; then
     fi
 fi
 
-# start mpd
-if [ ! -f ~/.mpd/pid -a ! -z $(which mpd) ] ; then
-    mpd
-fi
-
 # start mpDris to enable mpris control of mpd
 if [ ! -z $(which mpDris2) ]; then
     mpDris2 &
-fi
-
-if [ ! -z $(which twmnd) ]; then
-    pkill notify-osd
-    pkill notifyd
-    twmnd &
 fi
 
 eval $(ssh-agent -s)
