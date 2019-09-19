@@ -1,7 +1,7 @@
 [push]
     default = simple
 [user]
-    email = goljer@logio.cz
+    email = matus.goljer@gmail.com
     name = Matus Goljer
     signingkey = F1800B80
 [core]
@@ -16,9 +16,9 @@
     program = gpg2
 [tag]
     sort = version:refname
-[includeIf "gitdir:~/.emacs.d/"]
-    path = ~/.emacs.d/.gitconfig
-[includeIf "gitdir:~/dev/haskell/"]
-    path = ~/.emacs.d/.gitconfig
 [includeIf "gitdir:~/dev/ydistri/"]
     path = ~/dev/ydistri/.gitconfig
+[includeIf "gitdir:~/dev/logio/"]
+    path = ~/dev/logio/.gitconfig
+[includeIf "gitdir:~/dev/saleschamp/"]
+    path = ~/dev/saleschamp/.gitconfig
