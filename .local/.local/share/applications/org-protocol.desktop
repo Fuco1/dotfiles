@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=org-protocol
-Exec=emacs-capture "%u"
+Exec=emacs-capture
 Type=Application
 Terminal=false
 Categories=System;
