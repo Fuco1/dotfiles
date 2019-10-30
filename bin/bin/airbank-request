@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source lib-imgur.sh
+
+tmpfile=$(mktemp /tmp/abc-script.XXXXXX)
+qrencode -s 6 -o "$tmpfile" "SPD*1.0*ACC:CZ0730300000001560570014*AM:$1*CC:CZK"
+
+upload_image "$tmpfile"
+
+rm "$tmpfile"
