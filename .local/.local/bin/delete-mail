@@ -1,0 +1,14 @@
+#!/bin/bash
+
+function move_deleted {
+    s=${1##*/}
+    s=${s%%,*}
+    echo "deleting $1"
+    mv "$1" "$2/$s"
+}
+
+s=$(notmuch search --output=files tag:deleted and tag:saleschamp | grep -v trash)
+for f in $s; do move_deleted "$f" /home/matus/Maildir/Saleschamp/trash/new; done
+
+s=$(notmuch search --output=files tag:deleted and to:matus.goljer@gmail.com | grep -v trash)
+for f in $s; do move_deleted "$f" /home/matus/Maildir/Goljer/trash/new; done

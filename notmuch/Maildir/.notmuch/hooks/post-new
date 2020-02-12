@@ -6,19 +6,34 @@ notmuch tag +twitter -- tag:new and from:twitter.com
 notmuch tag +logio -- tag:new and to:logio.cz
 notmuch tag +logio -- tag:new and from:logio.cz
 
-notmuch tag +saleschamp -- tag:new and to:saleschamp.nl
-notmuch tag +saleschamp -- tag:new and from:saleschamp.nl
+notmuch tag +saleschamp -- tag:new and to:saleschamp
+notmuch tag +saleschamp -- tag:new and from:saleschamp
 
 # newsletters
 notmuch tag +newsletter -- tag:new and from:jakub@programmingdigest.net
 notmuch tag +newsletter -- tag:new and from:newsletter@brainpickings.org
-notmuch tag -inbox -unread -- tag:new and tag:newsletter
+notmuch tag -unread -- tag:new and tag:newsletter
 
 # Jira
-notmuch tag -inbox -unread +deleted -- tag:new and from:jira@saleschamp.atlassian.net added a worklog on
+notmuch tag -unread +deleted -- tag:new and from:jira@saleschamp.atlassian.net added a worklog on
 
 # Avoid sentry spam
-notmuch tag -inbox -unread +deleted -- tag:new and from:noreply@md.getsentry.com and not weekly
+notmuch tag -unread +deleted -- tag:new and from:noreply@md.getsentry.com and not weekly
 
-# finally, retag all "new" messages "inbox" and "unread"
-notmuch tag +inbox -new -- tag:new
+# Various order confirmations
+notmuch tag +confirmation -- tag:new and from:zakaznici@damejidlo.cz
+notmuch tag -unread -- tag:new and tag:confirmation
+
+# Github
+notmuch tag +github -- tag:new and notifications@github.com
+notmuch tag -unread -- tag:new and tag:github
+
+# tag all messages in inbox as +inbox
+notmuch tag -inbox -- tag:inbox
+notmuch tag +inbox -- 'path:Goljer/inbox/**'
+notmuch tag +inbox -- 'path:Saleschamp/inbox/**'
+notmuch tag -inbox -- tag:newsletter or tag:archived
+
+# finally, untag all "new"
+notmuch tag -unread -- tag:new and tag:deleted
+notmuch tag -new -- tag:new

@@ -3,8 +3,8 @@
 IMAPAccount logio
 Host imap.gmail.com
 User goljer@logio.cz
-PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/secrets/mailpass-logio.gpg"
-UseIMAPS yes
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/.password-store/google.com/goljer@logio.cz.gpg"
+SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore logio-remote
@@ -35,8 +35,8 @@ Channel logio-sent
 IMAPAccount saleschamp
 Host imap.gmail.com
 User matus@saleschamp.nl
-PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/secrets/mailpass-saleschamp.gpg"
-UseIMAPS yes
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/.password-store/google.com/matus@saleschamp.nl.gpg"
+SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore saleschamp-remote
@@ -45,6 +45,13 @@ Account saleschamp
 MaildirStore saleschamp-local
 Path ~/Maildir/Saleschamp/
 Inbox ~/Maildir/Saleschamp/inbox
+
+Channel saleschamp-default
+Master :saleschamp-remote:
+Slave :saleschamp-local:
+Expunge Slave
+SyncState *
+Patterns "INBOX"
 
 Channel saleschamp-all
 Master :saleschamp-remote:"[Gmail]/All Mail"
@@ -58,7 +65,16 @@ Slave :saleschamp-local:sent
 Create Slave
 SyncState *
 
+Channel saleschamp-trash
+Master :saleschamp-remote:"[Gmail]/Trash"
+Slave :saleschamp-local:trash
+Create Slave
+Expunge Slave
+SyncState *
+
 Group saleschamp
+Channel saleschamp-default
+Channel saleschamp-trash
 Channel saleschamp-all
 Channel saleschamp-sent
 
@@ -67,8 +83,8 @@ Channel saleschamp-sent
 IMAPAccount goljer
 Host imap.gmail.com
 User matus.goljer@gmail.com
-PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/secrets/mailpass-goljer.gpg"
-UseIMAPS yes
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/.password-store/google.com/matus.goljer@gmail.com.gpg"
+SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore goljer-remote
@@ -77,6 +93,13 @@ Account goljer
 MaildirStore goljer-local
 Path ~/Maildir/Goljer/
 Inbox ~/Maildir/Goljer/inbox
+
+Channel goljer-default
+Master :goljer-remote:
+Slave :goljer-local:
+Expunge Slave
+SyncState *
+Patterns "INBOX"
 
 Channel goljer-all
 Master :goljer-remote:"[Gmail]/All Mail"
@@ -90,7 +113,16 @@ Slave :goljer-local:sent
 Create Slave
 SyncState *
 
+Channel goljer-trash
+Master :goljer-remote:"[Gmail]/Bin"
+Slave :goljer-local:trash
+Create Slave
+Expunge Slave
+SyncState *
+
 Group goljer
+Channel goljer-trash
+Channel goljer-default
 Channel goljer-all
 Channel goljer-sent
 
@@ -99,8 +131,9 @@ Channel goljer-sent
 IMAPAccount dota
 Host imap.gmail.com
 User dota.keys@gmail.com
-PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/secrets/mailpass-dota.gpg"
-UseIMAPS yes
+Pass hera_kleit1os
+#PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/.password-store/google.com/dota.keys@gmail.com.gpg"
+SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore dota-remote
