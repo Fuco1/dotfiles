@@ -54,7 +54,8 @@ alias pw "find ~/.password-store | sed -r 's/.*?\.password-store\/(.*?)\.gpg/\1/
 
 # bindings
 function fish_user_key_bindings
-  bind \eg my_fish_grep
+    bind \eg my_fish_grep
+    bind \ea my_fish_awk
 end
 
 function runjava
