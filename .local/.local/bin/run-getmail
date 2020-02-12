@@ -12,4 +12,4 @@ if [ "$WHERE" = "home" ] || [ "$WHERE" = "brno" ] ; then
     /usr/bin/mbsync --config /home/matus/.config/isync/mbsyncrc saleschamp
 fi
 
-/usr/local/bin/notmuch --config /home/matus/.config/notmuch/config new
+/usr/bin/notmuch --config /home/matus/.config/notmuch/config new
