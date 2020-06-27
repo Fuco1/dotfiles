@@ -22,3 +22,5 @@
     path = ~/dev/logio/.gitconfig
 [includeIf "gitdir:~/dev/saleschamp/"]
     path = ~/dev/saleschamp/.gitconfig
+[alias]
+	lol = log --oneline --decorate --all --graph
