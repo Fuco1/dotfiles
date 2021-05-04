@@ -1,0 +1,7 @@
+set -g status-bg colour15
+set -g status-left-bg colour15
+set -g status-right-bg colour15
+set -g status-fg colour7
+
+setw -g window-status-bell-style fg=colour9
+setw -g window-status-activity-style fg=colour13

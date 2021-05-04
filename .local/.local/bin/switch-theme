@@ -1,0 +1,17 @@
+#!/bin/bash
+
+THEME=${1:-dark}
+
+IFS=$'\n' CONFIGS=( $(find /home/matus/dotfiles -name 'my-theme.json' -printf "%h/" -exec jq -r ".config" '{}' \;) )
+IFS=$'\n' FILES=( $(find /home/matus/dotfiles -name 'my-theme.json' -printf "%h/" -exec jq -r ".$THEME" '{}' \;) )
+IFS=$'\n' RELOADS=( $(find /home/matus/dotfiles -name 'my-theme.json' -exec jq -r ".reload" '{}' \;) )
+
+for index in "${!CONFIGS[@]}"; do  # Also, quote indices
+    CONFIG="${CONFIGS[$index]}"
+    FILE="${FILES[$index]}"
+    RELOAD="${RELOADS[$index]}"
+    echo "Patching $CONFIG to use $FILE theme definition"
+    perl -0777 -i -p -e "s|(Theme:\n.*? \"?)(.*?)(\"?\n)|\$1$FILE\$3|igs" "$CONFIG"
+    echo "Reloading $CONFIG"
+    eval "$RELOAD"
+done

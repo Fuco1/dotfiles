@@ -38,28 +38,6 @@ URxvt.boldFont: xft:Monospace:pixelsize=14:antialias=true:hinting=true
 ! set color depth
 URxvt.depth: 32
 
-URxvt.foreground: #bbbbbb
-URxvt.background: #050505
-
-! black red green yellow blue purple cyan white
-! normal versions
-URxvt.color0:  #000000
-URxvt.color1:  #af0000
-URxvt.color2:  #5faf00
-URxvt.color3:  #af8700
-URxvt.color4:  #005f87
-URxvt.color5:  #5f005f
-URxvt.color6:  #00bbbb
-URxvt.color7:  #bbbbbb
-! light versions
-URxvt.color8:  #555555
-URxvt.color9:  #ff5f5f
-URxvt.color10: #87ff00
-URxvt.color11: #ffff5f
-URxvt.color12: #5f87d7
-URxvt.color13: #ffafff
-URxvt.color14: #55ffff
-URxvt.color15: #ffffff
-
-URxvt.colorIT: #ff5555
-URxvt.colorUL: #4682B4
+! Theme:
+#include "/home/matus/dotfiles/X/urxvt-light"
+! Theme-end:

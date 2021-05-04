@@ -1,0 +1,6 @@
+{
+    "config": ".tmux.conf",
+    "reload": "tmux source ~/.tmux.conf",
+    "dark": "tmux-dark",
+    "light": "tmux-light"
+}

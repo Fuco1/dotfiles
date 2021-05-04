@@ -1,0 +1,6 @@
+{
+    "config": ".Xresources",
+    "reload": "xrdb -merge ~/.Xresources",
+    "dark": "urxvt-dark",
+    "light": "urxvt-light"
+}

@@ -1,0 +1,45 @@
+! Dark theme
+
+URxvt.foreground: #bbbbbb
+URxvt.background: #050505
+
+! black
+URxvt.color0:  #050505
+URxvt.color8:  #555555
+
+! red
+URxvt.color1:  #af0000
+URxvt.color9:  #ff5f5f
+
+! green
+URxvt.color2:  #5faf00
+URxvt.color10: #87ff00
+
+! yellow
+URxvt.color3:  #af8700
+URxvt.color11: #ffff5f
+
+! blue
+URxvt.color4:  #005f87
+URxvt.color12: #5f87d7
+
+! purple / magenta
+URxvt.color5:  #5f005f
+URxvt.color13: #ffafff
+
+! cyan
+URxvt.color6:  #00bbbb
+URxvt.color14: #55ffff
+
+! white
+URxvt.color7:  #bbbbbb
+URxvt.color15: #ffffff
+
+! Extra
+URxvt.colorIT: #ff5555
+URxvt.colorUL: #4682B4
+
+! Local Variables:
+! mode: conf-xdefaults
+! eval: (rainbow-mode 1)
+! End:
