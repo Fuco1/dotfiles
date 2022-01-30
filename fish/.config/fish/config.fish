@@ -49,6 +49,10 @@ alias yd "youtube-dl"
 alias vlca "vlc --vout none"
 alias cvlca "cvlc --vout none"
 alias pw "find ~/.password-store | sed -r 's/.*?\.password-store\/(.*?)\.gpg/\1/' | fzf | xargs pass -c"
+alias fehp "feh -f - -t"
+
+# grc
+alias df "grc df"
 
 # bindings
 function fish_user_key_bindings
