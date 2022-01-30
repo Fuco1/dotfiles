@@ -6,6 +6,7 @@
     signingkey = F1800B80
 [core]
     autocrlf = input
+    longpaths = true
 [color]
     ui = auto
 [status]
@@ -23,4 +24,8 @@
 [includeIf "gitdir:~/dev/saleschamp/"]
     path = ~/dev/saleschamp/.gitconfig
 [alias]
-	lol = log --oneline --decorate --all --graph
+    lol = log --oneline --decorate --all --graph
+[credential]
+    helper = cache
+[init]
+    defaultBranch = master
