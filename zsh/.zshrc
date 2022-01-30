@@ -95,3 +95,5 @@ if [ -n "$INSIDE_EMACS" ]; then
 fi
 
 export PROMPT_COMMAND
+
+source /home/matus/.config/broot/launcher/bash/br
