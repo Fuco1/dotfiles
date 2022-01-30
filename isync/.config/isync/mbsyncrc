@@ -131,8 +131,7 @@ Channel goljer-sent
 IMAPAccount dota
 Host imap.gmail.com
 User dota.keys@gmail.com
-Pass hera_kleit1os
-#PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/.password-store/google.com/dota.keys@gmail.com.gpg"
+PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d /home/matus/.password-store/google.com/dota.keys@gmail.com.gpg"
 SSLType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
