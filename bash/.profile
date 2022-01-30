@@ -8,6 +8,7 @@ export PATH="$PATH:$HOME/.composer/vendor/bin"
 export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 export PATH="$PATH:$GOPATH/bin"
 export PATH="$PATH:/opt/Unity/Editor"
+export PATH="$PATH:/opt/mssql-tools/bin"
 export PATH="$HOME/.local/bin:$PATH"  # highest priority
 
 export XDG_CONFIG_HOME="$HOME/.config"
