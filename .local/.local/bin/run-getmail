@@ -9,7 +9,6 @@ WHERE=$(/bin/cat /home/matus/.whereami)
 if [ "$WHERE" = "home" ] || [ "$WHERE" = "brno" ] ; then
     /usr/local/bin/mbsync --config /home/matus/.config/isync/mbsyncrc goljer
     /usr/local/bin/mbsync --config /home/matus/.config/isync/mbsyncrc dota
-    /usr/local/bin/mbsync --config /home/matus/.config/isync/mbsyncrc saleschamp
 fi
 
 /usr/bin/notmuch --config /home/matus/.config/notmuch/config new
