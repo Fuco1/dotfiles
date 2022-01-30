@@ -19,3 +19,9 @@ git add documents/journal.org.gpg >/dev/null 2>&1
 echo "===== $(date --iso-8601=seconds) =====" >> /home/matus/git-annex.log
 git commit -m "thales: $(date --iso-8601=seconds)" &>> /home/matus/git-annex.log
 git annex sync --content &>> /home/matus/git-annex.log
+
+if [[ -d /media/data-750/data/ ]] ; then
+    echo "Repository: Annex data - media"
+    cd /media/data-750/data/
+    git annex sync &>> /home/matus/git-annex.log
+fi
