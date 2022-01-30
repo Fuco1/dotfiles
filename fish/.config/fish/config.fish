@@ -1,5 +1,3 @@
-eval (python -m virtualfish auto_activation)
-
 # ledger
 alias l "ledger -X Kc --sort date"
 
