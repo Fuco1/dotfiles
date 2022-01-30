@@ -11,29 +11,21 @@ notmuch tag +saleschamp -- tag:new and from:saleschamp
 
 # newsletters
 notmuch tag +newsletter -- tag:new and from:jakub@programmingdigest.net
-notmuch tag +newsletter -- tag:new and from:newsletter@brainpickings.org
+
 notmuch tag -unread -- tag:new and tag:newsletter
 
-# Jira
-notmuch tag -unread +deleted -- tag:new and from:jira@saleschamp.atlassian.net added a worklog on
-
-# Avoid sentry spam
+# Saleschamp related spam
+notmuch tag -unread +deleted -- tag:new and from:jira@saleschamp.atlassian.net
 notmuch tag -unread +deleted -- tag:new and from:noreply@md.getsentry.com and not weekly
-
-# Various order confirmations
-notmuch tag +confirmation -- tag:new and from:zakaznici@damejidlo.cz
-notmuch tag -unread -- tag:new and tag:confirmation
 
 # Github
 notmuch tag +github -- tag:new and notifications@github.com
 notmuch tag -unread -- tag:new and tag:github
 
-# tag all messages in inbox as +inbox
-notmuch tag -inbox -- tag:inbox
-notmuch tag +inbox -- 'path:Goljer/inbox/**'
-notmuch tag +inbox -- 'path:Saleschamp/inbox/**'
+# Decide what we want to keep in inbox
+notmuch tag +inbox -- tag:new
 notmuch tag -inbox -- tag:newsletter or tag:archived
 
-# finally, untag all "new"
+# Make sure deleted and uninteresting things are removed from unread queue
 notmuch tag -unread -- tag:new and tag:deleted
 notmuch tag -new -- tag:new
