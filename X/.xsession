@@ -24,7 +24,6 @@ fi
 
 eval $(ssh-agent -s)
 ssh-add "/home/matus/.ssh/id_rsa"
-ssh-add "/home/matus/.ssh/id_rsa_democritos"
 
 mountavfs
 if [ ! -z $(which tagsistant) ]; then
