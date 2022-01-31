@@ -39,5 +39,5 @@ URxvt.boldFont: xft:Monospace:pixelsize=14:antialias=true:hinting=true
 URxvt.depth: 32
 
 ! Theme:
-#include "/home/matus/dotfiles/X/urxvt-light"
+#include "/home/matus/dotfiles/X/urxvt-dark"
 ! Theme-end:
