@@ -93,5 +93,5 @@ end
 
 #rvm default
 if test -f /home/matus/.local/share/autojump/autojump.fish; . /home/matus/.local/share/autojump/autojump.fish; end
-# https://github.com/martinkacmar/fish-avn
-[ -f /home/matus/.config/fish/functions/fish_avn.fish ]; and source ~/.config/fish/functions/fish_avn.fish
+
+load_nvm
