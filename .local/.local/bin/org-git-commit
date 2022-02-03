@@ -9,15 +9,15 @@ cd ~/org
 git ls-files --deleted -z | xargs -0 git rm
 # Add new files
 git add .
-git commit -m "thales: $(date --iso-8601=seconds)"
-git push origin thales
+git commit -m "parmenides: $(date --iso-8601=seconds)"
+git push origin parmenides
 
 echo "Repository: Annex data"
 cd ~/data/
 git add -u documents/ >/dev/null 2>&1
 git add documents/journal.org.gpg >/dev/null 2>&1
 echo "===== $(date --iso-8601=seconds) =====" >> /home/matus/git-annex.log
-git commit -m "thales: $(date --iso-8601=seconds)" &>> /home/matus/git-annex.log
+git commit -m "parmenides: $(date --iso-8601=seconds)" &>> /home/matus/git-annex.log
 git annex sync --content &>> /home/matus/git-annex.log
 
 if [[ -d /media/data-750/data/ ]] ; then
