@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ -z "$1" ] ; then
+    cat <<EOF
+Usage: ./rerun [-i, --include PATTERN] PROGRAM
+
+Rerun PROGRAM when any file in directory changes.
+
+Arguments:
+  -i, --include     Pattern of files to include in the watch
+
+EOF
+    exit 1
+fi
+
+OPTIONS=i:
+LONGOPTS=include:
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
+if [ "$?" -ne 0 ]; then
+    exit 2
+fi
+
+eval set -- "$PARSED"
+
+INCLUDE=""
+
+while true; do
+    case "$1" in
+        -i|--include)
+            INCLUDE="--include $2"
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Programming error"
+            exit 3
+            ;;
+    esac
+done
+
+function execute() {
+    ## clear
+    echo "$@"
+    eval "$@"
+    echo ""
+}
+
+## execute "$@"
+
+inotifywait --quiet --recursive --monitor --event modify $INCLUDE --format "%w%f" . \
+| grep --line-buffered -v '.swp$' | while read change; do
+    execute "$@"
+done
