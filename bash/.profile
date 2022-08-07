@@ -40,3 +40,5 @@ export STACK_ROOT="$XDG_DATA_HOME"/stack
 
 # to unconfuse AWT about Xmonad
 export _JAVA_AWT_WM_NONREPARENTING=1
+
+[[ -s "$HOME/.profile_local" ]] && source "$HOME/.profile_local"
