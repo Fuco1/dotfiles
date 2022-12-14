@@ -12,3 +12,5 @@ case $(cat /home/matus/.whereami) in
     "home") synclient TouchpadOff=1 ;;
     "brno") synclient TouchpadOff=1 ;;
 esac
+
+imwheel
