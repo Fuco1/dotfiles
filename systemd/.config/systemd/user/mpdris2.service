@@ -1,0 +1,8 @@
+[Unit]
+Description=MPD + Mpris interop
+
+[Service]
+ExecStart=/usr/local/bin/mpDris2
+
+[Install]
+WantedBy=default.target

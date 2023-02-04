@@ -1,8 +1,0 @@
-[Unit]
-Description=GPG Agent
-
-[Service]
-ExecStart=/usr/bin/gpg-agent --server
-
-[Install]
-WantedBy=default.target

@@ -2,7 +2,7 @@
 Description=TWMN Daemon
 
 [Service]
-ExecStart=/usr/local/bin/twmnd
+ExecStart=/home/matus/.local/bin/twmnd
 
 [Install]
 WantedBy=default.target
