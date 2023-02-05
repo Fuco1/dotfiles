@@ -1,0 +1,58 @@
+[general]
+accounts = gmail_goljer, gmail_dota
+# , outlook_ydistri
+pythonfile = /home/matus/dotfiles/offlineimap/offlineimap.py
+
+[Account gmail_goljer]
+localrepository = local_gmail_goljer
+remoterepository = remote_gmail_goljer
+
+[Repository local_gmail_goljer]
+type = Maildir
+localfolders = /home/matus/Maildir/Goljer
+
+[Repository remote_gmail_goljer]
+type = Gmail
+maxconnections = 1
+remotehost = imap.gmail.com
+remoteuser = matus.goljer@gmail.com
+remotepasseval = get_pass("google.com/offlineimap/matus.goljer@gmail.com")
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Account gmail_dota]
+localrepository = local_gmail_dota
+remoterepository = remote_gmail_dota
+
+[Repository local_gmail_dota]
+type = Maildir
+localfolders = /home/matus/Maildir/Dota
+
+[Repository remote_gmail_dota]
+type = Gmail
+maxconnections = 1
+remotehost = imap.gmail.com
+remoteuser = dota.keys@gmail.com
+remotepasseval = get_pass("google.com/offlineimap/dota.keys@gmail.com")
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+# [Account outlook_ydistri]
+# localrepository = local_outlook_ydistri
+# remoterepository = remote_outlook_ydistri
+
+# [Repository local_outlook_ydistri]
+# type = Maildir
+# localfolders = /home/matus/Maildir/Ydistri
+
+# [Repository remote_outlook_ydistri]
+# type = IMAP
+# maxconnections = 1
+# remotehost = outlook.office365.com
+# remoteuser = matus.goljer@ydistri.com
+# remotepasseval = get_pass("ydistri.com/offlineimap/matus.goljer@ydistri.com")
+# remoteport = 993
+# ssl = yes
+# realdelete = no
+# sync_deletes = no
+# sslcacertfile = /etc/ssl/certs/ca-certificates.crt

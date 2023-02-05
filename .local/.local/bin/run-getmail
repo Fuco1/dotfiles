@@ -1,14 +1,9 @@
 #!/bin/sh
 
 export GNUPGHOME="/home/matus/.gnupg"
+LOG_FILE="/home/matus/.run-getmail.log"
 
-/usr/local/bin/mbsync --config /home/matus/.config/isync/mbsyncrc logio
-
-WHERE=$(/bin/cat /home/matus/.whereami)
-
-if [ "$WHERE" = "home" ] || [ "$WHERE" = "brno" ] ; then
-    /usr/local/bin/mbsync --config /home/matus/.config/isync/mbsyncrc goljer
-    /usr/local/bin/mbsync --config /home/matus/.config/isync/mbsyncrc dota
-fi
-
-/usr/bin/notmuch --config /home/matus/.config/notmuch/config new
+echo "[$(date --iso-8601=seconds)] ===============================================================" >>$LOG_FILE
+/home/matus/.local/bin/process-deleted >>$LOG_FILE 2>&1
+/usr/bin/offlineimap -c /home/matus/.offlineimaprc >>$LOG_FILE 2>&1
+/usr/local/bin/notmuch --config /home/matus/.config/notmuch/config new >>$LOG_FILE 2>&1

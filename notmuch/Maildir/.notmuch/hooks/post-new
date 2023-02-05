@@ -3,29 +3,26 @@
 notmuch tag +muni -- tag:new and from:muni.cz
 notmuch tag +twitter -- tag:new and from:twitter.com
 
-notmuch tag +logio -- tag:new and to:logio.cz
-notmuch tag +logio -- tag:new and from:logio.cz
-
-notmuch tag +saleschamp -- tag:new and to:saleschamp
-notmuch tag +saleschamp -- tag:new and from:saleschamp
+notmuch tag +ydistri -- tag:new and to:ydistri.com
+notmuch tag +ydistri -- tag:new and from:ydistri.com
 
 # newsletters
 notmuch tag +newsletter -- tag:new and from:jakub@programmingdigest.net
-
-notmuch tag -unread -- tag:new and tag:newsletter
-
-# Saleschamp related spam
-notmuch tag -unread +deleted -- tag:new and from:jira@saleschamp.atlassian.net
-notmuch tag -unread +deleted -- tag:new and from:noreply@md.getsentry.com and not weekly
+notmuch tag +newsletter -- tag:new and from:hi@16personalities.com
 
 # Github
 notmuch tag +github -- tag:new and notifications@github.com
-notmuch tag -unread -- tag:new and tag:github
 
-# Decide what we want to keep in inbox
-notmuch tag +inbox -- tag:new
-notmuch tag -inbox -- tag:newsletter or tag:archived
+# Tag according to folders
+notmuch tag -inbox -- tag:inbox and not 'folder:/INBOX/'
+notmuch tag -important -- tag:important and not 'folder:/\[Gmail\]\.Important/'
+notmuch tag -starred -- tag:starred and not 'folder:/\[Gmail\]\.Starred/'
 
-# Make sure deleted and uninteresting things are removed from unread queue
-notmuch tag -unread -- tag:new and tag:deleted
+notmuch tag +inbox -- not tag:inbox and 'folder:/INBOX/'
+notmuch tag +important -- not tag:important and 'folder:/\[Gmail\]\.Important/'
+notmuch tag +starred -- not tag:starred and 'folder:/\[Gmail\]\.Starred/'
+notmuch tag +trash -inbox -- not tag:trash and 'folder:/\[Gmail\]\.Bin/'
+notmuch tag +trash -inbox -- not tag:trash and 'folder:/\[Gmail\]\.Trash/'
+
+# Untag new since those mails were already processed
 notmuch tag -new -- tag:new

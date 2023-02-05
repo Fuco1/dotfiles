@@ -1,0 +1,72 @@
+#!/bin/bash
+
+OPTIONS=n
+LONGOPTS=dry-run
+
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
+if [ $? -ne 0 ]; then
+    exit 2
+fi
+
+eval set -- "$PARSED"
+
+DRY_RUN=""
+MV_COMMAND="mv"
+RM_COMMAND="rm"
+
+while true; do
+    case "$1" in
+        -n|--dry-run)
+            DRY_RUN="1"
+            MV_COMMAND="echo [mv] "
+            RM_COMMAND="echo [rm] "
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Programming error"
+            exit 3
+            ;;
+    esac
+done
+
+if [ -n "$DRY_RUN" ]; then
+    echo "Running in dry mode"
+fi
+
+with_search() {
+    local TEMPLATE=$1
+    shift
+    local COUNT=$(notmuch count --exclude=false "$@")
+    printf "${TEMPLATE}\n" "$COUNT" 1>&2
+
+    notmuch search --exclude=false --output=files "$@"
+}
+
+MAILDIR=$HOME/Maildir
+
+###### TRASH
+### matus.goljer@gmail.com
+with_search "[matus.goljer@gmail.com] Moving %d messages tagged as 'trash' to folder Bin" \
+            tag:trash and 'folder:/Goljer.*All.Mail/' and not 'folder:/Goljer.*Bin/' \
+    | grep 'All Mail' \
+    | xargs -r -I {} -s 5000 $MV_COMMAND "{}" "$MAILDIR/Goljer/[Gmail].Bin/new"
+
+### dota.keys@gmail.com
+# TRASH_TO_DELETE_COUNT=$(notmuch count --exclude=false tag:trash and 'folder:/Dota.*All.Mail/' and not 'folder:/Dota.*Trash/')
+
+# echo "[dota.keys@gmail.com]    Deleting $TRASH_TO_DELETE_COUNT messages tagged as 'trash' to folder Trash"
+
+# notmuch search --exclude=false --output=files tag:trash and 'folder:/Dota.*All.Mail/' and not 'folder:/Dota.*Trash/' | grep 'All Mail' | xargs -I {} -s 5000 $MV_COMMAND "{}" "$MAILDIR/Dota/[Gmail].Trash/new"
+with_search "[dota.keys@gmail.com]    Moving %d messages tagged as 'trash' to folder Trash" \
+            tag:trash and 'folder:/Dota.*All.Mail/' and not 'folder:/Dota.*Trash/' \
+    | grep 'All Mail' \
+    | xargs -r -I {} -s 5000 $MV_COMMAND "{}" "$MAILDIR/Dota/[Gmail].Trash/new"
+
+###### INBOX and other labels
+with_search "Removing %d messages from INDEX" not tag:inbox and 'folder:/INBOX/' | grep INBOX | xargs -r -l $RM_COMMAND
+with_search "Removing %d messages from Important" not tag:important and 'folder:/Important/' | grep Important | xargs -r -l $RM_COMMAND
+with_search "Removing %d messages from Starred" not tag:starred and 'folder:/Starred/' | grep Starred | xargs -r -l $RM_COMMAND

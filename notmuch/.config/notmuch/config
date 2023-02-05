@@ -31,7 +31,7 @@ path=/home/matus/Maildir
 [user]
 name=Matúš Goljer
 primary_email=matus.goljer@gmail.com
-other_email=dota.keys@gmail.com;goljer@logio.cz;matus@saleschamp.nl
+other_email=dota.keys@gmail.com;matus.goljer@ydistri.com
 
 # Configuration for "notmuch new"
 #
@@ -48,7 +48,7 @@ other_email=dota.keys@gmail.com;goljer@logio.cz;matus@saleschamp.nl
 #       in the mail store.
 #
 [new]
-tags=new;unread;
+tags=new;
 ignore=
 
 # Search configuration
@@ -61,7 +61,7 @@ ignore=
 #       query will override that exclusion.
 #
 [search]
-exclude_tags=deleted;spam;
+exclude_tags=trash;spam;
 
 # Maildir compatibility configuration
 #
