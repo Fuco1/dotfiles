@@ -1,4 +1,0 @@
-#!/bin/bash -e
-
-cd '/home/matus/.wine/drive_c/Program Files/HeidiSQL'
-exec wine heidisql.exe
