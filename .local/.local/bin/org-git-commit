@@ -6,7 +6,7 @@ export PATH="/home/matus/.local/bin:/usr/local/bin:$PATH"
 echo "Repository: org"
 cd ~/org
 # Remove deleted files
-git ls-files --deleted -z | xargs -0 git rm
+git ls-files --deleted -z | xargs -r -0 git rm
 # Add new files
 git add .
 git commit -m "parmenides: $(date --iso-8601=seconds)"
