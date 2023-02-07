@@ -24,5 +24,7 @@ notmuch tag +starred -- not tag:starred and 'folder:/\[Gmail\]\.Starred/'
 notmuch tag +trash -inbox -- not tag:trash and 'folder:/\[Gmail\]\.Bin/'
 notmuch tag +trash -inbox -- not tag:trash and 'folder:/\[Gmail\]\.Trash/'
 
+notmuch tag -archived -- tag:archived and tag:trash
+
 # Untag new since those mails were already processed
 notmuch tag -new -- tag:new
