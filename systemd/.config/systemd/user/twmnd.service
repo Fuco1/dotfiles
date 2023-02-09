@@ -1,8 +1,12 @@
 [Unit]
-Description=TWMN Daemon
+Description=twmn server
+After=graphical.target
 
 [Service]
-ExecStart=/home/matus/.local/bin/twmnd
+Type=simple
+StandardOutput=null
+Restart=on-failure
+ExecStart=/usr/local/bin/twmnd
 
 [Install]
 WantedBy=default.target
