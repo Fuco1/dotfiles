@@ -1,6 +1,7 @@
 set first-page-column 2
 set window-title-basename true
 set guioptions ""
+set selection-clipboard clipboard
 
 set font "inconsolata 15"
 set default-bg "#151515" #00
