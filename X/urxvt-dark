@@ -8,7 +8,7 @@ URxvt.color0:  #050505
 URxvt.color8:  #555555
 
 ! red
-URxvt.color1:  #af0000
+URxvt.color1:  #d70000
 URxvt.color9:  #ff5f5f
 
 ! green
@@ -24,7 +24,7 @@ URxvt.color4:  #005f87
 URxvt.color12: #5f87d7
 
 ! purple / magenta
-URxvt.color5:  #5f005f
+URxvt.color5:  #875f87
 URxvt.color13: #ffafff
 
 ! cyan
