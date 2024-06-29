@@ -1,0 +1,45 @@
+#!/bin/bash
+# Turn javascript object literal into JSON and pretty print
+
+OPTIONS=p
+LONGOPTS=pretty-print
+
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
+if [ $? -ne 0 ]; then
+    exit 2
+fi
+
+eval set -- "$PARSED"
+OPT_PRETTY_PRINT=""
+while true; do
+    case "$1" in
+        -p|--pretty-print)
+            OPT_PRETTY_PRINT="true"
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Error: Unkown option: $1" >&2
+            exit 3
+            ;;
+    esac
+done
+
+################################
+
+if [ -t 0 ]; then
+    input=$@
+else
+    input=$(</dev/stdin)
+fi
+
+out=$(node --print "JSON.stringify($input)")
+
+if [ -n "$OPT_PRETTY_PRINT" ] ; then
+    echo "$out" | jq .
+else
+    echo "$out"
+fi
