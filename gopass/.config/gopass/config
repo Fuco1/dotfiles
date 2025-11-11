@@ -1,0 +1,11 @@
+autoclip: false
+autoimport: true
+cliptimeout: 45
+exportkeys: true
+nopager: false
+notifications: true
+parsing: true
+path: /home/matus/.password-store
+safecontent: false
+[mounts]
+	path = /home/matus/.password-store
