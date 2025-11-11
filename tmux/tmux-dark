@@ -1,0 +1,10 @@
+set -g status-style fg=colour15,bg=colour0
+set -g status-left-style bg=colour0
+set -g status-right-style bg=colour0
+
+setw -g window-status-bell-style fg=colour9
+setw -g window-status-activity-style fg=colour13
+
+# Local Variables:
+# mode: conf
+# End:
