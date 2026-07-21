@@ -29,11 +29,15 @@ URxvt.saveLines: 12000
 ! scrollbar position - left=false (default) or right=true
 ! URxvt*scrollBar_right: true
 
-URxvt.letterSpace: -1
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintfull
 
 ! xft:Inconsolata:pixelsize=14:antialias=true:hinting=true
-URxvt.font: xft:Monospace:pixelsize=14:antialias=true:hinting=true
-URxvt.boldFont: xft:Monospace:pixelsize=14:antialias=true:hinting=true
+URxvt.font: xft:JetBrains Mono:size=12
+URxvt.boldFont: xft:JetBrains Mono:size=12
 
 ! set color depth
 URxvt.depth: 32
