@@ -45,3 +45,6 @@ URxvt.depth: 32
 ! Theme:
 #include "/home/matus/dotfiles/X/urxvt-dark"
 ! Theme-end:
+
+! Emacs: bypass XIM; IBus over XIM reorders keys under load
+Emacs.useXIM: false
