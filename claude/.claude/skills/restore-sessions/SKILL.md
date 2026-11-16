@@ -74,13 +74,15 @@ slug of the session's subject. Avoid the names of orc's lane windows (`worker-N`
 
 ```
 T=$(tmux display -p -t "$TMUX_PANE" '#S')
-tmux new-window -d -t "$T:" -n <slug> -c <session cwd> "ccarchive resume <uuid>"
+tmux new-window -d -t "$T:" -n <slug> -c <session cwd> "ccarchive resume <uuid>; exec fish"
 ```
 
+`exec fish` keeps the window open at a shell once Claude exits.
+
 About 15 seconds later each uuid appears in one of `~/.claude/sessions/*.json`. A uuid missing
-from the registry, or a window that closed, is a resume that failed: report it. The
-window's `pane_current_command` stays `fish`, because `claude` runs as a child of
-the shell tmux starts the command in.
+from the registry is a resume that failed: report it. The window stays open either way, so
+an open window proves nothing. The window's `pane_current_command` stays `fish`, because
+`claude` runs as a child of the shell tmux starts the command in.
 
 ## 4. Report
 
