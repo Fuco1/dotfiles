@@ -22,7 +22,9 @@ xrandr | grep -A1 -E '^Virtual-[12] '
 ```
 
 The first command prints the size each output has. The second prints the size the
-host requests for each output, on the line ending in `+`.
+host requests for each output, on the line ending in `+`. After a guest restart
+`Virtual-2` is off and the host requests 640x480 for it. Step 2 switches it on and
+VirtualBox opens its second window.
 
 When the operator reports a black screen, capture the guest framebuffer and look
 at it:
@@ -31,40 +33,54 @@ at it:
 import -window root <scratchpad>/root.png
 ```
 
-Content on both halves means the guest draws both screens and the black is in the
-host's VirtualBox window. The fix in step 2 repairs that case too.
+Content on both halves means the guest draws both screens. The black is then in
+the host's VirtualBox window, and step 2 repairs it.
 
 ## 2. Set both outputs
 
-Switch both outputs off, then set both modes and the framebuffer size explicitly
-in one call. With the VM fullscreen on both host monitors:
+With the VM fullscreen on both host monitors, run these three commands in order:
+
+```sh
+xrandr --output Virtual-1 --auto --output Virtual-2 --auto --right-of Virtual-1
+xrandr --output Virtual-1 --mode 2560x1440 --pos 0x0 --primary
+xrandr --fb 5120x1440 --output Virtual-1 --mode 2560x1440 --pos 0x0 --output Virtual-2 --mode 2560x1440 --pos 2560x0
+```
+
+The first command can fail with `BadMatch` and switch both outputs off. Run the
+other two anyway. This sequence cleared a black second screen on 2026-11-18 and
+on 2026-11-20.
+
+A shorter sequence switches both outputs off first:
 
 ```sh
 xrandr --output Virtual-1 --off --output Virtual-2 --off
 xrandr --fb 5120x1440 --output Virtual-1 --mode 2560x1440 --pos 0x0 --primary --output Virtual-2 --mode 2560x1440 --pos 2560x0
 ```
 
-For windowed sizes, use each output's preferred mode. `--fb` is the sum of the
-two widths by the larger height, and `Virtual-2` sits at `--pos <width of
-Virtual-1>x0`. A preferred size that matches neither a host monitor nor a host
-window appears while a host window is black. Use 2560x1440 for that output.
+It cleared a black second screen on 2026-11-19 and once on 2026-11-20. It left the
+second screen black twice on 2026-11-20.
+
+For windowed sizes, use each output's preferred mode in place of 2560x1440. `--fb`
+is the sum of the two widths by the larger height. `Virtual-2` sits at `--pos
+<width of Virtual-1>x0`. A preferred size that matches neither a host monitor nor
+a host window appears while a host window is black. Use 2560x1440 for that output.
 
 Confirm with `xrandr --listmonitors`, then ask the operator whether both screens
 show content at full size with no black bars.
 
 ## Steps that leave the problem in place
 
-- `xrandr --output Virtual-1 --auto --output Virtual-2 --auto --right-of Virtual-1`
-  can fail with `BadMatch` and leave both outputs off. When it succeeds, a screen
-  that was black in the host window is still black.
+- The `--auto` command on its own. A screen that was black in the host window is
+  still black after it.
 - Switching only `Virtual-2` off and on.
+- `xrefresh`.
 - Restarting the `VBoxClient` user services or `vboxadd-service`.
 - View → Virtual Screen 2 → Disable in the host's VirtualBox window.
 
 ## Unknown
 
 Until 2026-11-16 the screens resized on their own with the same Guest Additions
-(7.2.18), kernel, X server and xmonad config. Automatic resizing stopped after the
-guest resumed from a 68-hour freeze on 2026-11-16. Guest reboots did not restore
-it. A cold start (shut down the guest, start the VM without a saved state)
-is untested as a way to bring it back.
+(7.2.18), kernel and X server. The xmonad config was also the same. Automatic
+resizing stopped after the guest resumed from a 68-hour freeze on 2026-11-16.
+Guest reboots and a guest crash on 2026-11-20 did not restore it. A cold start
+(shut down the guest, start the VM without a saved state) is untested.
